@@ -28,5 +28,14 @@ class MovementSource
     @destination_location = Location.find(self.destination_location_id)
   end
   
+  def origin_location=(location)
+    self.origin_location_id = location.id
+  end
+
+  def destination_location=(location)
+    self.destination_location_id = location.id
+  end
+
+  
 
 end
