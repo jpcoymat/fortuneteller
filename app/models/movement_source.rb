@@ -19,6 +19,14 @@ class MovementSource
   belongs_to :location
   belongs_to :product  
   
+
+  def origin_location
+    @origin_location = Location.find(self.origin_location_id)
+  end
+
+  def destination_location
+    @destination_location = Location.find(self.destination_location_id)
+  end
   
 
 end
