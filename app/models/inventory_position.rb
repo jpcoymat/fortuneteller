@@ -1,0 +1,42 @@
+class InventoryPosition
+  include Mongoid::Document
+  include Mongoid::Timestamps
+  field :on_hand_quantity,	type: Float
+  field :allocated_quantity,	type: Float
+  field :in_transit_quantity,	type: Float
+  field :on_order_quantity,	type: Float
+
+  embeds_many :inventory_projections, order: :projected_for 
+
+  belongs_to :product
+  belongs_to :location
+
+  def add_movement_source(movement_source)
+    if movement_source_within_projection?(movement_source)
+      case movement_source.class.name 
+        when "Forecast"
+          add_forecast(movement_source)
+        when "OrderLine"
+          add_order_line(movement_source)
+        when "ShipLine"
+          add_ship_line(movement_source)
+      end
+    end 
+  end
+
+  def movement_source_within_projection?(movement_source)
+    @movement_source.projected_for <= latest_projection_date
+  end
+
+  def latest_projection_date
+    self.inventory_projections.last.projected_for
+  end
+
+  def add_forecast(forecast)
+    self.on_order_qty += forecast.quantity
+    
+  end
+
+   
+
+end

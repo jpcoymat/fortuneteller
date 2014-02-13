@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  source: MyString
+  adjustment_type: MyString
+  adjustment_quantity: 1.5
+
+two:
+  source: MyString
+  adjustment_type: MyString
+  adjustment_quantity: 1.5

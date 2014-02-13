@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  order_number: MyString
+  start_ship_by: 2014-01-27
+  end_ship_by: 2014-01-27
+
+two:
+  order_number: MyString
+  start_ship_by: 2014-01-27
+  end_ship_by: 2014-01-27

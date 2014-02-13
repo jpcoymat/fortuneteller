@@ -1,0 +1,4 @@
+class ShipLine < MovementSource
+
+
+end

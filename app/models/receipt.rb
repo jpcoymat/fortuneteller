@@ -1,0 +1,3 @@
+class Receipt < InventoryAdjustment 
+
+end

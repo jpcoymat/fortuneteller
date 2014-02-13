@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  on_hand_quantity: 1.5
+  allocated_quantity: 1.5
+  in_transit_quantity: 1.5
+
+two:
+  on_hand_quantity: 1.5
+  allocated_quantity: 1.5
+  in_transit_quantity: 1.5

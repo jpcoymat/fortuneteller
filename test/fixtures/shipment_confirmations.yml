@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  shipment_number: MyString
+  line_number: MyString
+  shipped_quantity: 1.5
+
+two:
+  shipment_number: MyString
+  line_number: MyString
+  shipped_quantity: 1.5
