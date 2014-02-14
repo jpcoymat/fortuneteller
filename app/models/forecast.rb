@@ -1,5 +1,7 @@
 class Forecast < MovementSource
 
+  validates :trackable? 
+
   def steps_on_existing_order_lines?
     overlapping_order_lines.empty?
   end
@@ -14,5 +16,10 @@ class Forecast < MovementSource
     @order_lines = OrderLine.where(etd: self.etd, product_id: self.product_id, origin_location_id: self.origin_location_id).all
     @order_lines
   end  
+
+  def trackable?
+    @product_location_assignment = ProductLocationAssignment.where(product_id: self.product_id, location_id: self.origin_location_id).all
+    @product_location_assigment.empty?
+  end
 
 end
