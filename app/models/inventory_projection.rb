@@ -2,6 +2,7 @@ class InventoryProjection
   include Mongoid::Document
   include Mongoid::Timestamp
   field :on_hand_quantity, type: Float
+  field :forecasted_quantity, type: Float
   field :allocated_quantity, type: Float
   field :on_order_quantity, type: Float
   field :in_transit_quantity, type: Float
