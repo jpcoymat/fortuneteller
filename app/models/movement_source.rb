@@ -36,6 +36,10 @@ class MovementSource
     self.destination_location_id = location.id
   end
 
-  
+  def trackable?
+    product_location_assignment = ProductLocationAssignment.where(product_id: self.product_id, location_id: self.origin_location_id).first
+    product_location_assignment.nil? ? ProductLocationAssignment.where(product_id: self.product_id, location_id: self.destination_location_id).first : nil
+    !(product_location_assignment.nil?) #if PLA is nil, return false (not trackable) and if PLA is not nil, return true (trackable)
+  end  
 
 end

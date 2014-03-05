@@ -13,7 +13,11 @@ class ShipLinesController < ApplicationController
   end
 
   def create
-    
+    @ship_line = ShipLine.new(params[:ship_line])
+    if @ship_line.trackable?
+      if @ship_line.requires_origin_decrement
+      end
+    end 
   end
 
   def destroy
