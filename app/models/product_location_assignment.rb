@@ -7,4 +7,6 @@ class ProductLocationAssignment
   belongs_to :product
   belongs_to :location
 
+  validates :product_id, uniqueness: {scope: :location_id}
+
 end
