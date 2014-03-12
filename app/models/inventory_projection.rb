@@ -27,7 +27,7 @@ class InventoryProjection
   end
 
   def calculate_on_hand_quantity
-    if self.projected_for.eql?(Time.now) 
+    if self.projected_for.eql?(Date.today) 
       self.on_hand_quantity = self.inventory_position.on_hand_quantity 
     else
        self.on_hand_quantity = yesterday.available_quantity
