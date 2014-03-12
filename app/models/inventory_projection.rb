@@ -34,4 +34,28 @@ class InventoryProjection
     end
   end
 
+  def set_all_fields
+    set_on_order_quantity
+    set_in_transit_quantity
+    set_allocated_quantity
+    set_forecasted_quantity
+  end
+
+
+  def set_on_order_quantity
+    self.on_order_qty = OrderLine.where(product_id: self.product_id, destination_location_id: self.location_id, eta: self.projected_for).sum(:quantity)
+  end
+
+  def set_in_transit_quantity
+    self.in_transity_quantity = ShipLine.where(product_id: self.product_id, destination_location_id: self.location_id, eta: self.projected_for).sum(:quantity)
+  end
+  
+  def set_allocated_quantity
+    self.allocated_quantity = OrderLine.where(product_id: self.product_id, origin_location_id: self.location_id, etd: self.projected_for).sum(:quantity)
+  end
+
+  def set_forecasted_quantity
+    self.forecasted_quantity = Foreast.where(product_id: self.product_id, origin_location_id: self.location_id, etd: self.projected_for).sum(:quantity)
+  end
+
 end

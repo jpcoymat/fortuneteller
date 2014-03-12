@@ -39,8 +39,22 @@ class InventoryPosition
   end
 
   def create_projections
-    days_to_project = self.location.organization.days_to_project
-    
+    if self.inventory_projections.empty?
+      days_to_project = self.location.organization.days_to_project
+      projection_date = DateTime.now
+      first_projection = true
+      days_to_project.times do 
+        inventory_projection = InventoryProjection.new(inventory_position_id: self.id, projected_for: projection_date)
+        if first_projection
+          inventory_projection.on_hand_quantity = self.on_hand_quantity
+          first_projection = false  
+        else
+          inventory_projection.on_hand_quantity = inventory_projection.yesterday.available_quantity
+        end
+        inventory_projection.set_all_fields
+        projection_date += 1.day
+      end
+    end
   end   
 
 end
