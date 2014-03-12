@@ -1,6 +1,6 @@
 class InventoryProjection
   include Mongoid::Document
-  include Mongoid::Timestamp
+  include Mongoid::Timestamps
   field :on_hand_quantity, type: Float
   field :forecasted_quantity, type: Float
   field :allocated_quantity, type: Float
@@ -19,11 +19,11 @@ class InventoryProjection
   end
 
   def yesterday
-    @yesterday = InventoryProjection.where(product_id: self.product_id, location_id: self.location_id, projected_for: (self.projected_for - 1.day).first
+    @yesterday = InventoryProjection.where(product_id: self.product_id, location_id: self.location_id, projected_for: (self.projected_for - 1.day)).first
   end
 
   def tomorrow 
-    @tomorrow = InventoryProjection.where(product_id: self.product_id, location_id: self.location_id, projected_for: (self.projected_for + 1.day).first
+    @tomorrow = InventoryProjection.where(product_id: self.product_id, location_id: self.location_id, projected_for: (self.projected_for + 1.day)).first
   end
 
   def calculate_on_hand_quantity

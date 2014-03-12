@@ -5,8 +5,9 @@ class InventoryPosition
   field :allocated_quantity,	type: Float
   field :in_transit_quantity,	type: Float
   field :on_order_quantity,	type: Float
+  field :forecasted_quantity,	type: Float
 
-  embeds_many :inventory_projections, order: :projected_for 
+  embeds_many :inventory_projections, order: :projected_for.asc 
 
   belongs_to :product
   belongs_to :location
@@ -37,6 +38,9 @@ class InventoryPosition
     
   end
 
-   
+  def create_projections
+    days_to_project = self.location.organization.days_to_project
+    
+  end   
 
 end
