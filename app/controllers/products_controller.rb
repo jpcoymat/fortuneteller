@@ -39,7 +39,7 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
     @product.is_active = false
     @product.save
-    redirect_to products_path
+    redirect_to lookup_products_path
   end
 
 end

@@ -7,7 +7,6 @@ Fortuneteller::Application.routes.draw do
   resources :inventory_advice
   resources :receipts
   resources :users
-  resources :products
   resources :locations
   resources :product_location_assignments
   resources :inventory_positions do
@@ -19,7 +18,6 @@ Fortuneteller::Application.routes.draw do
       post 'lookup'
     end
   end
-  resources :locations
 
 
   # The priority is based upon order of creation: first created -> highest priority.
