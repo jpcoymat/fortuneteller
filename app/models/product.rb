@@ -3,7 +3,8 @@ class Product
   include Mongoid::Timestamps
   field :name, type: String
   field :code, type: String
-
+  field :is_active, type: Boolean
+ 
   belongs_to :organization
   has_many :product_location_assignments
 

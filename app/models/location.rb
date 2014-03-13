@@ -9,6 +9,7 @@ class Location
   field :state_providence, type: String
   field :country, type: String
   field :postal_code, type: String
+  field :is_active, type: Boolean
 
   belongs_to :organization  
 
