@@ -13,6 +13,14 @@ Fortuneteller::Application.routes.draw do
   resources :inventory_positions do
     resources :inventory_projections
   end
+  resources :products do
+    collection do
+      get 'lookup'
+      post 'lookup'
+    end
+  end
+  resources :locations
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
