@@ -11,4 +11,10 @@ class Organization
   has_many :products
   has_many :locations
 
+  def product_location_assignments
+    @product_location_assignments = []
+    self.products.each {|product| @product_location_assignments << product.product_location_assignments}
+    @product_location_assignments.flatten!
+  end
+
 end

@@ -7,4 +7,9 @@ class User
   field :dob, type: Date
 
   belongs_to :organization
+
+  def product_location_assignments
+    @product_location_assignments = self.organization.product_location_assignments
+  end
+
 end

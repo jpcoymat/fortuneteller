@@ -9,7 +9,7 @@ class Product
 
 
   def locations
-    @locations = Location.find(self.product_location_assignments.maps {|pla| pla.location_id})
+    @locations = Location.find(self.product_location_assignments.map {|pla| pla.location_id})
   end  
 
 end
