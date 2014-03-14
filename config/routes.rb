@@ -1,6 +1,6 @@
 Fortuneteller::Application.routes.draw do
 
-  devise_for :users
+
   resources :users
   resources :organizations
   resources :forecasts
