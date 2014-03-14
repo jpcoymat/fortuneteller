@@ -7,7 +7,7 @@ class ProductLocationAssignmentsController < ApplicationController
   end
 
   def show
-    @product_location_assignment = ProductLocationAssignment.find(params[:id]
+    @product_location_assignment = ProductLocationAssignment.find(params[:id])
   end
 
   def edit
