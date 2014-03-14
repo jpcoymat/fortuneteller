@@ -1,0 +1,7 @@
+<h1>Create Product Location Assignment</h1>
+	
+	<%= form_for @product_location_assignment do |form| %>
+		<%= render partial: "product_location_assignment", locals: {form: form} %>
+		<%= submit_tag "Create" %>
+	<% end %>
+

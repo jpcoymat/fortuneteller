@@ -1,0 +1,15 @@
+<h1>Product Location Assignments </h1>
+	<% if @product_location_assignments.empty? %>
+		<p>No Product Location Assignment records have been created.</p>
+	<% else %>
+		<table>
+		<tr><th>Product</th> <th>Location</th> <th>Minimum Quantity </th> <th>Maximum Quantity</th></tr>
+		<% @product_location_assignments.each do |product_location_assignments| %>
+			<tr>	<td><%= product_location_assignment.product.name 	%></td>
+				<td><%= product_location_assignment.location.name	%></td>
+				<td><%= product_location_assignment.maximum_quantity	%></td>
+				<td><%= product_location_assignment.minimum_quantity	%></td>
+				<td><%= link_to "Edit", edit_product_location_assignment_path %></td>
+		<% end %>
+	<% end %>
+	

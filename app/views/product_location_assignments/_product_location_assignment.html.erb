@@ -1,0 +1,6 @@
+<table>
+	<tr><td>Product 		</td>	<td><%= form.select :product_id, @products.collect {|product| [product.name, product.id] } %></td></tr>
+	<tr><td>Location		</td>	<td><%= form.select :location_id, @locations.collect {|location| [location.name, location.id] %> </td></tr>
+	<tr><td>Minimum Quantity  	</td>	<td><%= form.text_field :minimum_quantity %> 	</td></tr>
+	<tr><td>Maximum Quantity	</td>	<td><%= form.text_field :maximum_quantity %>	</td></tr>
+</table>

@@ -1,5 +1,6 @@
 class LocationsController < ApplicationController
 
+  before_filter :authenticate_user!
 
   def index
     @locations = User.find(session[:user_id).organization.locations

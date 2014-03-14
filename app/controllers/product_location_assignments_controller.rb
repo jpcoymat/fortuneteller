@@ -1,5 +1,7 @@
 class ProductLocationAssignmentsController < ApplicationController
 
+  before_filter :authenticate_user!
+
   def index
     @product_location_assignments = User.find(session[:user_id]).product_location_assignments
   end
@@ -21,7 +23,6 @@ class ProductLocationAssignmentsController < ApplicationController
       redirect_to product_location_assignment_path(@product_location_assignment)
     else
       @organization = User.find(session[:user_id]).organization
-      @product_location_assignment = ProductLocationAssignment.find(params[:id])
       @location = @organization.locations
       @products = @organization.products
       render action: "edit"
@@ -31,7 +32,6 @@ class ProductLocationAssignmentsController < ApplicationController
   def new
     @product_location_assignment = ProductLocationAssignment.new
     @organization = User.find(session[:user_id]).organization
-    @product_location_assignment = ProductLocationAssignment.find(params[:id])
     @location = @organization.locations
     @products = @organization.products
   end

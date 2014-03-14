@@ -1,7 +1,13 @@
 class ProductsController < ApplicationController
-  
+
+  before_filter :authenticate_user!  
 
   def lookup
+    @user = User.find(session[:user_id])
+    if request.post?
+      params[:product].delete_if {|k,v| v.blank?}
+      @products = Product.where(params[:product]).all 
+    end
   end
 
    
