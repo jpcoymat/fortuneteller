@@ -1,12 +1,13 @@
 Fortuneteller::Application.routes.draw do
 
+  devise_for :users
   resources :organizations
   resources :forecasts
   resources :order_lines
   resources :ship_lines
   resources :inventory_advice
   resources :receipts
-  resources :users
+
   resources :locations
   resources :product_location_assignments
   resources :inventory_positions do
@@ -74,4 +75,6 @@ Fortuneteller::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+
+  root to: 'main#index'
 end
