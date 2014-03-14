@@ -1,0 +1,28 @@
+<h1>Products</h1>
+<h4>Please enter your search criteria </h4>
+
+<%= form_for :product_search, :url => lookup_products_path do |form| %>
+	<table>
+        	<tr><td>Product Name  </td><td><%= form.text_field :name %></td><td>Product Code</td><td<%= form.text_field :code %>></td></tr>
+        </table>
+        <%= submit_tag "Search" %>
+<% end %>
+
+<% if request.post? %>
+
+	<% if @products.empty? %>
+		<p>No products match your search criteria </p>
+   	<% else %>
+		<table>
+			<tr><th>Product Name</th><th>Product Code</th></tr>
+			<% for product in @products %>
+				<tr>	<td><%= producct.name %></td><td><%= product.code %></td>
+					<td><%= link_to "Edit", edit_product_path(product) %></td>
+				</tr>
+ 			<% end %>
+		</table>
+	<% end %>
+<% end %>
+
+
+<%= link_to "Add New Product", new_product_path %>
