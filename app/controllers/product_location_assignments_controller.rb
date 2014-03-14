@@ -1,6 +1,6 @@
 class ProductLocationAssignmentsController < ApplicationController
 
-  before_filter :authenticate_user!
+  before_filter :authenticate_user
 
   def index
     @product_location_assignments = User.find(session[:user_id]).product_location_assignments
