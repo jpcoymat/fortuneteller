@@ -1,6 +1,6 @@
 class Forecast < MovementSource
 
-  validates :trackable? 
+
 
   def steps_on_existing_order_lines?
     overlapping_order_lines.empty?
