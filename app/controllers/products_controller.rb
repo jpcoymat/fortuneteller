@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
 
-  before_filter :authenticate_user  
+  before_filter :authorize  
 
   def lookup
     @user = User.find(session[:user_id])

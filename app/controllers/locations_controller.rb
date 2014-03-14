@@ -1,9 +1,9 @@
 class LocationsController < ApplicationController
 
-  before_filter :authenticate_user
+  before_filter :authorize
 
   def index
-    @locations = User.find(session[:user_id).organization.locations
+    @locations = User.find(session[:user_id]).organization.locations
   end
   
   def show
