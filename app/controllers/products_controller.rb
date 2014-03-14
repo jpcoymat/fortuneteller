@@ -24,6 +24,7 @@ class ProductsController < ApplicationController
 
   def new
     @product = Product.new
+    @user = User.find(session[:user_id])
   end
 
   def create
@@ -31,6 +32,7 @@ class ProductsController < ApplicationController
     if @product.save
       redirect_to product_path(@product)
     else
+     @user = User.find(session[:user_id])
      render action: "new"
     end
   end

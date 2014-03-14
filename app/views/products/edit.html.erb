@@ -1,0 +1,5 @@
+<h1>Edit Product </h1>
+	<%= form_for @product do |form| %>
+		<%= render partial: "product", locals: {form: form} %>
+		<%= submit_tag "Update" %>
+	<% end %>
