@@ -34,11 +34,12 @@ class User
   # field :unlock_token,    :type => String # Only if unlock strategy is :email or :both
   # field :locked_at,       :type => Time
   include Mongoid::Timestamps
-  field :username, type: String
+
   field :first_name, type: String
   field :last_name, type: String
   field :dob, type: Date
 
+  validates :first_name, :last_name, :email, :organization_id, presence: true
   belongs_to :organization
 
   def product_location_assignments
