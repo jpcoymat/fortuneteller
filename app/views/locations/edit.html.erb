@@ -1,0 +1,6 @@
+<h1>Edit Location </h1>
+	<%= form_for @location od |form| %>
+		<%= render partial: "location", locals: {form: form} %>
+		<%= submit_tag "Update" %>
+	<% end %>
+<%= link_to "View Locations", locations_path %>

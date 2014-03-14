@@ -1,0 +1,15 @@
+<h1>Location Details </h1>
+
+<table>
+        <tr><th>Location Name   </th>   <td><%= @location.name                   %></td></tr>
+        <tr><th>Location Code   </th>   <td><%= @location.code                   %></td></tr>
+        <tr><th>Address         </th>   <td><%= @location.address_1              %></td></tr>
+        <tr><th>Adddres 2       </th>   <td><%= @location.address_2              %></td></tr>
+        <tr><th>City            </th>   <td><%= @location.city                   %></td></tr>
+        <tr><th>State/Prov      </th>   <td><%= @location.state_providence       %></td></tr>
+        <tr><th>Country         </th>   <td><%= @location.country                %></td></tr>
+</table>
+<%= link_to "Edit Location", edit_location_path(@location) %>
+<br /><br /> 
+<%= link_to "View Locations", locations_path %>
+
