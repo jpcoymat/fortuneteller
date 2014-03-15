@@ -38,7 +38,7 @@ class User
   def password=(pwd)
     @password = pwd
     return if pwd.blank?
-    self.hashed_password = Digest::SHA1.hexdigest(self.password)
+    self.encrypted_password = Digest::SHA1.hexdigest(self.password)
   end
 
   def self.authenticate(username, password)
