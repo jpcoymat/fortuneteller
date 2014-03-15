@@ -6,12 +6,11 @@ class LoginController < ApplicationController
     if request.post?
       @user = User.authenticate(params[:user_login][:username],params[:user_login][:password])
       if @user
-        flash[:notice] = "Bienvenido!"
         session[:user_id] = @user.id
-        redirect_to :controller => 'main', :action => 'index'
+        redirect_to main_index_path 
       else
         flash[:notice] ="Usuario/contrasena invalida"
-        redirect_to :controller => 'login', :action => 'login'
+        render action: login
       end
     end
   end
@@ -19,7 +18,7 @@ class LoginController < ApplicationController
   def logout
     session[:user_id] = nil
     flash[:notice] = "Su sesion ha terminado"
-    redirect_to :controller => 'login', :action => 'login'
+    redirect_to login_login_path
   end
 
 end
