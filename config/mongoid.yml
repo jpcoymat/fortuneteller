@@ -30,8 +30,6 @@ development:
         # retry_interval: 1
   # Configure Mongoid specific options. (optional)
   options:
-    skip_version_check: true
-    safe: true
     # Includes the root model name in json serialization. (default: false)
     # include_root_in_json: false
 
