@@ -9,7 +9,7 @@ class LoginController < ApplicationController
         session[:user_id] = @user.id
         redirect_to main_index_path 
       else
-        flash[:notice] ="Usuario/contrasena invalida"
+        flash[:notice] ="Username/password invalid"
         render action: login
       end
     end
@@ -17,7 +17,7 @@ class LoginController < ApplicationController
 
   def logout
     session[:user_id] = nil
-    flash[:notice] = "Su sesion ha terminado"
+    flash[:notice] = "You have logged out of your session"
     redirect_to login_login_path
   end
 

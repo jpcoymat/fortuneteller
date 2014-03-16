@@ -21,8 +21,8 @@ class ProductsController < ApplicationController
 
   def update
     @product = Product.find(params[:id])
-    if @product.save
-      redirect_to product_path(@product)
+    if @product.update_attributes(params[:product])
+      redirect_to lookup_products_path 
     else
       render action: "edit"
     end
@@ -36,7 +36,7 @@ class ProductsController < ApplicationController
   def create
     @product = Product.new(params[:product])
     if @product.save
-      redirect_to product_path(@product)
+      redirect_to lookup_products_path
     else
      @user = User.find(session[:user_id])
      render action: "new"

@@ -6,7 +6,8 @@ class ApplicationController < ActionController::Base
   protected
     
     def authorize
-      unless User.find(session[:user_id])
+      user_id = session[:user_id] || -1
+      if User.where(id: user_id).first.nil?
         redirect_to login_login_path 
       end
     end
