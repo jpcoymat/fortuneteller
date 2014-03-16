@@ -1,0 +1,19 @@
+<h1>Location</h1>
+	<% if @location.empty? %>
+		<p>No locations have been created for this Org.</p>
+	<% else %>
+		<table>
+		<tr><th>Location Name </th><th>Location Code</th> <th>Address</th> <th>City</th> <th>State/Prov</th><th>Country</th></tr>
+		<% @location.each do |location| %>
+			<tr>	<td><%= location.name 	%></td>
+				<td><%= location.code	%></td>
+				<td><%= location.address_1	%></td>
+				<td><%= location.state_providence	%></td>
+				<td><%= link_to "View", location_path(location) %></td>
+				<td><%= link_to "Edit", edit_location_path(location) %></td>
+			</tr>
+		<% end %>
+		</table>
+	<% end %>
+	<%= link_to "Create New Location", new_location_path %>
+
