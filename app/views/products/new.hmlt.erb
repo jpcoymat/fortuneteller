@@ -1,7 +1,0 @@
-<h1>Create New Product </h1>
-
-	<%= form_for @product do |form|	%>
-		<%= form.hidden_field organization_id, value: @user.organization.id	%>
-		<%= render partial: "product", local: {form: form} 			%>
-		<%= submit_tag "Create Product" %>
-	<% end %> 
