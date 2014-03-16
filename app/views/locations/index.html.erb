@@ -1,10 +1,10 @@
 <h1>Location</h1>
-	<% if @location.empty? %>
+	<% if @locations.empty? %>
 		<p>No locations have been created for this Org.</p>
 	<% else %>
 		<table>
 		<tr><th>Location Name </th><th>Location Code</th> <th>Address</th> <th>City</th> <th>State/Prov</th><th>Country</th></tr>
-		<% @location.each do |location| %>
+		<% @locations.each do |location| %>
 			<tr>	<td><%= location.name 	%></td>
 				<td><%= location.code	%></td>
 				<td><%= location.address_1	%></td>
