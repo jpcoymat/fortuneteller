@@ -1,21 +1,19 @@
 class LocationsController < ApplicationController
 
   before_filter :authorize
+  before_action :set_location, only: [:show, :edit, :update, :destroy]
 
   def index
     @locations = User.find(session[:user_id]).organization.locations
   end
   
   def show
-    @location = Location.find(params[:id])
   end
  
   def edit
-    @location = Location.find(params[:id])
   end
 
   def update
-    @location = Location.find(params[:id])
     if @location.update_attributes(params[:location])
       redirect_to location_path(@location)
     else
@@ -37,11 +35,16 @@ class LocationsController < ApplicationController
   end
 
   def destroy
-    @location = Location.find(params[:id])
     @location.is_active = false
     @location.save
     redirect_to locations_path
   end
+
+  private
+  
+    def set_location
+      @location = Location.find(params[:id])
+    end
 
 
 end

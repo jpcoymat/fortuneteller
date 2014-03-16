@@ -1,4 +1,7 @@
 class ReceiptsController < ApplicationController
+
+  before_action :set_receipt, only: [:show, :edit, :destroy, :update]
+
   def index
   end
 
@@ -19,4 +22,11 @@ class ReceiptsController < ApplicationController
 
   def destroy
   end
+
+  private
+    
+    def set_receipt
+      @receipt = Receipt.find(params[:id])
+    end
+  
 end

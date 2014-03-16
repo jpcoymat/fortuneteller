@@ -1,4 +1,7 @@
 class ShipLinesController < ApplicationController
+
+  before_action :set_ship_line, only: [:show, :edit, :update, :destroy]
+
   def index
   
   end
@@ -22,4 +25,11 @@ class ShipLinesController < ApplicationController
 
   def destroy
   end
+ 
+  private
+
+    def set_ship_line
+      @ship_line = ShipLine.find(params[:id])
+    end
+
 end

@@ -1,4 +1,7 @@
 class ForecastsController < ApplicationController
+   
+  before_action :set_forecast, only:[:show,:edit,:update,:destroy]
+
   def index
   end
 
@@ -26,4 +29,11 @@ class ForecastsController < ApplicationController
 
   def destroy
   end
+
+  private
+ 
+    def set_forecast
+      @forecast = Forecast.find(params[:id])
+    end
+
 end

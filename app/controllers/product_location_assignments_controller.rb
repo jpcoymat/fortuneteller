@@ -1,24 +1,23 @@
 class ProductLocationAssignmentsController < ApplicationController
 
   before_filter :authorize
+  before_action :set_product_location_assignment, only: [:show, :edit, :update, :destroy]
+
 
   def index
     @product_location_assignments = User.find(session[:user_id]).product_location_assignments
   end
 
   def show
-    @product_location_assignment = ProductLocationAssignment.find(params[:id])
   end
 
   def edit
     @organization = User.find(session[:user_id]).organization
-    @product_location_assignment = ProductLocationAssignment.find(params[:id])
     @location = @organization.locations
     @products = @organization.products
   end
 
   def update
-    @product_location_assignment = ProductLocationAssignment.find(params[:id])
     if @product_location_assignment.update_attributes(params[:product_location_assignment])
       redirect_to product_location_assignment_path(@product_location_assignment)
     else
@@ -48,6 +47,12 @@ class ProductLocationAssignmentsController < ApplicationController
       render action: "new"
     end
   end
+
+  private
+
+    def set_product_location_assignment
+      @product_location_assignment = ProductLocationAssignment.find(params[:idi])
+    end
 
 end
 

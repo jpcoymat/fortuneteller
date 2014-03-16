@@ -1,4 +1,7 @@
 class OrderLinesController < ApplicationController
+
+  before_action :set_order_line, only: [:show,:edit,:create,:update,:destroy]
+
   def index
   end
 
@@ -27,4 +30,13 @@ class OrderLinesController < ApplicationController
 
   def destroy
   end
+
+  private
+    
+    def set_order_line
+      @order_line = OrderLine.find(params[:id])
+    end  
+
 end
+
+
