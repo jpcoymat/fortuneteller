@@ -13,4 +13,10 @@ class Location
 
   belongs_to :organization  
 
+  after_initialize :activate
+
+  def activate
+    self.is_active = true
+  end
+
 end

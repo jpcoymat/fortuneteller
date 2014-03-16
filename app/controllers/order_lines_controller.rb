@@ -1,6 +1,6 @@
 class OrderLinesController < ApplicationController
 
-  before_action :set_order_line, only: [:show,:edit,:create,:update,:destroy]
+  before_action :set_order_line, only: [:show,:edit,:update,:destroy]
 
   def index
   end

@@ -13,6 +13,12 @@ class Product
   validates :name, uniqueness: {scope: :organization_id}
   validates :code, uniqueness: {scope: :organization_id}
 
+  after_initialize :activate
+
+  def activate
+    self.is_active = true
+  end
+
   def locations
     @locations = Location.find(self.product_location_assignments.map {|pla| pla.location_id})
   end  
