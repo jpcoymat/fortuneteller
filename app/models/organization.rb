@@ -15,6 +15,7 @@ class Organization
     @product_location_assignments = []
     self.products.each {|product| @product_location_assignments << product.product_location_assignments}
     @product_location_assignments.flatten!
+    @product_location_assignments
   end
 
 end
