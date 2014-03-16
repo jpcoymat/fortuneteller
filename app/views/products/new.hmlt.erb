@@ -2,6 +2,6 @@
 
 	<%= form_for @product do |form|	%>
 		<%= form.hidden_field organization_id, value: @user.organization_id	%>
-		<%= render partial: "product", local: {form: form} 			%>
+		<%= render partial: "product", locals: {form: form} 			%>
 		<%= submit_tag "Create Product" %>
 	<% end %> 
