@@ -13,13 +13,13 @@ class ProductLocationAssignmentsController < ApplicationController
 
   def edit
     @organization = User.find(session[:user_id]).organization
-    @location = @organization.locations
+    @locations = @organization.locations
     @products = @organization.products
   end
 
   def update
     if @product_location_assignment.update_attributes(product_location_assignment_params)
-      redirect_to product_location_assignment_path(@product_location_assignment)
+      redirect_to product_location_assignments_path
     else
       @organization = User.find(session[:user_id]).organization
       @location = @organization.locations
@@ -31,14 +31,14 @@ class ProductLocationAssignmentsController < ApplicationController
   def new
     @product_location_assignment = ProductLocationAssignment.new
     @organization = User.find(session[:user_id]).organization
-    @location = @organization.locations
+    @locations = @organization.locations
     @products = @organization.products
   end
 
   def create
     @product_location_assignment = ProductLocationAssignment.new(product_location_assignment_params)
     if @product_location_assignment.save
-      redirect_to product_location_assignment_path(@product_location_assignment)
+      redirect_to product_location_assignments_path
     else
       @organization = User.find(session[:user_id]).organization
       @product_location_assignment = ProductLocationAssignment.find(params[:id])
@@ -51,7 +51,7 @@ class ProductLocationAssignmentsController < ApplicationController
   private
 
     def set_product_location_assignment
-      @product_location_assignment = ProductLocationAssignment.find(params[:idi])
+      @product_location_assignment = ProductLocationAssignment.find(params[:id])
     end
 
     def product_location_assignment_params

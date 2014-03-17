@@ -1,5 +1,5 @@
 <h1>Edit Location </h1>
-	<%= form_for @location od |form| %>
+	<%= form_for @location do |form| %>
 		<%= render partial: "location", locals: {form: form} %>
 		<%= submit_tag "Update" %>
 	<% end %>

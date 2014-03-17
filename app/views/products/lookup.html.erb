@@ -15,9 +15,9 @@
 		<p>No products match your search criteria </p>
    	<% else %>
 		<table>
-			<tr><th>Product Name</th><th>Product Code</th></tr>
+			<tr><th>Product Name</th><th>Product Code</th><th>Product Category</th></tr>
 			<% for product in @products %>
-				<tr>	<td><%= product.name %></td><td><%= product.code %></td>
+				<tr>	<td><%= product.name %></td><td><%= product.code %></td><td><%= product.product_category %></td>
 					<td><%= link_to "Edit", edit_product_path(product) %></td>
 				</tr>
  			<% end %>
@@ -26,4 +26,4 @@
 <% end %>
 
 
-<%= link_to "Add New Product", new_product_path %>
+<%= link_to "Main Menu", main_index_path %> || <%= link_to "Add New Product", new_product_path %>

@@ -4,12 +4,14 @@
 	<% else %>
 		<table>
 		<tr><th>Product</th> <th>Location</th> <th>Minimum Quantity </th> <th>Maximum Quantity</th></tr>
-		<% @product_location_assignments.each do |product_location_assignments| %>
+		<% @product_location_assignments.each do |product_location_assignment| %>
 			<tr>	<td><%= product_location_assignment.product.name 	%></td>
 				<td><%= product_location_assignment.location.name	%></td>
 				<td><%= product_location_assignment.maximum_quantity	%></td>
 				<td><%= product_location_assignment.minimum_quantity	%></td>
-				<td><%= link_to "Edit", edit_product_location_assignment_path %></td>
+				<td><%= link_to "Edit", edit_product_location_assignment_path(product_location_assignment) %></td>
 		<% end %>
+		</table >
 	<% end %>
-	
+	<br /> <br />
+	<%= link_to "Main Menu", main_index_path %> | <%= link_to "Add Product Location Assignment", new_product_location_assignment_path %>

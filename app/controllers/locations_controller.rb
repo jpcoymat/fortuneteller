@@ -22,6 +22,7 @@ class LocationsController < ApplicationController
   end
 
   def new
+    @user = User.find(session[:user_id])
     @location = Location.new
   end
 
@@ -47,7 +48,7 @@ class LocationsController < ApplicationController
     end
 
     def location_params
-      params.require(:location).permit(:name, :code, :address_1, :address_2, :city, :state_providence, :country, :postal_code)
+      params.require(:location).permit(:name, :code, :address_1, :address_2, :city, :state_providence, :country, :postal_code, :organization_id)
     end
 
 end

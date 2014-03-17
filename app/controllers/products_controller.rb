@@ -19,7 +19,7 @@ class ProductsController < ApplicationController
   end
 
   def update
-    if @product.update_attributes(params[:product])
+    if @product.update_attributes(product_params)
       redirect_to lookup_products_path 
     else
       render action: "edit"
@@ -32,7 +32,7 @@ class ProductsController < ApplicationController
   end
 
   def create
-    @product = Product.new(params[:product])
+    @product = Product.new(product_params)
     if @product.save
       redirect_to lookup_products_path
     else
@@ -54,7 +54,7 @@ class ProductsController < ApplicationController
     end
 
     def product_params
-      params.require(:product).permit(:name, :code, :product_category)
+      params.require(:product).permit(:name, :code, :product_category, :organization_id)
     end
 
 end

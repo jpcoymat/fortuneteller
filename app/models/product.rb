@@ -9,9 +9,8 @@ class Product
   belongs_to :organization
   has_many :product_location_assignments
 
-  validates :name, :code, presence: true
-  validates :name, uniqueness: {scope: :organization_id}
-  validates :code, uniqueness: {scope: :organization_id}
+  validates :name, :code, :organization_id, presence: true
+  validates_uniqueness_of :code, scope: :organization_id
 
   after_initialize :activate
 
