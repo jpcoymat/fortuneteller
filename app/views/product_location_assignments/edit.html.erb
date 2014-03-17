@@ -1,4 +1,7 @@
 <h1>Edit Product Location Assignment </h1>
+	
+	<%= render partial: "product_location_assignment_errors" %>	
+
 	<%= form_for @product_location_assignment do |form| %>
 		<%= render partial: "product_location_assignment", locals: {form: form} %>
 		<%= submit_tag "Update" %>
