@@ -6,7 +6,7 @@
 
     		<ul>
     			<% @product.errors.each do |key,value| %>
-      				<li><%= value %></li>
+      				<li><%= key.to_s.capitalize + " " + value %></li>
     			<% end %>
     		</ul>
   		</div>
