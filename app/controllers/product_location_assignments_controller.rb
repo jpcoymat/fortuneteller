@@ -41,7 +41,7 @@ class ProductLocationAssignmentsController < ApplicationController
       redirect_to product_location_assignments_path
     else
       @organization = User.find(session[:user_id]).organization
-      @location = @organization.locations
+      @locations = @organization.locations
       @products = @organization.products
       render action: "new"
     end

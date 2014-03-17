@@ -1,9 +1,9 @@
         <% if @product_location_assignment.errors.any? %>
                 <div id="error_explanation">
-                <h2>This Product Location Assignment contains <%= @product.errors.count.to_s + pluralize(@product.errors.count, "eror") %>  :</h2>
+                <h2>This Product Location Assignment contains <%= @product_location_assignment.errors.count.to_s + pluralize(@product_location_assignment.errors.count, "eror") %>  :</h2>
 
                 <ul>
-                        <% @product.errors.each do |key,value| %>
+                        <% @product_location_assignment.errors.each do |key,value| %>
                                 <li><%= key.to_s.capitalize + " " + value %></li>
                         <% end %>
                 </ul>

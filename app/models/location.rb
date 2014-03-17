@@ -13,6 +13,9 @@ class Location
 
   belongs_to :organization  
 
+  validates :name, :code, :city, :country, presence: true
+  validates_uniqueness_of :code, scope: :organization_id
+
   after_initialize :activate
 
   def activate
