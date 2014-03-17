@@ -1,5 +1,5 @@
 <h1>Create New Location</h1>
-	<%= render partial: "location_errors %>
+	<%= render partial: "location_errors" %>
 	<%= form_for @location do |form| %>
 		<%= form.hidden_field :organization_id, value: @user.organization.id %>
 		<%= render partial: "location", locals: {form: form} %>
