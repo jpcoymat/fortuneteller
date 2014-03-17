@@ -1,6 +1,6 @@
 <h1>Create New Product </h1>
 	
-	<%= render partial: "error" %>
+	<%= render partial: "error", locals: {product: @product}  %>
 
 	<%= form_for @product do |form|	%>
 		<%= form.hidden_field :organization_id, value: @user.organization_id	%>
