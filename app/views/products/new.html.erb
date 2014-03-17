@@ -1,16 +1,6 @@
 <h1>Create New Product </h1>
 	
-	<% if @product.errors.any? %>
-  		<div id="error_explanation">
-    		<h2>There are <%= @product.errors.count.to_s %> error(s) with this product :</h2>
-
-    		<ul>
-    			<% @product.errors.each do |key,value| %>
-      				<li><%= key.to_s.capitalize + " " + value %></li>
-    			<% end %>
-    		</ul>
-  		</div>
-	<% end %>
+	<%= render partial: "error" %>
 
 	<%= form_for @product do |form|	%>
 		<%= form.hidden_field :organization_id, value: @user.organization_id	%>
