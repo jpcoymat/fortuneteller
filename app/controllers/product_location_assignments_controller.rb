@@ -41,7 +41,6 @@ class ProductLocationAssignmentsController < ApplicationController
       redirect_to product_location_assignments_path
     else
       @organization = User.find(session[:user_id]).organization
-      @product_location_assignment = ProductLocationAssignment.find(params[:id])
       @location = @organization.locations
       @products = @organization.products
       render action: "new"
@@ -57,6 +56,7 @@ class ProductLocationAssignmentsController < ApplicationController
     def product_location_assignment_params
       params.require(:product_location_assignment).permit(:minimum_quantity, :maximum_quantity, :product_id, :location_id)
     end
+
 
 end
 
