@@ -1,6 +1,6 @@
         <% if @product_location_assignment.errors.any? %>
                 <div id="error_explanation">
-                <h2>This Product Location Assignment contains <%= @product_location_assignment.errors.count.to_s + pluralize(@product_location_assignment.errors.count, "eror") %>  :</h2>
+                <h2>This Product Location Assignment contains <%= pluralize(@product_location_assignment.errors.count, "error") %>  :</h2>
 
                 <ul>
                         <% @product_location_assignment.errors.each do |key,value| %>

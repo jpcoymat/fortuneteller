@@ -1,6 +1,6 @@
         <% if @product.errors.any? %>
                 <div id="error_explanation">
-                <h2>This Product contains <%= @product.errors.count.to_s + pluralize(@product.errors.count, "eror") %>  :</h2>
+                <h2>This Product contains <%= pluralize(@product.errors.count, "error") %>  :</h2>
 
                 <ul>
                         <% @product.errors.each do |key,value| %>

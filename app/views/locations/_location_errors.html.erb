@@ -1,6 +1,6 @@
 <% if @location.errors.any? %>
 	<div id="error_explanation">
-                <h2>This Location contains <%= @location.errors.count.to_s + pluralize(@location.errors.count, "eror") %>  :</h2>
+                <h2>This Location contains <%= pluralize(@location.errors.count, "error") %>  :</h2>
 
                 <ul>
                         <% @location.errors.each do |key,value| %>
