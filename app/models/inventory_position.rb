@@ -43,10 +43,10 @@ class InventoryPosition
       days_to_project = self.location.organization.days_to_project
       projection_date = Date.today
       days_to_project.times do 
-        inventory_projection = InventoryProjection.new(projected_for: projection_date)
+        inventory_projection = self.inventory_projections.new(projected_for: projection_date)
         inventory_projection.calculate_on_hand_quantity
         inventory_projection.set_all_fields
-        self.create_inventory_projection(inventory_projection)
+        inventory_projection.save
         projection_date += 1.day
       end
     end
