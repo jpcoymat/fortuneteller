@@ -2,10 +2,6 @@ class InventoryPosition
   include Mongoid::Document
   include Mongoid::Timestamps
   field :on_hand_quantity,	type: Float
-  field :allocated_quantity,	type: Float
-  field :in_transit_quantity,	type: Float
-  field :on_order_quantity,	type: Float
-  field :forecasted_quantity,	type: Float
 
   embeds_many :inventory_projections, order: :projected_for.asc 
 
@@ -51,5 +47,34 @@ class InventoryPosition
       self.save
     end
   end   
+ 
+  def on_order_quantity
+    @on_order_quantity = 0
+    self.inventory_projections.each {|projection| @on_order_quantity += projection.on_order_quantity}
+    @on_order_quantity	
+  end
+
+
+  def forecasted_quantity
+    @forecasted_quantity = 0
+    self.inventory_projections.each {|projection| @forecasted_quantity += projection.forecasted_quantity}
+    @forecasted_quantity
+  end
+
+  def in_transit_quantity
+    @in_transit_quantity = 0
+    self.inventory_projections.each {|projection| @in_transit_quantity += projection.in_transit_quantity}
+    @in_transit_quantity
+  end
+
+  def allocated_quantity
+    @allocated_quantity = 0
+    self.inventory_projections.each {|projection| @allocated_quantity += projection.allocated_quantity}
+    @allocated_quantity
+  end
+
+  def available_quantity
+    self.on_hand_quantity + on_order_quantity + in_transit_quantity - allocated_quantity - forecasted_quantity
+  end
 
 end
