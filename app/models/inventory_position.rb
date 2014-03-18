@@ -46,9 +46,9 @@ class InventoryPosition
         inventory_projection = self.inventory_projections.new(projected_for: projection_date)
         inventory_projection.calculate_on_hand_quantity
         inventory_projection.set_all_fields
-        inventory_projection.save
         projection_date += 1.day
       end
+      self.save
     end
   end   
 
