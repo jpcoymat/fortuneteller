@@ -38,6 +38,7 @@ class ProductLocationAssignmentsController < ApplicationController
   def create
     @product_location_assignment = ProductLocationAssignment.new(product_location_assignment_params)
     if @product_location_assignment.save
+      @product_location_assignment.create_inventory_position
       redirect_to product_location_assignments_path
     else
       @organization = User.find(session[:user_id]).organization
