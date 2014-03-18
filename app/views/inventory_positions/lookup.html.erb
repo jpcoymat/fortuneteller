@@ -1,0 +1,48 @@
+<h1>Inventory Positions</h1>
+ <p>Please select a Product and Locaiton to see projections.</p>
+  <%= form_for :inventory_position_search, url: lookup_inventory_positions_path do |form| %>
+	<%= form.label "Product" %> <%= form.select :product_id, @products.collect {|product| [product.name, product.id]} %>
+        <%= form.label "Location" %> <%= form.select :location_id, @locations.collect {|location| [location.name, location.id]} %>
+        <%= submit_tag "Lookup Projections" %> 
+  <% end %>
+  <br \><br \>
+  <hr>
+  <% if request.post? %>
+    <% if @inventory_position.nil? %>
+       <p>There are no Inventory Positon records for the product and location chosen.</p>	
+    <% else %>
+       <table>
+         <tr><th>Date</th> 	<% @inventory_position.inventory_projections.each do |projection| %>
+					<th><%= projection.projected_for.to_s %> </th> 
+				<% end %> 
+	 </tr>
+	 <tr><th>On Hand  </th> <% @inventory_position.inventory_projections.each do |projection| %>
+					<td><%= projection.on_hand_quantity.to_s %> </td>
+				<% end %>
+	 </tr>
+         <tr><th>On Order </th> <% @inventory_position.inventory_projections.each do |projection| %> 
+					<td><%= projection.on_order_quantity.to_s %></td>
+				<% end %>
+	 </tr>
+         <tr><th>In Transit </th> <% @inventory_position.inventory_projections.each do |projection| %>
+					<td><%= projection.in_transit_quantity.to_s %></td>
+				  <% end %>
+	 </tr>
+         <tr><th>Allocated </th> <% @inventory_position.inventory_projections.each do |projection| %> 
+					<td><%=  projection.allocated_quantity.to_s %>  </td>
+				<% end %>
+	 </tr>
+         <tr><th>Forecasted </th> <% @inventory_position.inventory_projections.each do |projection| %>
+					<td><%= projection.forecasted_quantity.to_s %></td>
+				<% end %>
+	</tr>
+         <tr><th>Available </th> <% @inventory_position.inventory_projections.each do |projection| %> 
+					<td><%= projection.available_quantity.to_s %></td>
+				<% end %>
+	</tr>
+ 	</table>
+    <% end %>
+  <% end %>
+
+
+
