@@ -10,4 +10,14 @@ class ShipLine < MovementSource
     inventory_position = InventoryPosition.where(product_id: self.product_id, location_id: self.origin_location_id).first
   end
 
+  def save
+    if super
+      if trackable?
+        if requires_origin_decrement?
+        else
+           
+        end
+      end 
+    end
+  end
  end

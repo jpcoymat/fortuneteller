@@ -53,4 +53,11 @@ class InventoryProjection
     self.forecasted_quantity = Forecast.where(product_id: self.inventory_position.product_id, origin_location_id: self.inventory_position.location_id, etd: self.projected_for).sum(:quantity)
   end
 
+  def cascade
+    self.inventory_position.inventory_projections.where(:projected_for.gt => self.projected_for).each  {|projection| projection.calculate_on_hand_quantity}
+    self.inventory_position.save
+  end
+
+
+
 end
