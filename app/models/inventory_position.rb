@@ -77,4 +77,15 @@ class InventoryPosition
     self.on_hand_quantity + on_order_quantity + in_transit_quantity - allocated_quantity - forecasted_quantity
   end
 
+  def reset_projections
+    unless self.inventory_projections.empty?
+      self.inventory_projections.each do |projection|
+        projection.calculate_on_hand_quantity
+        projection.set_all_fields
+      end
+      self.save
+    end
+  end
+
+
 end
