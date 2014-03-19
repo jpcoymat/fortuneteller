@@ -18,6 +18,7 @@ Fortuneteller::Application.routes.draw do
   resources :locations
   resources :product_location_assignments
   resources :inventory_positions do
+    resources :inventory_projections
     collection do
       get 'lookup'
       post 'lookup'

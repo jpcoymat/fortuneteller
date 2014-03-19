@@ -11,6 +11,7 @@
     <% if @inventory_position.nil? %>
        <p>There are no Inventory Positon records for the product and location chosen.</p>	
     <% else %>
+       <p>Projections for Product <%= @inventory_position.product.name %> and Location <%= @inventory_position.location.name %></p>	
        <table>
          <tr><th>Date</th> 	<% @inventory_position.inventory_projections.each do |projection| %>
 					<th><%= projection.projected_for.to_s %> </th> 
