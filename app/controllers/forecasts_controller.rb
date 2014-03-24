@@ -3,18 +3,25 @@ class ForecastsController < ApplicationController
   before_action :set_forecast, only:[:show,:edit,:update,:destroy]
 
   def index
+    @user = User.find(session[:user_id)
+    @forecasts = @user.organization.forecasts
   end
 
   def show
   end
 
   def new
+    @forecast = Forecast.new
   end
 
   def edit
   end
 
   def update
+    if @forecast.update_attributes(forecast_params)
+    else
+      render action: "edit"  
+    end
   end
 
   def create

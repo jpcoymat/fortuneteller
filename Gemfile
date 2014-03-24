@@ -32,6 +32,8 @@ gem 'execjs'
 gem 'mongoid', git: 'git://github.com/mongoid/mongoid.git'
 gem 'slim-rails'
 
+gem "resque", "~> 2.0.0.pre.1", github: "resque/resque"
+
 group :test do
   gem "rspec-rails"
   gem "cucumber-rails", require: false
@@ -47,7 +49,7 @@ end
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
 # Use unicorn as the app server
-# gem 'unicorn'
+gem 'unicorn'
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development

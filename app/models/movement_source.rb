@@ -13,7 +13,6 @@ class MovementSource
   field :origin_location_id, type: BSON::ObjectId
   field :destination_location_id, type: BSON::ObjectId
   field :legacy_store_id, type: String
-  field :type, type: String
   
   belongs_to :organization
   belongs_to :location

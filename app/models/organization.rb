@@ -10,6 +10,8 @@ class Organization
   has_many :users
   has_many :products
   has_many :locations
+  has_many :movement_sources
+ 
 
   def product_location_assignments
     @product_location_assignments = []
@@ -17,5 +19,17 @@ class Organization
     @product_location_assignments.flatten!
     @product_location_assignments
   end
+
+  def forecasts
+    @forecasts = Forecast.where(organziation_id: self.id).all
+  end
+
+  def order_lines
+    @order_lines = OrderLine.where(organization_id: self.id).all
+  end
+
+  def ship_lines
+    @ship_lines = ShipLine.where(organization_id: self.id).all
+  end 
 
 end
