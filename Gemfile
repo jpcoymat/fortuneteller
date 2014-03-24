@@ -32,7 +32,7 @@ gem 'execjs'
 gem 'mongoid', git: 'git://github.com/mongoid/mongoid.git'
 gem 'slim-rails'
 
-gem "resque", "~> 2.0.0.pre.1", github: "resque/resque"
+gem "resque"
 
 group :test do
   gem "rspec-rails"
