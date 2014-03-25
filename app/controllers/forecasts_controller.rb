@@ -3,7 +3,7 @@ class ForecastsController < ApplicationController
   before_action :set_forecast, only:[:show,:edit,:update,:destroy]
 
   def index
-    @user = User.find(session[:user_id)
+    @user = User.find(session[:user_id])
     @forecasts = @user.organization.forecasts
   end
 
