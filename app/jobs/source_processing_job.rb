@@ -22,9 +22,23 @@ class SourceProcessingJob
     origin_inventory_position = origin_position(ship_line)
     unless origin_inventory_position.nil?
       origin_inventory_position.on_hand_quantity -= ship_line.quantity
-      origin_inventory_position.
+      origin_inventory_position.reset_projections
     end
-    if track_destination?(ship_line)
+    destination_inventory_position = destination_position(ship_line) 
+    unless destination_inventory_position.nil?
+     po_line = ship_line.parent_movement_source
+     unless po_line.nil?
+       position = destination_inventory_position.inventory_projections.where(projected_for: po_line.eta).first
+       unless position.nil?
+         position.on_order_quantity -= ship_line.quantity
+       end
+     end
+     position = destination_inventory_position.inventory_projections.where(projected_for: ship_line.eta).first
+     unless position.nil?
+       position.in_transit_quantity += ship_line.quantity
+     end 
+     destination_inventory_position.save
+     destination_inventory_position.reset_projections
     end
   end
 
