@@ -33,7 +33,7 @@ class SourceProcessingJob
     end
     destination_inventory_position = destination_position(ship_line) 
     unless destination_inventory_position.nil?
-     Resque.logger.info("Found destination position: Product: " + origin_inventory_position.product.name + " - Location: " + origin_inventory_position.location.name)
+     Resque.logger.info("Found destination position: Product: " + destination_inventory_position.product.name + " - Location: " + destination_inventory_position.location.name)
      po_line = ship_line.parent_movement_source
      unless po_line.nil?
        position = destination_inventory_position.inventory_projections.where(projected_for: po_line.eta).first

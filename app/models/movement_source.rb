@@ -15,9 +15,12 @@ class MovementSource
   field :legacy_store_id, type: String
   
   belongs_to :organization
-  belongs_to :location
   belongs_to :product  
-  
+
+  before_create  :set_original_quantity  
+
+  validates :object_reference_number, :original_quantity, presence: true
+
 
   def origin_location
     @origin_location = Location.find(self.origin_location_id)
@@ -40,5 +43,11 @@ class MovementSource
     product_location_assignment.nil? ? ProductLocationAssignment.where(product_id: self.product_id, location_id: self.destination_location_id).first : nil
     !(product_location_assignment.nil?) #if PLA is nil, return false (not trackable) and if PLA is not nil, return true (trackable)
   end  
+
+  protected
+
+    def set_original_quantity
+      self.original_quantity = self.quantity
+    end 
 
 end
