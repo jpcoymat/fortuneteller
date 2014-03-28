@@ -1,0 +1,13 @@
+<h1>Add Ship Line <h1>
+	<h3> Enter Ship Line Details</h3>
+	<%= render partial: "ship_line_errors" %>
+	<%= form_for @ship_line do |form| %>
+          <%= form.hidden_field :organization_id, value: @user.organization_id %> 
+	  <%= render partial: 'ship_line', locals: {form: form} %>
+	  <%= submit_tag "Create" %>
+        <% end %>
+
+<br /><br />
+<%= link_to "Return to Ship Lines", ship_lines_path %>
+
+
