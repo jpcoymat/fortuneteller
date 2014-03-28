@@ -10,7 +10,7 @@ class LoginController < ApplicationController
         redirect_to main_index_path 
       else
         flash[:notice] ="Username/password invalid"
-        render action: login
+        render action: "login"
       end
     end
   end

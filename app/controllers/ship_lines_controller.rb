@@ -3,7 +3,8 @@ class ShipLinesController < ApplicationController
   before_action :set_ship_line, only: [:show, :edit, :update, :destroy]
 
   def index
-  
+    @user = User.find(session[:user_id])
+    @ship_lines = ShipLine.where(organization_id: @user.organization_id).all   
   end
 
   def show
