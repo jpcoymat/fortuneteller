@@ -20,8 +20,16 @@ class ShipLinesController < ApplicationController
 
   def create
     @ship_line = ShipLine.new(ship_line_params)
+    @ship_line.eta, @ship_line.etd = full_eta, full_etd
     if @ship_line.save
       Resque.enqueue(SourceProcessingJob, @ship_line.id.to_s)
+      flash[:notice] = "Ship Lines has been created succesfully queued for processing"
+      redirect_to ship_lines_path
+    else 
+      @user = User.find(session[:user_id])
+      @products = @user.organization.products
+      @locations = @user.organization.locations
+      render action: "new"
     end
   end
 
@@ -30,7 +38,7 @@ class ShipLinesController < ApplicationController
     @ship_line = ShipLine.new
     @user = User.find(session[:user_id])
     @products = @user.organization.products
-    @location = @user.organization.locations
+    @locations = @user.organization.locations
   end
 
   def destroy
@@ -39,11 +47,19 @@ class ShipLinesController < ApplicationController
   private
 
     def ship_line_params
-       params.require(:ship_line).permit(:origin_location_id, :destination_location_id, :product_id:, :original_quantity, :eta, :etd)
+       params.require(:ship_line).permit(:origin_location_id, :destination_location_id, :product_id, :original_quantity)
     end
 
     def set_ship_line
       @ship_line = ShipLine.find(params[:id])
+    end
+
+    def full_eta
+      eta = Date.new(params[:ship_line]["eta(1i)"].to_i, params[:ship_line]["eta(2i)"].to_i, params[:ship_line]["eta(3i)"].to_i)
+    end
+
+    def full_etd
+      etd = Date.new(params[:ship_line]["etd(1i)"].to_i, params[:ship_line]["etd(2i)"].to_i, params[:ship_line]["etd(3i)"].to_i)
     end
 
 end

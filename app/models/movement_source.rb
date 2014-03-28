@@ -1,6 +1,7 @@
 class MovementSource
   include Mongoid::Document
   include Mongoid::Timestamps
+
   recursively_embeds_many #used for paret-child relationship
   field :source, type: String
   field :object_reference_number, type: String
@@ -19,15 +20,15 @@ class MovementSource
 
   before_create  :set_original_quantity  
 
-  validates :object_reference_number, :original_quantity, presence: true
-
+  validates :object_reference_number, :quantity, presence: true
+  validate :origin_or_destination
 
   def origin_location
-    @origin_location = Location.find(self.origin_location_id)
+    @origin_location = Location.where(id: self.origin_location_id).first
   end
 
   def destination_location
-    @destination_location = Location.find(self.destination_location_id)
+    @destination_location = Location.where(id: self.destination_location_id).first
   end
   
   def origin_location=(location)
@@ -49,5 +50,13 @@ class MovementSource
     def set_original_quantity
       self.original_quantity = self.quantity
     end 
+
+    def origin_or_destination
+      if self.origin_location_id.nil? and self.destination_location_id.nil?
+        errors.add(:base, "Origin and Destination cannot be both null") 
+      end
+    end
+    
+   
 
 end

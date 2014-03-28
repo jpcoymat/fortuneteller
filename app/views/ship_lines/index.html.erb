@@ -1,2 +1,23 @@
-h1 ShipLinesController#index
-p Find me in app/views/ship_lines_controller/index.html.slim
+<h1> Ship Lines </h1>
+<% if @ship_lines.empty? %>
+  <p> No Ship Lines have been created</p>
+<% else %>
+  <table>
+    <tr><th>Shipment Reference </th> <th>ETA</th> <th>ETD</th> <th>Product</th><th>Quantity</th> <th>Origin Location </th> <th>Destination Location</th></tr>
+    <% @ship_lines.each do |ship_line| %>
+       <tr><td><%= ship_line.object_reference_number    %></td>
+           <td><%= ship_line.eta.to_s                   %></td>
+           <td><%= ship_line.etd.to_s                   %></td>
+           <td><%= ship_line.product.name               %></td>
+           <td><%= ship_line.quantity                   %></td>
+           <td><%= ship_line.origin_location.nil? ? "" : ship_line.origin_location.name       %></td>
+           <td><%= ship_line.destination_location.nil? ? "" :  ship_line.destination_location.name  %></td>
+       </tr>
+    <% end %>
+    </table>
+<% end %>
+    <br \> <br\>
+    <%= link_to "Add New Ship Line", new_ship_line_path %>
+    <br \> <br\>
+    <%= link_to "Main Menu", main_index_path            %>                   
+
