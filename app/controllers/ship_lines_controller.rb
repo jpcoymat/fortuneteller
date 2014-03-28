@@ -47,7 +47,7 @@ class ShipLinesController < ApplicationController
   private
 
     def ship_line_params
-       params.require(:ship_line).permit(:origin_location_id, :destination_location_id, :product_id, :original_quantity)
+       params.require(:ship_line).permit(:organization_id, :origin_location_id, :destination_location_id, :product_id, :quantity, :object_reference_number)
     end
 
     def set_ship_line
