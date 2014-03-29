@@ -2,8 +2,6 @@ class SourceProcessingJob
 
   @queue = :new_movement_sources
 
-  attr_accessor :inventory_position
-
   def self.perform(movement_source_id)
     Resque.logger.info("Here we go ...")
     @movement_source = MovementSource.find(movement_source_id)
@@ -65,10 +63,6 @@ class SourceProcessingJob
   
   def self.destination_position(movement_source)
     inventory_position = InventoryPosition.where(location_id: movement_source.destination_location_id, product_id: movement_source.product_id).first
-  end
-
-  def self.write_to_log(log_message)
-    File.open("new_movement_sources_log.log",'a') {|f| f.write(log_message)} 
   end
 
 end

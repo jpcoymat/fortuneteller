@@ -1,6 +1,10 @@
 class ShipLine < MovementSource 
 
-before_create  :set_original_quantity
+  before_create  :set_etd
+
+  def set_etd
+    self.etd = Date.today
+  end
 
  
 end

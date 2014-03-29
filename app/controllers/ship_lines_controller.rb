@@ -20,7 +20,7 @@ class ShipLinesController < ApplicationController
 
   def create
     @ship_line = ShipLine.new(ship_line_params)
-    @ship_line.eta, @ship_line.etd = full_eta, full_etd
+    @ship_line.eta = full_eta
     if @ship_line.save
       Resque.enqueue(SourceProcessingJob, @ship_line.id.to_s)
       flash[:notice] = "Ship Lines has been created succesfully queued for processing"
@@ -56,10 +56,6 @@ class ShipLinesController < ApplicationController
 
     def full_eta
       eta = Date.new(params[:ship_line]["eta(1i)"].to_i, params[:ship_line]["eta(2i)"].to_i, params[:ship_line]["eta(3i)"].to_i)
-    end
-
-    def full_etd
-      etd = Date.new(params[:ship_line]["etd(1i)"].to_i, params[:ship_line]["etd(2i)"].to_i, params[:ship_line]["etd(3i)"].to_i)
     end
 
 end

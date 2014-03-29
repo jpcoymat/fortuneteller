@@ -7,7 +7,6 @@ class InventoryAdjustment
   field :adjustment_date, type: Date
   field :object_reference_number, type: String 
   field :legacy_store_id, type: String
-  field :type, type: String
   field :legacy_persistance, type: Boolean
 
   belongs_to :organization
