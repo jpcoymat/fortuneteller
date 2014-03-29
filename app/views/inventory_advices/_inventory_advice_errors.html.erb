@@ -1,0 +1,13 @@
+<% if @inventory_advice.errors.any? %>
+        <div id="error_explanation">
+                <h2>This Inventory Advice contains <%= pluralize(@inventory_advice.errors.count, "error") %>  :</h2>
+
+                <ul>
+                        <% @inventory_advice.errors.each do |key,value| %>
+                                <li><%= key.to_s.capitalize + " " + value %></li>
+                        <% end %>
+                </ul>
+                </div>
+<% end %>
+
+
