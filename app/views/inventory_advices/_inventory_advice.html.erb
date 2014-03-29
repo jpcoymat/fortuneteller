@@ -1,6 +1,7 @@
 <table>
+  <tr><td>Source		</td> <td><%= form.text_field :source			%></td></tr>
   <tr><td>Reference Number 	</td> <td><%= form.text_field :object_reference_number %></td></tr>
   <tr><td>Product		</td> <td><%= form.select :product_id, @products.collect {|product| [product.name, product.id]} %></td></tr>
-  <tr><td>Location		</td> <td><%= form.select :location_id, @locations.collect {|location| [location.name, location.id %></td></tr>
+  <tr><td>Location		</td> <td><%= form.select :location_id, @locations.collect {|location| [location.name, location.id]} %></td></tr>
   <tr><td>Quantity		</td> <td><%= form.text_field :adjustment_quantity %></td></tr>
 </table>

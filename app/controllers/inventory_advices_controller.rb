@@ -21,7 +21,7 @@ class InventoryAdvicesController < ApplicationController
     @inventory_advice = InventoryAdvice.new(inventory_advice_params)
     if @inventory_advice.save
       Resque.enqueue(AdjustmentProcessingJob, @inventory_advice.id.to_s)
-      redirect_to inventory_advice_index_path
+      redirect_to inventory_advices_path
     else
       flash[:notice] = "Error creating Inventory Advice"
       @user = User.find(session[:user_id])
@@ -48,7 +48,7 @@ class InventoryAdvicesController < ApplicationController
     end  
 
     def inventory_advice_params
-      params.require(:inventory_advice).permit(:product_id, :location_id, :organization_id, :object_reference_number, :adjustment_quantity)
+      params.require(:inventory_advice).permit(:source, :product_id, :location_id, :organization_id, :object_reference_number, :adjustment_quantity)
     end
     
 end
