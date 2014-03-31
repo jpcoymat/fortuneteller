@@ -1,0 +1,11 @@
+<% if @order_line.errors.any? %>
+        <div id="error_explanation">
+                <h2>This Order Line contains <%= pluralize(@order_line.errors.count, "error") %>  :</h2>
+
+                <ul>
+                        <% @order_line.errors.each do |key,value| %>
+                                <li><%= key.to_s.capitalize + " " + value %></li>
+                        <% end %>
+                </ul>
+                </div>
+<% end %>

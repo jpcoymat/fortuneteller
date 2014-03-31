@@ -1,0 +1,10 @@
+<table>
+        <tr><td>Order Line Reference Number     </td>   <td><%= form.text_field :object_reference_number        %></td></tr>
+        <tr><td>ETD                             </td>   <td><%= form.date_select :etd, {start_year: Date.today.year}                            %></td></tr>
+        <tr><td>ETA                             </td>   <td><%= form.date_select :eta, {start_year: Date.today.year}                            %></td></tr>
+        <tr><td>Product                         </td>   <td><%= form.select :product_id, @products.collect {|product| [product.name, product.id]} %></td><tr>
+        <tr><td>Origin Location                 </td>   <td><%= form.select :origin_location_id, @locations.collect {|loc| [loc.name, loc.id]}, {include_blank: true} %></td></tr>
+        <tr><td>Destination Location            </td>   <td><%= form.select :destination_location_id, @locations.collect {|loc| [loc.name, loc.id]}, {include_blank: true} %></td></tr>
+        <tr><td>Quantity                        </td>   <td><%= form.text_field :quantity                       %></td></tr>
+</table>
+

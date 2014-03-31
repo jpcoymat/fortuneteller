@@ -1,0 +1,11 @@
+<h1>Create New Order Line</h1>
+<h3> Enter Order Line Details</h3>
+<%= render partial: "order_line_errors" %>
+<%= form_for @order_line do |form| %>
+  <%= form.hidden_field :organization_id, value: @user.organization_id %>
+  <%= render partial: "order_line", locals: {form: form} %>
+  <%= submit_tag "Create Order Line" %>
+<% end %>
+
+<br \><br \>
+<%= link_to "Return to Order Lines", order_lines_path %>

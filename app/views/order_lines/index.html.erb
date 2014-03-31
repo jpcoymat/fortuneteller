@@ -1,0 +1,23 @@
+<h1>Order Lines </h1>
+<% if @order_lines.empty? %>
+  <p>No Order Lines have been created yet.</p>
+<% else %>
+   <table>
+	<tr><th>Order Line Reference Number </th> <th>ETD</th> <th>ETA</th> <th>Product</th> <th>Origin Location </th> <th>Destination Location</th> <th>Quantity</th></tr>
+     	<% @order_lines.each do |order_line| %>
+		<tr><td><%= order_line.object_reference_number %></td>
+		<td><%= order_line.etd.to_s %></td>
+		<td><%= order_line.eta.to_s %></td> 
+		<td><%= order_line.product.name %></td>
+		<td><%= order_line.origin_location.name %></td>
+		<td><%= order_line.destination_location.name %></td>
+		<td><%= order_line.quantity.to_s	%></td>
+		</tr>
+   	<% end %>
+  </table %>
+<% end %>
+<br /> <br /> 
+<%= link_to "Create New Order Line", new_order_line_path %>
+<br /> <br />
+<%= link_to "Main Menu", main_index_path %>
+ 

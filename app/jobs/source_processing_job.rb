@@ -52,6 +52,26 @@ class SourceProcessingJob
   end
 
   def self.process_order_line(order_line)
+   Resque.logger.info("process order line starting ..")
+   origin_inventory_position = origin_position(order_line)
+   unless origin_inventory_position.nil? 
+     Resque.logger.info("Found origin position: Product: " + origin_inventory_position.product.name + " - Location: " + origin_inventory_position.location.name + " - On Hand Qty: " + origin_inventory_position.on_hand_quantity.to_s)
+     origin_projection = origin_inventory_position.inventory_projections.where(projected_for: order_line.etd).first
+     if origin_projection
+       origin_projection.allocated_quantity += order_line.quantity
+       origin_projection.save
+       origin_projection.cascade
+     end
+   end
+   destination_inventory_position = destination_position(order_line)
+   if destination_inventory_position
+     destination_projection = destination_inventory_position.inventory_projections.where(projected_for: order_line.eta).first
+     if destination_projection
+       destination_projection.on_order_quantity += order_line.quantity
+       destination_projection.save
+       destination_projection.cascade
+     end
+   end
   end
 
   def self.process_forecast(forecast)
