@@ -33,6 +33,7 @@ gem 'mongoid', git: 'git://github.com/mongoid/mongoid.git'
 gem 'slim-rails'
 
 gem "resque"
+gem "resque-web", require: "resque_web"
 
 group :test do
   gem "rspec-rails"

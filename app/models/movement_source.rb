@@ -2,7 +2,7 @@ class MovementSource
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  recursively_embeds_many #used for paret-child relationship
+  #recursively_embeds_many #used for paret-child relationship
   field :source, type: String
   field :object_reference_number, type: String
   field :original_quantity, type: Float
@@ -14,7 +14,8 @@ class MovementSource
   field :origin_location_id, type: BSON::ObjectId
   field :destination_location_id, type: BSON::ObjectId
   field :legacy_store_id, type: String
-  
+  field :parent_movement_source_id, type: BSON::ObjectId  
+
   belongs_to :organization
   belongs_to :product  
 
@@ -22,6 +23,7 @@ class MovementSource
 
   validates :object_reference_number, :quantity, presence: true
   validate :origin_or_destination
+
 
   def origin_location
     @origin_location = Location.where(id: self.origin_location_id).first
@@ -44,6 +46,20 @@ class MovementSource
     product_location_assignment.nil? ? ProductLocationAssignment.where(product_id: self.product_id, location_id: self.destination_location_id).first : nil
     !(product_location_assignment.nil?) #if PLA is nil, return false (not trackable) and if PLA is not nil, return true (trackable)
   end  
+
+  def parent_movement_source
+    @parent_movement_source = nil
+    self.parent_movement_source_id.nil? ? nil : @parent_movement_source = MovementSource.find(self.parent_movement_source_id)
+    @parent_movement_source
+  end
+
+  def parent_movement_source=(movement_source)
+    self.parent_movement_source_id = movement_source.id
+  end
+  
+  def child_movement_sources
+    @child_movement_sources = MovementSource.where(parent_movement_source_id: self.id).all
+  end
 
   protected
 
