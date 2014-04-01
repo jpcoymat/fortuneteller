@@ -23,7 +23,7 @@ class MovementSource
 
   validates :object_reference_number, :quantity, presence: true
   validate :origin_or_destination
-
+  validate :parent_child_match
 
   def origin_location
     @origin_location = Location.where(id: self.origin_location_id).first
@@ -70,6 +70,14 @@ class MovementSource
     def origin_or_destination
       if self.origin_location_id.nil? and self.destination_location_id.nil?
         errors.add(:base, "Origin and Destination cannot be both null") 
+      end
+    end
+
+    def parent_child_match
+      if parent_movement_source 
+        if (parent_movement_source.product != self.product) || (parent_movement_source.origin_location != self.origin_location) || (parent_movement_source.destination_location != self.destination_location)
+          errors.add(:base, "Object details does not match parent")
+        end
       end
     end
     

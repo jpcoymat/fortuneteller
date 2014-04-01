@@ -5,6 +5,13 @@
   </div>
 </div>
 <div class="form-group">
+  <%= form.label "Order Line", class: "col-sm-2 control-label" %>
+  <div class="col-xs-4">
+    <%= form.select :parent_movement_source_id, @order_lines.collect {|ol| [ol.object_reference_number, ol.id]}, {include_blank: true}, class: "form-control" %>
+  </div>
+</div>
+
+<div class="form-group">
   <%= form.label "ETA", class: "col-sm-2 control-label" %>
   <div class="col-xs-2"> 
     <%= form.date_select :eta, {start_year: Date.today.year}, class: "form-control"  %>

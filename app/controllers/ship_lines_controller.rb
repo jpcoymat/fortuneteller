@@ -39,6 +39,7 @@ class ShipLinesController < ApplicationController
     @user = User.find(session[:user_id])
     @products = @user.organization.products
     @locations = @user.organization.locations
+    @order_lines = OrderLine.where(organization_id: @user.organization_id).all
   end
 
   def destroy
@@ -47,7 +48,7 @@ class ShipLinesController < ApplicationController
   private
 
     def ship_line_params
-       params.require(:ship_line).permit(:organization_id, :origin_location_id, :destination_location_id, :product_id, :quantity, :object_reference_number)
+       params.require(:ship_line).permit(:parent_movement_source_id, :organization_id, :origin_location_id, :destination_location_id, :product_id, :quantity, :object_reference_number)
     end
 
     def set_ship_line
