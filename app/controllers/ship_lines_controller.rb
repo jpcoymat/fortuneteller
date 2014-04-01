@@ -29,6 +29,7 @@ class ShipLinesController < ApplicationController
       @user = User.find(session[:user_id])
       @products = @user.organization.products
       @locations = @user.organization.locations
+      @order_lines = OrderLine.where(organization_id: @user.organization_id).all
       render action: "new"
     end
   end
