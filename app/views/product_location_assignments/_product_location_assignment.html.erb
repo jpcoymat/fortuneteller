@@ -1,25 +1,25 @@
-<div class="control-group">
-  <%= form.label  "Product",  class: "control-label" %>
-  <div class="controls">
-    <%= form.select :product_id, @products.collect {|product| [product.name, product.id] } %>
+<div class="form-group">
+  <%= form.label  "Product",  class: "col-sm-2 control-label" %>
+  <div class="col-xs-4">
+    <%= form.select :product_id, @products.collect {|product| [product.name, product.id] }, class: "form-control" %>
   </div>
 </div>
-<div class="control-group">
-  <%= form.label "Location",  class: "control-label" %>
-  <div class="controls">
-    <%= form.select :location_id, @locations.collect {|location| [location.name, location.id] } %> 
+<div class="form-group">
+  <%= form.label "Location",  class: "col-sm-2 control-label" %>
+  <div class="col-xs-4">
+    <%= form.select :location_id, @locations.collect {|location| [location.name, location.id] }, class: "form-control" %> 
   </div>
 </div>
-<div class="control-group">
-  <%= form.label "Minimum Quantity",  class: "control-label" %>
-  <div class="controls">
-     <%= form.text_field :minimum_quantity %> 	
+<div class="form-group">
+  <%= form.label "Minimum Quantity",  class: "col-sm-2 control-label" %>
+  <div class="col-xs-4">
+     <%= form.text_field :minimum_quantity, class: "form-control" %> 	
   </div>
 </div>
-<div class="control-group">
-  <%= form.label "Maximum Quantity",  class: "control-label" %>
-  <div class="controls">
-    <%= form.text_field :maximum_quantity %>
+<div class="form-group">
+  <%= form.label "Maximum Quantity",  class: "col-sm-2 control-label" %>
+  <div class="col-xs-4">
+    <%= form.text_field :maximum_quantity, class: "form-control" %>
   </div>
 </div>
 

@@ -4,7 +4,7 @@
 	
 	<%= form_for @product_location_assignment, html: {class: "form-horizontal"} do |form| %>
 		<%= render partial: "product_location_assignment", locals: {form: form} %>
-		<%= submit_tag "Create" %>
+		<%= submit_tag "Create", class: "btn btn-primary" %>
 	<% end %>
 	<br /><br />
 	<%= link_to "Product Location Assignments", product_location_assignments_path %>

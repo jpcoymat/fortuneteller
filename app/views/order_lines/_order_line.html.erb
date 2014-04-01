@@ -1,43 +1,43 @@
-<div class="control-group">
-  <%= form.label "Order Line Reference Number", class: "control-label" %>
-  <div class="controls">
-    <%= form.text_field :object_reference_number        %>
+<div class="form-group">
+  <%= form.label "Order Line Reference Number", class: "col-sm-2 control-label" %>
+  <div class="col-xs-4">
+    <%= form.text_field :object_reference_number, class: "form-control"        %>
   </div>
 </div>
-<div class="control-group">
-  <%= form.label "ETD", class: "control-label" %>
-  <div class="controls">
-    <%= form.date_select :etd, {start_year: Date.today.year}                            %>
+<div class="form-group">
+  <%= form.label "ETD", class: "col-sm-2 control-label" %>
+  <div class="col-xs-4">
+    <%= form.date_select :etd, {start_year: Date.today.year}, class: "form-control" %>
   </div>
 </div>
-<div class="control-group">
- <%=  form.label "ETA", class: "control-label" %>
- <div class="controls">
-   <%= form.date_select :eta, {start_year: Date.today.year}                            %>
+<div class="form-group">
+ <%=  form.label "ETA", class: "col-sm-2 control-label" %>
+ <div class="col-xs-4">
+   <%= form.date_select :eta, {start_year: Date.today.year}, class: "form-control"  %>
   </div>
 </div>
-<div class="control-group">
-  <%= form.label "Product", class: "control-label" %>
-  <div class="controls">
-    <%= form.select :product_id, @products.collect {|product| [product.name, product.id]} %>
+<div class="form-group">
+  <%= form.label "Product", class: "col-sm-2 control-label" %>
+  <div class="col-xs-4">
+    <%= form.select :product_id, @products.collect {|product| [product.name, product.id]}, class: "form-control" %>
   </div>
 </div>
-<div class="control-group">
-  <%= form.label "Origin Location", class: "control-label" %>
-  <div class="controls">
-    <%= form.select :origin_location_id, @locations.collect {|loc| [loc.name, loc.id]}, {include_blank: true} %>
+<div class="form-group">
+  <%= form.label "Origin Location", class: "col-sm-2 control-label" %>
+  <div class="col-xs-4">
+    <%= form.select :origin_location_id, @locations.collect {|loc| [loc.name, loc.id]}, {include_blank: true}, class: "form-control" %>
   </div>
 </div>
-<div class="control-group">
-  <%= form.label "Destination Location", class: "control-label" %>
-  <div class="controls">
-  <%= form.select :destination_location_id, @locations.collect {|loc| [loc.name, loc.id]}, {include_blank: true} %>
+<div class="form-group">
+  <%= form.label "Destination Location", class: "col-sm-2 control-label" %>
+  <div class="col-xs-4">
+  <%= form.select :destination_location_id, @locations.collect {|loc| [loc.name, loc.id]}, {include_blank: true}, class: "form-control" %>
  </div>
 </div>
-<div class="control-group">
-  <%= form.label "Quantity", class: "control-label" %>
-  <div class="controls">
-     <%= form.text_field :quantity                       %>
+<div class="form-group">
+  <%= form.label "Quantity", class: "col-sm-2 control-label" %>
+  <div class="col-xs-4">
+     <%= form.text_field :quantity, class: "form-control"  %>
   </div>
 </div>
 
