@@ -35,6 +35,9 @@ gem 'slim-rails'
 gem "resque"
 gem "resque-web", require: "resque_web"
 
+gem "twitter-bootstrap-rails"
+
+
 group :test do
   gem "rspec-rails"
   gem "cucumber-rails", require: false

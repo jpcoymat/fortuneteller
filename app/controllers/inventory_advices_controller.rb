@@ -1,5 +1,5 @@
 class InventoryAdvicesController < ApplicationController
-   
+  before_filter :authorize   
   before_action :set_inventory_advice, only: [:show, :edit, :update, :destroy]
 
 

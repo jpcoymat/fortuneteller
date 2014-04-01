@@ -1,5 +1,5 @@
 class ReceiptsController < ApplicationController
-
+  before_filter :authorize
   before_action :set_receipt, only: [:show, :edit, :destroy, :update]
 
   def index

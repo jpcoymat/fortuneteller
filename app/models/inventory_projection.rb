@@ -58,6 +58,23 @@ class InventoryProjection
     self.inventory_position.save
   end
 
+  def on_order_sources
+    @on_order_sources = OrderLine.where(product_id: self.inventory_position.product_id, destination_location_id: self.inventory_position.location_id, eta: self.projected_for).all
+  end
+
+  def in_transit_sources
+    @in_transit_sources = ShipLine.where(product_id: self.inventory_position.product_id, destination_location_id: self.inventory_position.location_id, eta: self.projected_for).all
+  end
+
+  def allocation_sources
+    @allocation_sources = OrderLine.where(product_id: self.inventory_position.product_id, origin_location_id: self.inventory_position.location_id, etd: self.projected_for).all
+  end
+   
+  def forecast_sources
+    @forecast_sources = Forecast.where(product_id: self.inventory_position.product_id, origin_location_id: self.inventory_position.location_id, etd: self.projected_for).all
+  end
+
+  
 
 
 end

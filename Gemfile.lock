@@ -230,5 +230,6 @@ DEPENDENCIES
   slim-rails
   therubyracer
   turbolinks
+  twitter-bootstrap-rails
   uglifier (>= 1.3.0)
   unicorn

@@ -1,5 +1,5 @@
 class ForecastsController < ApplicationController
-   
+  before_filter :authorize   
   before_action :set_forecast, only:[:show,:edit,:update,:destroy]
 
   def index
