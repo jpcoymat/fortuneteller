@@ -3,7 +3,7 @@
 <% if @inventory_advice.empty? %>
   <p>No inventory advice created </p>
 <% else %>
-   <table class="table-striped">
+   <table class="table table-striped">
      <tr><th>Reference Number</th> <th>Adjustment Date </th> <th>Product</th> <th>Location</th> <th>Adjustment Type</th> <th>Quantity</th></tr>
      <% @inventory_advice.each do |advice| %>
        <tr><td><%= advice.object_reference_number %> </td> <td><%= advice.adjustment_date.to_s %></td> <td><%= advice.product.name %></td> <td><%= advice.location.name %></td> <td><%= advice.adjustment_type %></td> <td><%= advice.adjustment_quantity.to_s %></td></tr>

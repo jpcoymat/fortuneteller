@@ -2,7 +2,7 @@
 <% if @order_lines.empty? %>
   <p>No Order Lines have been created yet.</p>
 <% else %>
-   <table class="table-striped">
+   <table class="table table-striped">
 	<tr><th>Order Line Reference Number </th> <th>ETD</th> <th>ETA</th> <th>Product</th> <th>Origin Location </th> <th>Destination Location</th> <th>Quantity</th></tr>
      	<% @order_lines.each do |order_line| %>
 		<tr><td><%= order_line.object_reference_number %></td>

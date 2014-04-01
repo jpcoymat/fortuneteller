@@ -2,7 +2,7 @@
 <% if @ship_lines.empty? %>
   <p> No Ship Lines have been created</p>
 <% else %>
-  <table class="table-striped">
+  <table class="table table-striped">
     <tr><th>Shipment Reference </th> <th>ETA</th> <th>ETD</th> <th>Product</th><th>Quantity</th> <th>Origin Location </th> <th>Destination Location</th></tr>
     <% @ship_lines.each do |ship_line| %>
        <tr><td><%= ship_line.object_reference_number    %></td>
