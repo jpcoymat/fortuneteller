@@ -21,7 +21,8 @@ class MovementSource
 
   before_create  :set_original_quantity  
 
-  validates :object_reference_number, :quantity, presence: true
+  validates :object_reference_number, :quantity, :organization_id, :product_id, :eta, :etd, presence: true
+  validates_uniqueness_of :object_reference_number, scope: :organization_id
   validate :origin_or_destination
   validate :parent_child_match
 
