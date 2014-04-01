@@ -1,10 +1,10 @@
 <table>
 	<tr><th>Source Type</th> <th> Source Reference</th> <th>Origin Location </th> </th> <th> Destination Location </th> <th>ETD</th> <th>ETA</th> <th>Product</th><th>Quantity</th></tr>
-	<% @movement_sources.each do |movement_source| %>
+	<% movement_sources.each do |movement_source| %>
 		<tr>	<td><%= movement_source.class.to_s		%></td>
 			<td><%= movement_source.object_reference_number	%></td>
-			<td><%= movement_source.origin_location.name	%></td>
-			<td><%= movement_source.destination_location.name	%></td>
+			<td><%= movement_source.origin_location_id.nil? ? "": movement_source.origin_location.name	%></td>
+			<td><%= movement_source.destination_location_id.nil? ? " " : movement_source.destination_location.name	%></td>
 			<td><%= movement_source.etd.to_s		%></td>
 			<td><%= movement_source.eta.to_s		%></td>
 			<td><%= movement_source.product.name		%></td>
