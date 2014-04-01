@@ -1,9 +1,12 @@
 <h1>Admin</h1>
-
+	<div class="row-fluid">
+  	<div class="span4 well">
 	<%= form_for :user_login, url: login_login_path do |form| %>
 		<table>
 			<tr><td>User Name 	</td>	<td><%= form.text_field :username 		%>	</td></tr>
 			<tr><td>Password	</td>	<td><%= form.password_field :password	%>	</td></tr>
 		</table>
-		<%= submit_tag "Login"	%>
+		<%= submit_tag "Login", {class: "btn btn-primary"}	%>
 	<% end %>
+	</div>
+	</div>

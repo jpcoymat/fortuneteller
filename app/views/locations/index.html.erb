@@ -2,7 +2,7 @@
 	<% if @locations.empty? %>
 		<p>No locations have been created for this Org.</p>
 	<% else %>
-		<table>
+		<table class="table table-striped">
 		<tr><th>Location Name </th><th>Location Code</th> <th>Address</th> <th>City</th> <th>State/Prov</th><th>Country</th></tr>
 		<% @locations.each do |location| %>
 			<tr>	<td><%= location.name 	%></td>

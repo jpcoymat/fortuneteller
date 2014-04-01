@@ -2,7 +2,7 @@
 	<% if @product_location_assignments.empty? %>
 		<p>No Product Location Assignment records have been created.</p>
 	<% else %>
-		<table>
+		<table class="table-striped">
 		<tr><th>Product</th> <th>Location</th> <th>Minimum Quantity </th> <th>Maximum Quantity</th></tr>
 		<% @product_location_assignments.each do |product_location_assignment| %>
 			<tr>	<td><%= product_location_assignment.product.name 	%></td>

@@ -1,5 +1,18 @@
-<table>
-	<tr><td>Product Name		</td>	<td><%= form.text_field :name 			%></td></tr>
-	<tr><td>Product Code		</td>	<td><%= form.text_field :code			%></td></tr>
-	<tr><td>Product Category	</td>	<td><%= form.text_field :product_category	%></td></tr>
-</table>
+<div class="control-group">
+  <%= form.label "Product Name", class: "control-label"  %> 
+  <div class="controls">
+    <%= form.text_field :name  %>
+  </div>
+</div>
+<div class="control-group">
+  <%= form.label "Product Code", class: "control-label"  %> 
+  <div class="controls">
+    <%= form.text_field :code  %>
+  </div>
+</div>
+<div class="control-group">
+  <%= form.label "Product Category", class: "control-label"  %>
+  <div class="controls">
+    <%= form.text_field :product_category	%>
+  </div>
+</div> 

@@ -1,7 +1,7 @@
 <h1>Edit Location </h1>
 	<%= render partial: "location_errors" %>
-	<%= form_for @location do |form| %>
+	<%= form_for @location, html: {class: "form-horizontal"} do |form| %>
 		<%= render partial: "location", locals: {form: form} %>
-		<%= submit_tag "Update" %>
+		<%= submit_tag "Update", class: "btn btn-primary" %>
 	<% end %>
 <%= link_to "View Locations", locations_path %>

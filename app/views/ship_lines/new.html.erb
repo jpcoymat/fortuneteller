@@ -1,10 +1,10 @@
 <h1>Add Ship Line <h1>
 	<h3> Enter Ship Line Details</h3>
 	<%= render partial: "ship_line_errors" %>
-	<%= form_for @ship_line do |form| %>
+	<%= form_for @ship_line, html: {class: "form-horizontal"} do |form| %>
           <%= form.hidden_field :organization_id, value: @user.organization_id %> 
 	  <%= render partial: 'ship_line', locals: {form: form} %>
-	  <%= submit_tag "Create" %>
+	  <%= submit_tag "Create", class: "btn btn-primary" %>
         <% end %>
 
 <br /><br />

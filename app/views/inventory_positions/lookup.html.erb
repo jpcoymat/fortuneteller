@@ -1,9 +1,9 @@
 <h1>Inventory Positions</h1>
  <p>Please select a Product and Locaiton to see projections.</p>
-  <%= form_for :inventory_position_search, url: lookup_inventory_positions_path do |form| %>
+  <%= form_for :inventory_position_search, url: lookup_inventory_positions_path, html: {class: "form-inline"}  do |form| %>
 	<%= form.label "Product" %> <%= form.select :product_id, @products.collect {|product| [product.name, product.id]} %>
         <%= form.label "Location" %> <%= form.select :location_id, @locations.collect {|location| [location.name, location.id]} %>
-        <%= submit_tag "Lookup Projections" %> 
+        <%= submit_tag "Lookup Projections", class: "btn btn-primary" %> 
   <% end %>
   <br \><br \>
   <hr>
@@ -12,7 +12,7 @@
        <p>There are no Inventory Positon records for the product and location chosen.</p>	
     <% else %>
        <p>Projections for Product <%= @inventory_position.product.name %> and Location <%= @inventory_position.location.name %></p>	
-       <table>
+       <table class="table-striped">
          <tr><th>Date</th><th>On Hand Quantity</th> <th>On Order Quantity</th><th>In Transit</th> <th>Allocated Quantity</th> <th>Forecasted Quantity</th><th>Available Quantity</th></tr>
 	 <% @inventory_position.inventory_projections.each do |inventory_projection| %>
            <tr>	<td><%= link_to(inventory_projection.projected_for.to_s, [@inventory_position,inventory_projection]) %></td>

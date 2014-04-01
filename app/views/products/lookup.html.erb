@@ -1,20 +1,22 @@
 <h1>Products</h1>
 <h4>Please enter your search criteria </h4>
 
-<%= form_for :product, :url => lookup_products_path do |form| %>
+<%= form_for :product, url: lookup_products_path, html: {class: "form-search"}   do |form| %>
 	<%= form.hidden_field :organization_id, value: @user.organization_id %>
-	<table>
-        	<tr><td>Product Name  </td><td><%= form.text_field :name %></td><td>Product Code</td><td><%= form.text_field :code %></td></tr>
-        </table>
-        <%= submit_tag "Search" %>
-<% end %>
 
+        	<%= form.label "Product Name", class: "form-inline"%>  <%= form.text_field :name, class: "input-medium search-query" %> <%= form.label "Product Code", class: "form-inline" %><%= form.text_field :code, class: "input-medium search-query" %>
+      
+        <%= submit_tag "Search", {class: "btn btn-primary"} %>
+<% end %>
+<br \>
+<hr>
+<br \>
 <% if request.post? %>
 
 	<% if @products.empty? %>
 		<p>No products match your search criteria </p>
    	<% else %>
-		<table>
+		<table class="table table-striped">
 			<tr><th>Product Name</th><th>Product Code</th><th>Product Category</th></tr>
 			<% for product in @products %>
 				<tr>	<td><%= product.name %></td><td><%= product.code %></td><td><%= product.product_category %></td>

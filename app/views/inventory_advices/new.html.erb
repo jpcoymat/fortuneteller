@@ -1,10 +1,10 @@
 <h1> Create Inventory Advice </h1>
 <h4>Enter Inventory Advice Details </h4>
 <%= render partial: "inventory_advice_errors" %>
-<%= form_for @inventory_advice do |form| %>
+<%= form_for @inventory_advice, html: {class: "form-horizontal"} do |form| %>
   <%= form.hidden_field :organization_id, value: @user.organization_id %>
   <%= render partial: "inventory_advice", locals: {form: form} %>
-  <%= submit_tag "Create" %>
+  <%= submit_tag "Create", class: "btn btn-primary" %>
 <% end %>
 <br /> <br />
 <%= link_to "Return to Inventory Advice", inventory_advices_path %>
