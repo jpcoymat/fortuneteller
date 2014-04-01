@@ -1,0 +1,43 @@
+<h1>Inventory Projection Details</h1>
+ 
+  <h4> Product: <%= @inventory_position.product.name %> </h4>
+  <h4> Location: <%= @inventory_position.location.name %></h4>
+  <h4> Projection Date: <%= @inventory_projection.projected_for.to_s %></h4> 
+  <table>
+	<tr><td>On Hand Quantity 	</td> 	<td><%= @inventory_projection.on_hand_quantity.to_s 	%></td></tr>
+	<tr><td>On Order Quantity	</td> 	<td><%= @inventory_projection.on_order_quantity.to_s	%></td></tr>
+	<tr><td>In Transit Quantity 	</td>	<td><%= @inventory_projection.in_transit_quantity.to_s	%></td></tr>
+	<tr><td>Allocated Quantity	</td>	<td><%= @inventory_projection.allocated_quantity.to_s	%></td></tr>
+	<tr><td>Forecasted Quantity	</td>	<td><%= @inventory_projection.forecasted_quantity.to_s	%></td></tr>
+	<tr><td>Available Quantity	</td>	<td><%= @inventory_projection.available_quantity.to_s	%></td></tr>
+  </table>	
+<br \><br \>
+  <h4>On Order Sources </h4>
+	<% if @inventory_projection.on_order_sources.empty? %>
+		<p>No On Order Sources for this product/location/date</p>
+	<% else %>
+		<%= render partial: "movement_sources", locals: {movement_sources: @inventory_projection.on_order_sources} %>
+	<% end %>
+<br \><br \>
+  <h4>In Transit Sources </h4>
+        <% if @inventory_projection.in_transit_sources.empty? %>
+                <p>No In Transit Sources for this product/location/date</p>
+        <% else %>
+                <%= render partial: "movement_sources", locals: {movement_sources: @inventory_projection.in_transit_sources} %>
+        <% end %>
+<br \><br \>
+  <h4>Allocation Sources </h4>
+        <% if @inventory_projection.allocation_sources.empty? %>
+                <p>No Allocation Sources for this product/location/date</p>
+        <% else %>
+                <%= render partial: "movement_sources", locals: {movement_sources: @inventory_projection.allocation_sources} %>
+        <% end %>
+<br \><br \>
+  <h4>Forecast Sources </h4>
+        <% if @inventory_projection.forecast_sources.empty? %>
+                <p>No Forecast Sources for this product/location/date</p>
+        <% else %>
+                <%= render partial: "movement_sources", locals: {movement_sources: @inventory_projection.forecast_sources} %>
+        <% end %>
+
+<%= link_to "Return to Projections", lookup_inventory_positions_path %>
