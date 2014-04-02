@@ -25,6 +25,8 @@ class MovementSource
   validates_uniqueness_of :object_reference_number, scope: :organization_id
   validate :origin_or_destination
   validate :parent_child_match
+  validate :arrival_after_departure
+  validate :different_locations
 
   def origin_location
     @origin_location = Location.where(id: self.origin_location_id).first
@@ -82,6 +84,16 @@ class MovementSource
       end
     end
     
-   
+    def arrival_after_departure
+      if self.etd > self.eta
+        errors.add(:base, "ETD cannot be greater than ETA") 
+      end 
+    end
+
+    def different_locations
+      if origin_location == destination_location
+        errors.add(:base, "Origin and Destination must be different")
+      end
+    end
 
 end
