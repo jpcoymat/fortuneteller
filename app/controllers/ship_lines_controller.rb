@@ -21,6 +21,7 @@ class ShipLinesController < ApplicationController
   def create
     @ship_line = ShipLine.new(ship_line_params)
     @ship_line.eta = full_eta
+    @ship_line.etd = Date.today
     if @ship_line.save
       Resque.enqueue(SourceProcessingJob, @ship_line.id.to_s)
       flash[:notice] = "Ship Lines has been created succesfully queued for processing"
