@@ -29,5 +29,36 @@ class AdjustmentProcessingJob
     inventory_position = InventoryPosition.where(product_id: inventory_adjustment.product_id, location_id: inventory_adjustment.location_id).first
   end
 
+  def self.process_receipt(receipt)
+    invn_posn = inventory_position(receipt)
+    if receipt.movement_source
+      case receipt.movement_source.class
+        when ShipLine
+          adjust_ship_line(receipt)
+        when OrderLine
+          adjust_order_line(receipt)
+      end
+    end
+    invn_posn.on_hand_quantity += receipt.adjustment_quantity
+    invn_posn.save
+    invn_posn.reset_projections
+  end
+
+  def adjust_ship_line(receipt)
+    ship_line = receipt.movement_source
+    adjustment_quantity = 0
+    ship_line.quantity - receipt.adjustment_quantity < 0 ? adjustment_quantity = ship_line.quantity : adjustment_quantity = receipt.adjustment_quantity
+    ship_line.save
+    inventory_position = InventoryPosition.where(product: receipt.product, location: receipt.location).first
+    if inventory_position
+      projection = inventory_position.inventory_projections.where(projected_for: ship_line.eta).first
+      if projection
+        projection.in_transit_quantity -= adjustment_quantity
+        projection.save
+        projection.cascade
+      end
+    end
+  end
+
 end
 

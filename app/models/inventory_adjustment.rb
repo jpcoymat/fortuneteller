@@ -12,6 +12,7 @@ class InventoryAdjustment
   belongs_to :organization
   belongs_to :location
   belongs_to :product
+  belongs_to :movement_source
 
   validates :object_reference_number, :organization_id, :location_id, :product_id, :adjustment_quantity, presence: true
   validates_uniqueness_of :object_reference_number, scope: :organization_id
