@@ -3,6 +3,7 @@ class ProductsController < ApplicationController
   before_filter :authorize  
   before_action :set_product, only: [:show, :edit, :update, :destroy]
 
+
   def lookup
     @user = User.find(session[:user_id])
     if request.post?
@@ -13,6 +14,11 @@ class ProductsController < ApplicationController
 
    
   def show
+   respond_to do |format|
+     format.html
+     format.xml {render xml: @product}
+     format.json {render json: @product}
+   end
   end
   
   def edit
@@ -33,11 +39,17 @@ class ProductsController < ApplicationController
 
   def create
     @product = Product.new(product_params)
-    if @product.save
-      redirect_to lookup_products_path
-    else
-     @user = User.find(session[:user_id])
-     render action: "new"
+    respond_to do |format|
+      if @product.save
+        format.html {redirect_to(lookup_products_path)}
+        format.xml {render xml: @product, status: :created, location: @product}
+      else
+        format.html do 
+           @user = User.find(session[:user_id])
+           render action: "new"
+        end
+        format.xml {render xml: @product.errors, status: :unprocessable_entity} 
+      end
     end
   end
 
