@@ -1,0 +1,15 @@
+<h1>Inventory Advice </h1>
+
+<% if @receipts.empty? %>
+  <p>No receipt created </p>
+<% else %>
+   <table class="table table-striped">
+     <tr><th>Reference Number</th> <th>Adjustment Date </th> <th>Product</th> <th>Location</th> <th>Adjustment Type</th> <th>Quantity</th></tr>
+     <% @receipts.each do |receipt| %>
+       <tr><td><%= receipt.object_reference_number %> </td> <td><%= receipt.adjustment_date.to_s %></td> <td><%= receipt.product.name %></td> <td><%= receipt.location.name %></td> <td><%= receipt.adjustment_type %></td> <td><%= receipt.adjustment_quantity.to_s %></td></tr>
+     <% end %>
+   </table>
+<% end %>
+<br /> <br />
+<%= link_to "Main Menu", main_index_path %> | <%= link_to "Create New Receipt", new_receipt_path %>
+

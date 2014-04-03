@@ -44,10 +44,11 @@ class AdjustmentProcessingJob
     invn_posn.reset_projections
   end
 
-  def adjust_ship_line(receipt)
+  def self.adjust_ship_line(receipt)
     ship_line = receipt.movement_source
     adjustment_quantity = 0
     ship_line.quantity - receipt.adjustment_quantity < 0 ? adjustment_quantity = ship_line.quantity : adjustment_quantity = receipt.adjustment_quantity
+    ship_line.quantity -= adjustment_quantity
     ship_line.save
     inventory_position = InventoryPosition.where(product: receipt.product, location: receipt.location).first
     if inventory_position
@@ -59,6 +60,25 @@ class AdjustmentProcessingJob
       end
     end
   end
+
+  def self.adjust_order_line(receipt)
+    order_line = receipt.movement_source
+    adjustment_quantity = 0
+    order_line.quantity - receipt.adjustment_quantity < 0 ? adjustment_quantity = order_line.quantity : adjustment_quantity = receipt.adjustment_quantity
+    order_line.quantity -= adjustment_quantity
+    order_line.save
+    inventory_position = InventoryPosition.where(location: receipt.location, product: receipt.product).first
+    if inventory_position
+      projection = inventory_position.inventory_projections.where(projected_for: order_line.eta).first
+      if projection
+        projection.on_order_quantity -= adjustment_quantity
+        projection.save
+        projection.cascade
+      end
+    end
+  end
+
+
 
 end
 
