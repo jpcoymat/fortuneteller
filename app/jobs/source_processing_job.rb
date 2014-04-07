@@ -2,9 +2,9 @@ class SourceProcessingJob
 
   @queue = :new_movement_sources
 
-  def self.perform(movement_source_id)
+  def self.perform(movement_source)
     Resque.logger.info("Here we go ...")
-    @movement_source = MovementSource.find(movement_source_id)
+    @movement_source = MovementSource.(movement_source)
     unless @movement_source.nil?
       Resque.logger.info("Found Movement Source")
       case @movement_source.class
@@ -18,6 +18,7 @@ class SourceProcessingJob
       end 
     end
   end
+
 
   def self.process_ship_line(ship_line)
     po_line = OrderLine.where(id: ship_line.parent_movement_source_id).first
@@ -37,6 +38,7 @@ class SourceProcessingJob
 	  projection.save
         end
       end
+      ship_line.create_shipment_confirmation
       origin_inventory_position.on_hand_quantity -= ship_line.quantity
       origin_inventory_position.save
       origin_inventory_position.reset_projections

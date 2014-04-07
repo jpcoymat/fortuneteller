@@ -90,7 +90,8 @@ class InventoryPosition
   def crawl
     today = Date.today
     self.inventory_projections.where(:projected_for.lt => today).each {|projection| projection.destroy}
-    self.save 
+    self.save
+    reset_projections
     while self.inventory_projections.count < self.product.organization.days_to_project
       latest_date = self.inventory_projections.last.projected_for
       new_date = latest_date + 1.day

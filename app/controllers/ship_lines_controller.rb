@@ -24,15 +24,14 @@ class ShipLinesController < ApplicationController
     @ship_line.etd = Date.today
     if @ship_line.save
       Resque.enqueue(SourceProcessingJob, @ship_line.id.to_s)
-      flash[:notice] = "Ship Lines has been created succesfully queued for processing"
+      flash[:notice] = "Ship Lines has been queued for processing"
       redirect_to ship_lines_path
-    else 
+    else
       @user = User.find(session[:user_id])
       @products = @user.organization.products
       @locations = @user.organization.locations
-      @order_lines = OrderLine.where(organization_id: @user.organization_id).all
+      @order_lines = OrderLine.where(organization_id: @user.organization_id).all 
       render action: "new"
-    end
   end
 
 
