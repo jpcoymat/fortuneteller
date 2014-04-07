@@ -32,6 +32,7 @@ class ShipLinesController < ApplicationController
       @locations = @user.organization.locations
       @order_lines = OrderLine.where(organization_id: @user.organization_id).all 
       render action: "new"
+    end
   end
 
 

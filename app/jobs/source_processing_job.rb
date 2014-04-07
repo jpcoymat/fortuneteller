@@ -4,7 +4,7 @@ class SourceProcessingJob
 
   def self.perform(movement_source)
     Resque.logger.info("Here we go ...")
-    @movement_source = MovementSource.(movement_source)
+    @movement_source = MovementSource.where(id: movement_source).first
     unless @movement_source.nil?
       Resque.logger.info("Found Movement Source")
       case @movement_source.class
@@ -25,8 +25,8 @@ class SourceProcessingJob
     origin_inventory_position = origin_position(ship_line)
     destination_inventory_position = destination_position(ship_line)
     amount_to_decrement = 0
-    po_line.quantity - ship_line.quantity < 0 ? amount_to_decrement = po_line.quantity : amount_to_decrement = ship_line.quantity
     if po_line
+      po_line.quantity - ship_line.quantity < 0 ? amount_to_decrement = po_line.quantity : amount_to_decrement = ship_line.quantity
       po_line.quantity -= amount_to_decrement
       po_line.save
     end
