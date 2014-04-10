@@ -20,7 +20,8 @@ class OrderLinesController < ApplicationController
     @order_line = OrderLine.new(order_line_params)
     @order_line.eta = full_eta
     @order_line.etd = full_etd
-    if Resque.enqueue(SourceProcessingJob, @order_line.to_json)
+    if @order_line.valid?
+      Resque.enqueue(SourceProcessingJob, @order_line.to_json)
       flash[:notice] = "Order Line has been created succesfully and queued for processing."
       redirect_to order_lines_path
     else

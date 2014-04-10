@@ -22,7 +22,8 @@ class ShipLinesController < ApplicationController
     @ship_line = ShipLine.new(ship_line_params)
     @ship_line.eta = full_eta
     @ship_line.etd = Date.today
-    if Resque.enqueue(SourceProcessingJob, @ship_line.to_json)
+    if @ship_line.valid?
+      Resque.enqueue(SourceProcessingJob, @ship_line.to_json)
       flash[:notice] = "Ship Lines has been queued for processing"
       redirect_to ship_lines_path
     else

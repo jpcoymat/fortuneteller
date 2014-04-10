@@ -85,8 +85,10 @@ class MovementSource
     end
     
     def arrival_after_departure
-      if self.etd > self.eta
-        errors.add(:base, "ETD cannot be greater than ETA") 
+      if self.etd and self.eta
+        if self.etd > self.eta
+          errors.add(:base, "ETD cannot be greater than ETA") 
+        end
       end 
     end
 
