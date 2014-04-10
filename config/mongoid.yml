@@ -75,6 +75,8 @@ production:
     default:
       uri: <%= ENV['MONGOHQ_URL'] %>
       options:
-        include_root_in_json: true
+       
         #skip_version_check: true
         #safe: true
+  options:
+    include_root_in_json: true 
