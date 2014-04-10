@@ -2,25 +2,29 @@ class SourceProcessingJob
 
   @queue = :new_movement_sources
 
-  def self.perform(movement_source)
+  def self.perform(json_string)
     Resque.logger.info("Here we go ...")
-    @movement_source = MovementSource.where(id: movement_source).first
-    unless @movement_source.nil?
-      Resque.logger.info("Found Movement Source")
-      case @movement_source.class
-        when ShipLine
-          Resque.logger.info("I am a ship line")
-          process_ship_line(@movement_source)
-        when OrderLine
-          process_order_line(@movement_source)
-        when Forecast
-          process_forecast(@movement_source)
-      end 
+    object_hash = JSON.load(json_string)
+    if object_hash.has_key?("order_line")
+      order_line = OrderLine.new(object_hash["order_line"])
+      process_order_line(order_line)
+    elsif object_hash.has_key?("ship_line")
+      ship_line = ShipLine.new(object_hash["ship_line"])
+      process_ship_line(ship_line)
+    elsif object_hash.has_key?("forecast")
+      forecast = Forecast.new(object_hash["forecast"])
+      process_forecast(forecast)
     end
   end
 
-
   def self.process_ship_line(ship_line)
+    id_count = ShipLine.where(id: ship_line.id).all.count
+    id_count == 0 ? process_new_ship_line(ship_line) : process_updated_ship_line(ship_line)
+  end
+  
+
+  def self.process_new_ship_line(ship_line)
+    ship_line.save
     po_line = OrderLine.where(id: ship_line.parent_movement_source_id).first
     origin_inventory_position = origin_position(ship_line)
     destination_inventory_position = destination_position(ship_line)
@@ -62,6 +66,12 @@ class SourceProcessingJob
   end
 
   def self.process_order_line(order_line)
+    id_count = OrderLine.where(id: order_line.id).all.count
+    id_count == 0 ? process_new_order_line(order_line) : process_updated_order_line(order_line)
+  end
+
+  def self.process_new_order_line(order_line)
+   order_line.save
    Resque.logger.info("process order line starting ..")
    origin_inventory_position = origin_position(order_line)
    unless origin_inventory_position.nil? 
@@ -82,6 +92,9 @@ class SourceProcessingJob
        destination_projection.cascade
      end
    end
+  end
+
+  def self.process_updated_order_line(order_line)
   end
 
   def self.process_forecast(forecast)
