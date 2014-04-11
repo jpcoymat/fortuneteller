@@ -12,6 +12,7 @@
 		<td><%= order_line.origin_location ? order_line.origin_location.name : nil %></td>
 		<td><%= order_line.destination_location ? order_line.destination_location.name : nil %></td>
 		<td><%= order_line.quantity.to_s	%></td>
+		<td><%= link_to "Edit", edit_order_line_path(order_line) %></td>
 		</tr>
    	<% end %>
   </table %>

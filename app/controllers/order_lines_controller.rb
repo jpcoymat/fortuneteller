@@ -34,6 +34,20 @@ class OrderLinesController < ApplicationController
   end
 
   def update
+   @order_line.assign_attributes(order_line_params)
+   @order_line.eta = full_eta
+   @order_line.etd = full_etd
+   if @order_line.valid?
+    Resque.enqueue(SourceProcessingJob, @order_line.to_json)
+    flash[:notice] = "Order Line updates have been queued for processing."
+    redirect_to order_lines_path
+   else
+    @user = User.find(session[:user_id])
+    @products = @user.organization.products
+    @locations = @user.organization.locations	 
+    render action: "edit"
+   end
+
   end
 
   def destroy
