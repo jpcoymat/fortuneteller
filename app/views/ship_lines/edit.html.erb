@@ -1,2 +1,12 @@
-h1 ShipLinesController#edit
-p Find me in app/views/ship_lines_controller/edit.html.slim
+<h1>Edit Ship Line <h1>
+        <h3> Enter Updated Ship Line Details</h3>
+        <%= render partial: "ship_line_errors" %>
+        <%= form_for @ship_line, html: {class: "form-horizontal"} do |form| %>
+          <%= render partial: 'ship_line', locals: {form: form} %>
+          <%= submit_tag "Create", class: "btn btn-primary" %>
+        <% end %>
+
+<br /><br />
+<%= link_to "Return to Ship Lines", ship_lines_path %>
+
+

@@ -21,46 +21,60 @@ class SourceProcessingJob
     id_count == 0 ? process_new_ship_line(ship_line) : process_updated_ship_line(ship_line)
   end
   
-
   def self.process_new_ship_line(ship_line)
     if ship_line.save
-      po_line = OrderLine.where(id: ship_line.parent_movement_source_id).first
-      origin_inventory_position = origin_position(ship_line)
-      destination_inventory_position = destination_position(ship_line)
-      amount_to_decrement = 0
+      project_ship_line(ship_line)
+    end
+  end
+
+
+  def self.project_ship_line(ship_line)
+     Resque.logger.info("Starting Ship line projection")
+    po_line = OrderLine.where(id: ship_line.parent_movement_source_id).first
+    origin_inventory_position = origin_position(ship_line)
+    destination_inventory_position = destination_position(ship_line)
+    amount_to_decrement = 0
+    if po_line
+       Resque.logger.info("Found associated PO Line with Ship Line")
+      amount_to_decrement = [ship_line.quantity, po_line.quantity].min
+      po_line.quantity -= amount_to_decrement
+      po_line.save
+    end
+    if origin_inventory_position
       if po_line
-        po_line.quantity - ship_line.quantity < 0 ? amount_to_decrement = po_line.quantity : amount_to_decrement = ship_line.quantity
-        po_line.quantity -= amount_to_decrement
-        po_line.save
-      end
-      if origin_inventory_position
-        if po_line
-	  projection = origin_inventory_position.inventory_projections.where(projected_for: po_line.eta).first
-          if projection
-	    projection.allocated_quantity -= amount_to_decrement
-	    projection.save
-          end
+        projection = origin_inventory_position.inventory_projections.where(projected_for: po_line.eta).first
+        if projection
+          Resque.logger.info("Found projection associated with order line: " + projection.projected_for.to_s)
+          projection.allocated_quantity -= amount_to_decrement
+          projection.save
         end
-        ship_line.create_shipment_confirmation
+      end
+      shipment_confirmation = ship_line.create_shipment_confirmation
+      shipment_confirmation.set_fields
+      Resque.logger.info("Shipment confirmation created " + shipment_confirmation.object_reference_number)
+      if shipment_confirmation.save
+        Resque.logger.info("Ship confirm saved")
         origin_inventory_position.on_hand_quantity -= ship_line.quantity
         origin_inventory_position.save
         origin_inventory_position.reset_projections
       end
-      if destination_inventory_position
-        if po_line
-          order_projection = destination_inventory_position.inventory_projections.where(projected_for: po_line.eta).first
-          if projection
-            order_projection.on_order_quantity -= amount_to_decrement
-            order_projection.save
-          end
+    end
+    if destination_inventory_position
+      if po_line
+        order_projection = destination_inventory_position.inventory_projections.where(projected_for: po_line.eta).first
+        if order_projection
+          Resque.logger.info("Projection associated with parent object for date :" + order_projection.projected_for.to_s) 
+          order_projection.on_order_quantity -= amount_to_decrement
+          order_projection.save
         end
-        projection = destination_inventory_position.inventory_projections.where(projected_for: ship_line.eta).first
-        if projection
-          projection.in_transit_quantity += ship_line.quantity
-          projection.save
-        end
-        destination_inventory_position.save
-        destination_inventory_position.reset_projections
+      end
+      projection = destination_inventory_position.inventory_projections.where(projected_for: ship_line.eta).first
+      if projection
+        Resque.logger.info("Projection for Shipline for " + projection.projected_for.to_s + ".  Current InTran qty: " + projection.in_transit_quantity.to_s)
+        projection.in_transit_quantity += ship_line.quantity
+        Resque.logger.info("Update in transit qty " + projection.in_transit_quantity.to_s)
+        projection.save
+        projection.cascade
       end
     end
   end
@@ -101,43 +115,6 @@ class SourceProcessingJob
 
   def self.process_updated_order_line(order_line)
     original_order_line = OrderLine.where(id: order_line.id).first
-    Resque.logger.info("Original Order Line: " + original_order_line.to_json)
-    updated_order_line_attributes_hash = order_line.attributes
-    original_order_line.assign_attributes(updated_order_line_attributes_hash)
-    Resque.logger.info("Updated Order Line: " + original_order_line.to_json)
-    original_order_line.changes.each {|k,v| Resque.logger.info("Field Change: " + k + " - Old Value: " + v[0].to_s + " - New Value: " + v[1].to_s)}   
-    if original_order_line.changes.count == 1 and original_order_line.changes.include?("quantity")
-      change_quantity = original_order_line.changes["quantity"][1] - original_order_line.changes["quantity"][0]
-      process_quantity_change_order_line(change_quantity, order_line)
-    else
-      undo_and_redo_order_line(order_line)
-    end  
-    original_order_line.save
-  end
-  
-  def self.process_quantity_change_order_line(change_quantity, order_line)
-    origin_inventory_position = origin_position(order_line)
-    if origin_inventory_position
-      origin_projection = origin_inventory_position.inventory_projections.where(projected_for: order_line.etd).first
-      if origin_projection
-        origin_projection.allocated_quantity += change_quantity
-        origin_projection.save
-        origin_projection.cascade
-      end
-    end
-    destination_inventory_position = destination_position(order_line)
-    if destination_inventory_position
-      destination_projection = destination_inventory_position.inventory_projections.where(projected_for: order_line.eta).first
-      if destination_projection
-        destination_projection.on_order_quantity += change_quantity
-        destination_projection.save
-        destination_projection.cascade
-      end
-    end   
-  end
-
-  def self.undo_and_redo_order_line(order_line)
-    original_order_line = OrderLine.where(id: order_line.id).first
     undo_order_line(original_order_line)
     project_order_line(order_line) 
     original_order_line.update_attributes(order_line.attributes)
@@ -173,6 +150,62 @@ class SourceProcessingJob
   
   def self.destination_position(movement_source)
     inventory_position = InventoryPosition.where(location_id: movement_source.destination_location_id, product_id: movement_source.product_id).first
+  end
+
+  def self.process_updated_ship_line(ship_line)
+    original_ship_line = ShipLine.find(ship_line.id)
+    Resque.logger.info("Original Ship Line: " + original_ship_line.to_json)
+    Resque.logger.info("Updated Ship Line: " + ship_line.to_json)
+    undo_ship_line(original_ship_line)
+    Resque.logger.info("Done with undo, no redoing new line")
+    project_ship_line(ship_line)
+    original_ship_line.update_attributes(ship_line.attributes)
+  end
+  
+
+  def self.undo_ship_line(ship_line)
+    return_to_parent(ship_line)
+    origin_inventory =  origin_position(ship_line)
+    if origin_inventory
+      Resque.logger.info("Origin invn: " + origin_inventory.product.name + " - " + origin_inventory.location.name + " / On Hand Qty: " + origin_inventory.on_hand_quantity.to_s)  
+      origin_inventory.on_hand_quantity += ship_line.quantity
+      Resque.logger.info("New On Hand Quantity: " + origin_inventory.on_hand_quantity.to_s)
+      origin_inventory.save
+      origin_inventory.reset_projections      
+    end
+    destination_inventory = destination_position(ship_line)
+    if destination_inventory
+      Resque.logger.info("Destn Invn: " + destination_inventory.product.name + " - " + destination_inventory.location.name + " / On Hand Qty: ")
+      destination_projection = destination_inventory.inventory_projections.where(projected_for: ship_line.eta).first
+      if destination_projection
+        Resque.logger.info("Found projection for date " + destination_projection.projected_for.to_s)
+        destination_projection.in_transit_quantity -= ship_line.quantity
+        destination_projection.save
+        destination_projection.cascade
+      end
+    end
+  end
+
+  def self.return_to_parent(ship_line)
+    order_line = ship_line.parent_movement_source
+    if order_line
+      origin_inventory = origin_position(order_line)
+      if origin_inventory
+        origin_projection = origin_inventory.inventory_projections.where(projected_for: order_line.etd).first
+        origin_projection.allocated_quantity += ship_line.quantity
+        origin_projection.save
+        origin_projection.cascade
+      end
+      destination_inventory = destination_position(ship_line)
+      if destination_inventory
+        destination_projection = destination_inventory.inventory_projections.where(projected_for: order_line.eta).first
+        if destination_projection
+          destination_projection.on_order_quantity += ship_line.quantity
+          destination_projection.save
+          destination_projection.cascade 
+        end
+      end
+    end
   end
 
 end

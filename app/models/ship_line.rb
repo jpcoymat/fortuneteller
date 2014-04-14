@@ -10,7 +10,7 @@ class ShipLine < MovementSource
 
   def create_shipment_confirmation
     @shipment_confirmation = ShipmentConfirmation.new(organization: self.organization, source: self.source, product: self.product, location: self.origin_location, adjustment_quantity: self.quantity, adjustment_date: self.etd, movement_source: self)
-    @shipment_confirmation.save   
+    @shipment_confirmation   
   end
 
  

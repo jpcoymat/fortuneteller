@@ -11,11 +11,26 @@ class ShipLinesController < ApplicationController
   end
 
   def edit
-    @location = @ship_line.location.organization.locations
-    @products = @ship_line.product.organization.products
+    @user = User.find(session[:user_id])
+    @locations = @user.organization.locations
+    @products = @user.organization.products
+    @order_lines = OrderLine.where(organization_id: @user.organization_id).all
   end
 
   def update
+    @ship_line.eta = full_eta
+    @ship_line.assign_attributes(ship_line_params)
+    if @ship_line.valid?
+      Resque.enqueue(SourceProcessingJob, @ship_line.to_json)
+      flash[:notice] = "Ship Line updates have been queued for processing"
+      redirect_to ship_lines_path
+    else
+      @user = User.find(session[:user_id])
+      @location = @ship_line.location.organization.locations
+      @products = @ship_line.product.organization.products
+      @order_lines = OrderLine.where(organization_id: @user.organization_id).all
+      render action: "edit"
+    end
   end
 
   def create

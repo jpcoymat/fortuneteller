@@ -12,6 +12,7 @@
            <td><%= ship_line.quantity                   %></td>
            <td><%= ship_line.origin_location.nil? ? "" : ship_line.origin_location.name       %></td>
            <td><%= ship_line.destination_location.nil? ? "" :  ship_line.destination_location.name  %></td>
+	   <td><%= link_to "Edit", edit_ship_line_path(ship_line) %></td>
        </tr>
     <% end %>
     </table>
