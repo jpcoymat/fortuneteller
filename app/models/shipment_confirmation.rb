@@ -20,7 +20,7 @@ class ShipmentConfirmation < InventoryAdjustment
   end
   
   def generate_reference_number
-    "SC" + self.product.code + self.location.code + self.adjustment_date.to_s + (rand()*1000).floor.to_s.rjust(4,"0")
+    "SC-" + self.product.code + "-"+ self.location.code + "-" + self.adjustment_date.to_s + "-" + (rand()*1000).floor.to_s.rjust(4,"0")
   end
 
   def reference_number_exists?(object_ref_num)
