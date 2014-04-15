@@ -5,6 +5,7 @@ class ShipmentConfirmation < InventoryAdjustment
 
   def set_fields
     self.adjustment_type = "Decrease"
+    self.source = "Fortuneteller"
     set_object_reference_number
   end 
  

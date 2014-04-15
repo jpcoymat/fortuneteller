@@ -1,0 +1,25 @@
+<h1>Shipment Confirmations</h1>
+ <% if @shipment_confirmations.empty? %>
+   	<p>No Shipment Confirmations have been generated for this organiation</p>
+ <% else %>
+	<table>
+		<tr>
+	<table class="table table-striped">
+     	<tr><th>Reference Number</th> <th>Adjustment Date </th> <th>Product</th> <th>Location</th> <th>Adjustment Type</th> <th>Quantity</th></tr>
+     	<% @shipment_confirmations.each do |shipment_confirmation| %>
+       		<tr>	<td><%= shipment_confirmation.object_reference_number %> </td> 
+			<td><%= shipment_confirmation.adjustment_date.to_s %></td> 
+			<td><%= shipment_confirmation.product.name %></td> 
+			<td><%= shipment_confirmation.location.name %></td> 
+			<td><%= shipment_confirmation.adjustment_type %></td> 
+			<td><%= shipment_confirmation.adjustment_quantity.to_s %></td>
+			<td><%= link_to "View Details", shipment_confirmation_path(shipment_confirmation) %></td>
+		</tr>
+     	<% end %>
+   	</table>
+<% end %>
+<br /> <br />
+<%= link_to "Main Menu", main_index_path %>
+<br /> <br />
+
+ 

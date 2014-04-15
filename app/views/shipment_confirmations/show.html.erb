@@ -1,0 +1,19 @@
+<h1>Shipment Confirmation Details</h1>
+
+   	<dl class="dl-horizontal">
+		<dt>Source		</dt>	<dd><%= @shipment_confirmation.source 			%></dd>
+		<dt>Reference Number	</dt>	<dd><%= @shipment_confirmation.object_reference_number	%></dd>	
+                <dt>Adjustment Type     </dt>   <dd><%= @shipment_confirmation.adjustment_type          %></dd>
+                <dt>Adjustmnet Quantity </dt>   <dd><%= @shipment_confirmation.adjustment_quantity      %></dd>
+		<dt>Product		</dt>	<dd><%= @shipment_confirmation.product.name		%></dd>
+		<dt>Location		</dt>	<dd><%= @shipment_confirmation.location.name		%></dd>
+		<dt>Movement Source	</dt>	<dd>
+		<% if @shipment_confirmation.movement_source? %>
+			<%= @shipment_confirmation.movement_source.object_reference_number	%>
+		<% end %>
+						</dd>
+	</dl>	
+
+<br /><br />
+<%= link_to "Return to Shipment Confirmations", shipment_confirmations_path %>
+<br /><br />

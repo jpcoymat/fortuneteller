@@ -1,15 +1,15 @@
 <h1>Location Details </h1>
 
-<table>
-        <tr><th>Location Name   </th>   <td><%= @location.name                   %></td></tr>
-        <tr><th>Location Code   </th>   <td><%= @location.code                   %></td></tr>
-        <tr><th>Address         </th>   <td><%= @location.address_1              %></td></tr>
-        <tr><th>Adddres 2       </th>   <td><%= @location.address_2              %></td></tr>
-        <tr><th>City            </th>   <td><%= @location.city                   %></td></tr>
-        <tr><th>State/Prov      </th>   <td><%= @location.state_providence       %></td></tr>
-	<tr><th>Postal Code	</th>	<td><%= @location.postal_code		 %></td></tr>
-        <tr><th>Country         </th>   <td><%= @location.country                %></td></tr>
-</table>
+<dl class="dl-horizontal">
+        <dt>Location Name   </dt>   <dd><%= @location.name                   %></dd>
+        <dt>Location Code   </dt>   <dd><%= @location.code                   %></dd>
+        <dt>Address         </dt>   <dd><%= @location.address_1              %></dd>
+        <dt>Adddres 2       </dt>   <dd><%= @location.address_2              %></dd>
+        <dt>City            </dt>   <dd><%= @location.city                   %></dd>
+        <dt>State/Prov      </dt>   <dd><%= @location.state_providence       %></dd>
+	<dt>Postal Code	</dt>	<dd><%= @location.postal_code		 %></dd>
+        <dt>Country         </dt>   <dd><%= @location.country                %></dd>
+</dl>
 <%= link_to "Edit Location", edit_location_path(@location) %>
 <br /><br /> 
 <%= link_to "View Locations", locations_path %>

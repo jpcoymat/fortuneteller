@@ -18,7 +18,7 @@ Fortuneteller::Application.routes.draw do
   resources :ship_lines
   resources :inventory_advices
   resources :receipts
-
+  resources :shipment_confirmations
   resources :locations
   resources :product_location_assignments
   resources :inventory_positions do
