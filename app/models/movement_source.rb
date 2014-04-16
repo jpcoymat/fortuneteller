@@ -19,6 +19,8 @@ class MovementSource
   belongs_to :organization
   belongs_to :product  
 
+  has_many :inventory_adjustments
+
   before_create  :set_original_quantity  
 
   validates :object_reference_number, :quantity, :organization_id, :product_id, :eta, :etd, presence: true

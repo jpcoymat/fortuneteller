@@ -1,0 +1,57 @@
+<h1>Order Line Details</h1>
+<dl class="dl-horizontal">
+                <dt>Source              	</dt>   <dd><%= @order_line.source                   	%></dd>
+                <dt>Reference Number    	</dt>   <dd><%= @order_line.object_reference_number  	%></dd>
+                <dt>ETA    			</dt>   <dd><%= @order_line.eta.to_s			%></dd>
+                <dt>ETD	 			</dt>   <dd><%= @order_line.etd.to_s			%></dd>
+                <dt>Product             	</dt>   <dd><%= @order_line.product.name             	%></dd>
+                <dt>Origin Location     	</dt>   <dd><%= @order_line.origin_location.nil? ? "" : @order_line.origin_location.name        	%></dd>
+		<dt>Destination Location	</dt>	<dd><%= @order_line.destination_location.nil? ? "" : @order_line.destination_location.name	%></dd>	
+                <dt>Original Quantity		</dt>	<dd><%= @order_line.original_quantity.to_s	%></dd>
+		<dt>Remainin Quantity		</dt>	<dd><%= @order_line.quantity.to_s		%></dd>
+                                                </dd>
+        </dl>
+<br /><br />
+<h4>Associated Ship Lines</h4>
+
+	<% if @order_line.child_movement_sources.empty? %>
+		<p>No Ship Lines for this Order Line were found.</p>
+	<% else %>
+		<table class="table table-striped">
+			<tr><th>Reference Number</th>	<th>Product</th> <th>Origin Location</th> <th>Destination Location</th> <th>Ship Quantity</th> <th> Remaining Quantity</th></tr>
+			<% @order_line.child_movement_sources.each do |ship_line| %>
+				<tr>
+					<td><%= ship_line.object_reference_number	%></td>
+					<td><%= ship_line.product.name			%></td>
+					<td><%= ship_line.origin_location ? ship_line.origin_location.name : "" %></td>
+					<td><%= ship_line.destination_location ? ship_line.destination_location.name : "" %></td>
+					<td><%= ship_line.original_quantity.to_s	%></td>
+					<td><%= ship_line.quantity.to_s			%></td>
+					<td><%= link_to("Details", ship_line_path(ship_line)) %></td>
+				</tr>
+			<% end %>
+		</table>
+	<% end %>
+<br /><br />
+<h4>Associated Inventory Adjustments</h4>
+	<% if @order_line.inventory_adjustments.empty? %>
+		<p>No Receipts or Shipment Confirmations associated to this Order Line </p>
+	<% else %>
+		<table class="table table-striped">
+			<tr><th>Adjustment Type</th> <th>Reference Number</th>   <th>Product</th> <th>Location</th> <th>Quantity</th></tr>
+			<% @order_line.inventory_adjustments.each do |inventory_adjustment| %>
+				<tr>	
+					<td><%= inventory_adjustment.class.to_s 		%></td>
+					<td><%= inventory_adjustment.object_reference_number 	%></td>
+					<td><%= inventory_adjustment.product.name		%></td>
+					<td><%= inventory_adjustment.location.name		%></td>
+					<td><%= inventory_adjustment.adjustment_quantity.to_s	%></td>
+					<td><%= link_to "Details", polymorphic_path(inventory_adjustment)	%></td>
+			<% end %>
+		</table>
+	<% end %>	
+<br /><br />
+<%= link_to "Return to Order Lines", order_lines_path %>
+<br /><br />
+
+

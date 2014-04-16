@@ -9,7 +9,7 @@
 		<dt>Location		</dt>	<dd><%= @shipment_confirmation.location.name		%></dd>
 		<dt>Movement Source	</dt>	<dd>
 		<% if @shipment_confirmation.movement_source? %>
-			<%= @shipment_confirmation.movement_source.object_reference_number	%>
+			<%= link_to(@shipment_confirmation.movement_source.object_reference_number, polymorphic_path(@shipment_confirmation.movement_source))	%>
 		<% end %>
 						</dd>
 	</dl>	

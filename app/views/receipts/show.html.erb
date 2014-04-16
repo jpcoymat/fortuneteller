@@ -1,0 +1,19 @@
+<h1>Receipt Details</h1>
+
+   	<dl class="dl-horizontal">
+		<dt>Source		</dt>	<dd><%= @receipt.source 			%></dd>
+		<dt>Reference Number	</dt>	<dd><%= @receipt.object_reference_number	%></dd>	
+                <dt>Adjustment Type     </dt>   <dd><%= @receipt.adjustment_type          %></dd>
+                <dt>Adjustmnet Quantity </dt>   <dd><%= @receipt.adjustment_quantity      %></dd>
+		<dt>Product		</dt>	<dd><%= @receipt.product.name		%></dd>
+		<dt>Location		</dt>	<dd><%= @receipt.location.name		%></dd>
+		<dt>Movement Source	</dt>	<dd>
+		<% if @receipt.movement_source? %>
+			<%= link_to(@receipt.movement_source.object_reference_number, polymorphic_path(@receipt.movement_source))	%>
+		<% end %>
+						</dd>
+	</dl>	
+
+<br /><br />
+<%= link_to "Return to Receipts", receipts_path %>
+<br /><br />
