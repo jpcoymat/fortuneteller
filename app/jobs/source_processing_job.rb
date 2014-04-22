@@ -189,8 +189,13 @@ class SourceProcessingJob
   def self.return_to_parent(ship_line)
     order_line = ship_line.parent_movement_source
     if order_line
+      Resque.logger.info("Updating Order Line " + order_line.object_reference_number + " - Current Qty: " + order_line.quantity.to_s)
+      order_line.quantity += ship_line.quantity
+      order_line.save
+      Resque.logger.info("New Qty: " + order_line.quantity.to_s)
       origin_inventory = origin_position(order_line)
       if origin_inventory
+        Resque.logger.info("Updating On Hand Inv at Origin for loc " + origin_inventory.location.name + " and prod " + origin_inventory.product.name)
         origin_projection = origin_inventory.inventory_projections.where(projected_for: order_line.etd).first
         origin_projection.allocated_quantity += ship_line.quantity
         origin_projection.save
@@ -198,8 +203,10 @@ class SourceProcessingJob
       end
       destination_inventory = destination_position(ship_line)
       if destination_inventory
+        Resque.logger.info("Updating OO qty at dest for loc " + destination_inventory.location.name + " and prod " + destination_inventory.product.name)
         destination_projection = destination_inventory.inventory_projections.where(projected_for: order_line.eta).first
         if destination_projection
+          Resque.logger.info("Updating projection record for date " + destination_projection.projected_for.to_s) 
           destination_projection.on_order_quantity += ship_line.quantity
           destination_projection.save
           destination_projection.cascade 
