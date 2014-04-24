@@ -8,6 +8,12 @@ class InventoryPositionsController < ApplicationController
     @locations = @organization.locations
     if request.post?
       @inventory_position = InventoryPosition.where(search_params).first
+      if @inventory_position
+        @data = []
+        @inventory_position.inventory_projections.each do |ip|
+          @data << [ip.projected_for.to_s, ip.available_quantity]
+        end
+      end
     end
   end
 

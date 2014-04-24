@@ -36,7 +36,7 @@ gem "resque"
 gem "resque-web", require: "resque_web"
 
 gem "twitter-bootstrap-rails"
-
+gem "chartkick"
 
 group :test do
   gem "rspec-rails"
