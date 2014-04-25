@@ -11,20 +11,7 @@
     <% if @inventory_position.nil? %>
        <p>There are no Inventory Positon records for the product and location chosen.</p>	
     <% else %>
-       <p>Projections for Product <%= @inventory_position.product.name %> and Location <%= @inventory_position.location.name %></p>	
-       <table class="table table-striped">
-         <tr><th>Date</th><th>On Hand Quantity</th> <th>On Order Quantity</th><th>In Transit</th> <th>Allocated Quantity</th> <th>Forecasted Quantity</th><th>Available Quantity</th></tr>
-	 <% @inventory_position.inventory_projections.each do |inventory_projection| %>
-           <tr>	<td><%= link_to(inventory_projection.projected_for.to_s, [@inventory_position,inventory_projection]) %></td>
-		<td><%= inventory_projection.on_hand_quantity.to_s %></td>
-		<td><%= inventory_projection.on_order_quantity.to_s %></td>
-		<td><%= inventory_projection.in_transit_quantity.to_s %></td>
-		<td><%= inventory_projection.allocated_quantity.to_s %></td>
-		<td><%= inventory_projection.forecasted_quantity.to_s %></td>
-		<td><%= inventory_projection.available_quantity.to_s %></td>
-	  </tr>  
-         <% end %>	 
-       </table>
+       <p>Projections for Product <%= @inventory_position.product.name %> and Location <%= @inventory_position.location.name %></p>
        <%= line_chart @data %>	
     <% end %>
   <% end %>

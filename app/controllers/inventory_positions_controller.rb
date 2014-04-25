@@ -10,9 +10,24 @@ class InventoryPositionsController < ApplicationController
       @inventory_position = InventoryPosition.where(search_params).first
       if @inventory_position
         @data = []
+        on_hand_data = []
+	on_order_data =[]
+	in_transit_data = []
+	allocated_data = []
+	forecasted_data = []
+	available_data = []
         @inventory_position.inventory_projections.each do |ip|
-          @data << [ip.projected_for.to_s, ip.available_quantity]
+          available_data << [ip.projected_for.to_s, ip.available_quantity]
+	  on_order_data << [ip.projected_for.to_s, ip.on_order_quantity]
+ 	  in_transit_data << [ip.projected_for.to_s, ip.in_transit_quantity]
+	  allocated_data << [ip.projected_for.to_s, ip.allocated_quantity]
+	  forecasted_data << [ip.projected_for.to_s, ip.forecasted_quantity]
         end
+        @data << {name: "On Hand Quantity", data: on_hand_data}
+	@data << {name: "On Order Quantity", data: on_order_data}
+	@data << {name: "In Transit Quantity", data: on_order_data}
+	@data << {name: "Allocated Quantity", data: allocated_data}
+	@data << {name: "Available Quantity", data: available_data}
       end
     end
   end
