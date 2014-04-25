@@ -14,12 +14,12 @@
        <p>Projections for Product <%= @inventory_position.product.name %> and Location <%= @inventory_position.location.name %></p>
        <%= line_chart(@data, library: {
 					series: 
-						{1 => {target_axis_index: 1 },
-						2 => {target_axis_index: 1 }, 
-						3 => {target_axis_index: 1 },
-						5 => {target_axis_index: 1 }
+						{1 => {targetAxisIndex: 1 },
+						2 => {targetAxisIndex: 1 }, 
+						3 => {targetAxisIndex: 1 },
+						5 => {targetAxisIndex: 1 }
 						}, 
-					v_axes: [{0 => {}},{1 => {}}]})    %>	
+					vAxes: [{0 => {textStyle:{color: 'red'}}},{1 => {textStyle:{color: 'blue'}}}]})    %>	
 	<table class="table table-striped">
           <tr><th>Date</th><th>On Hand Quantity</th> <th>On Order Quantity</th><th>In Transit</th> <th>Allocated Quantity</th> <th>Forecasted Quantity</th><th>Available Quantity</th></tr>
  	 <% @inventory_position.inventory_projections.each do |inventory_projection| %>
