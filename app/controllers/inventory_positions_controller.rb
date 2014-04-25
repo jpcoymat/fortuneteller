@@ -26,7 +26,7 @@ class InventoryPositionsController < ApplicationController
         end
         @data << {name: "On Hand Quantity", data: on_hand_data}
 	@data << {name: "On Order Quantity", data: on_order_data}
-	@data << {name: "In Transit Quantity", data: on_order_data}
+	@data << {name: "In Transit Quantity", data: in_transit_data}
 	@data << {name: "Allocated Quantity", data: allocated_data}
 	@data << {name: "Available Quantity", data: available_data}
 	@data << {name: "Forecasted Quantity", data: forecasted_data}
