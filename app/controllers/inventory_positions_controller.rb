@@ -17,6 +17,7 @@ class InventoryPositionsController < ApplicationController
 	forecasted_data = []
 	available_data = []
         @inventory_position.inventory_projections.each do |ip|
+	  on_hand_data << [ip.projected_for.to_s, ip.on_hand_quantity]
           available_data << [ip.projected_for.to_s, ip.available_quantity]
 	  on_order_data << [ip.projected_for.to_s, ip.on_order_quantity]
  	  in_transit_data << [ip.projected_for.to_s, ip.in_transit_quantity]
@@ -28,6 +29,7 @@ class InventoryPositionsController < ApplicationController
 	@data << {name: "In Transit Quantity", data: on_order_data}
 	@data << {name: "Allocated Quantity", data: allocated_data}
 	@data << {name: "Available Quantity", data: available_data}
+	@data << {name: "Forecasted Quantity", data: forecasted_data}
       end
     end
   end
