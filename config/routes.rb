@@ -14,8 +14,18 @@ Fortuneteller::Application.routes.draw do
   resources :users
   resources :organizations
   resources :forecasts
-  resources :order_lines
-  resources :ship_lines
+  resources :order_lines do
+    collection do 
+      get 'lookup'
+      post 'lookup'
+    end
+  end
+  resources :ship_lines do
+    collection do
+      get 'lookup'
+      post 'lookup'
+    end
+  end
   resources :inventory_advices
   resources :receipts
   resources :shipment_confirmations

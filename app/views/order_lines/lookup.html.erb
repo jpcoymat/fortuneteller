@@ -1,0 +1,42 @@
+<h1> Order Lines</h1>
+
+
+<%= form_for :order_line, url: lookup_order_lines_path, html: {class: "form-search"}   do |form| %>
+        <%= form.hidden_field :organization_id, value: @user.organization_id %>
+	<%= form.label "Product Name", class: "form-inline"%>  <%= form.select :product_id, @products.collect {|prod| [prod.name,  prod.id]}, {include_blank: true}, class: "form-control" %>
+	<%= form.label "Origin Location", class: "form-inline" %><%= form.select :origin_location_id, @locations.collect {|loc| [loc.name, loc.id]}, {include_blank: true}, class: "form-control" %>
+  	<%= form.label "Destination Location" , class: "form-inline" %><%= form.select :destination_location_id,  @locations.collect {|loc| [loc.name, loc.id]}, {include_blank: true}, class: "form-control" %>
+	<%= form.label "ETA", class: "form_inline" %><%= form.date_select :eta, {start_year: Date.today.year, include_blank: true}, class: "form-control" %>
+	<%= form.label "ETD", class: "form_inline" %><%= form.date_select :etd, {start_year: Date.today.year, include_blank: true}, class: "form-control" %>
+        <%= submit_tag "Search", {class: "btn btn-primary"} %>
+<% end %>
+<br \>
+<hr>
+<br \>
+<% if request.post? %>
+
+  <% if @order_lines.empty? %>
+    <p>No Order Lines have been created yet.</p>
+  <% else %>
+    <table class="table table-striped">
+      <tr><th>Order Line Reference Number </th> <th>ETD</th> <th>ETA</th> <th>Product</th> <th>Origin Location </th> <th>Destination Location</th> <th>Quantity</th></tr>
+        <% @order_lines.each do |order_line| %>
+          <tr><td><%= order_line.object_reference_number %></td>
+              <td><%= order_line.etd.to_s %></td>
+              <td><%= order_line.eta.to_s %></td>
+              <td><%= order_line.product.name %></td>
+              <td><%= order_line.origin_location ? order_line.origin_location.name : nil %></td>
+              <td><%= order_line.destination_location ? order_line.destination_location.name : nil %></td>
+              <td><%= order_line.quantity.to_s        %></td>
+              <td><%= link_to "Details", order_line_path(order_line)  %></td>
+              <td><%= link_to "Edit", edit_order_line_path(order_line) %></td>
+              </tr>
+        <% end %>
+    </table %>
+  <% end %>
+<% end %>
+<br /> <br />
+<%= link_to "Create New Order Line", new_order_line_path %>
+<br /> <br />
+<%= link_to "Main Menu", main_index_path %>
+
