@@ -12,8 +12,6 @@ class ShipLinesController < ApplicationController
     @products = Product.all
     @locations = Location.all
     if request.post?
-      params[:ship_line][:eta] = full_eta
-      params[:ship_line][:etd] = full_etd
       params[:ship_line].delete_if {|k,v| v.blank?}
       @ship_lines = ShipLine.where(params[:ship_line])
     end
@@ -86,30 +84,11 @@ class ShipLinesController < ApplicationController
     end
 
     def full_eta
-      eta = ""
-      if valid_date_params?("eta")
-        eta = Date.new(params[:ship_line]["eta(1i)"].to_i, params[:ship_line]["eta(2i)"].to_i, params[:ship_line]["eta(3i)"].to_i)
-      end
-      eta
+      eta = Date.new(params[:ship_line]["eta(1i)"].to_i, params[:ship_line]["eta(2i)"].to_i, params[:ship_line]["eta(3i)"].to_i)
     end
    
     def full_etd
-      etd = ""
-      if valid_date_params?("etd")
-        etd = Date.new(params[:ship_line]["eta(1i)"].to_i, params[:ship_line]["eta(2i)"].to_i, params[:ship_line]["eta(3i)"].to_i)
-      end
-      etd
-    end
-   
-    def valid_date_params?(date_component)
-      is_valid = true
-      params[:ship_line].each do |k,v|
-        if k.include?(date_component) and v.blank?
-          is_valid = false
-          break
-        end
-      end
-      is_valid
+      etd = Date.new(params[:ship_line]["eta(1i)"].to_i, params[:ship_line]["eta(2i)"].to_i, params[:ship_line]["eta(3i)"].to_i)
     end
 
 end

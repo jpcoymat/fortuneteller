@@ -7,8 +7,6 @@ class OrderLinesController < ApplicationController
     @products = Product.all
     @locations = Location.all
     if request.post?
-      params[:order_line][:eta] = full_eta
-      params[:order_line][:etd] = full_etd
       params[:order_line].delete_if {|k,v| v.blank?}
       @order_lines = OrderLine.where(params[:order_line])
     end	
@@ -85,30 +83,11 @@ class OrderLinesController < ApplicationController
     end  
 
     def full_eta
-      eta = "" 
-      if valid_date_params?("eta")
-        eta = Date.new(params[:order_line]["eta(1i)"].to_i, params[:order_line]["eta(2i)"].to_i, params[:order_line]["eta(3i)"].to_i)
-      end
-      eta
+      eta = Date.new(params[:order_line]["eta(1i)"].to_i, params[:order_line]["eta(2i)"].to_i, params[:order_line]["eta(3i)"].to_i)
     end
 
     def full_etd
-      etd = ""
-      if valid_date_params?("etd")
-        etd = Date.new(params[:order_line]["etd(1i)"].to_i, params[:order_line]["etd(2i)"].to_i, params[:order_line]["etd(3i)"].to_i)
-      end
-      etd
-    end
-
-    def valid_date_params?(date_component)
-      is_valid = true
-      params[:order_line].each do |k,v|
-        if k.include?(date_component) and v.blank?
-          is_valid = false
-          break
-        end
-      end 
-      is_valid	 
+      etd = Date.new(params[:order_line]["etd(1i)"].to_i, params[:order_line]["etd(2i)"].to_i, params[:order_line]["etd(3i)"].to_i)
     end
 
 end
