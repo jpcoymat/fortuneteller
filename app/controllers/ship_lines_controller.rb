@@ -34,7 +34,7 @@ class ShipLinesController < ApplicationController
     if @ship_line.valid?
       Resque.enqueue(SourceProcessingJob, @ship_line.to_json)
       flash[:notice] = "Ship Line updates have been queued for processing"
-      redirect_to ship_lines_path
+      redirect_to lookup_ship_lines_path
     else
       @user = User.find(session[:user_id])
       @location = @ship_line.location.organization.locations
@@ -51,7 +51,7 @@ class ShipLinesController < ApplicationController
     if @ship_line.valid?
       Resque.enqueue(SourceProcessingJob, @ship_line.to_json)
       flash[:notice] = "Ship Lines has been queued for processing"
-      redirect_to ship_lines_path
+      redirect_to lookup_ship_lines_path
     else
       @user = User.find(session[:user_id])
       @products = @user.organization.products

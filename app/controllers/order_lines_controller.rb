@@ -34,7 +34,7 @@ class OrderLinesController < ApplicationController
     if @order_line.valid?
       Resque.enqueue(SourceProcessingJob, @order_line.to_json)
       flash[:notice] = "Order Line has been created succesfully and queued for processing."
-      redirect_to order_lines_path
+      redirect_to lookup_order_lines_path
     else
       flash[:notice] = "Error creating Order Line"
       @user = User.find(session[:user_id])
@@ -51,7 +51,7 @@ class OrderLinesController < ApplicationController
    if @order_line.valid?
     Resque.enqueue(SourceProcessingJob, @order_line.to_json)
     flash[:notice] = "Order Line updates have been queued for processing."
-    redirect_to order_lines_path
+    redirect_to lookup_order_lines_path
    else
     @user = User.find(session[:user_id])
     @products = @user.organization.products
