@@ -2,11 +2,11 @@
 
 <%= form_for :ship_line, url: lookup_ship_lines_path, html: {class: "form-search"}   do |form| %>
         <%= form.hidden_field :organization_id, value: @user.organization_id %>
-        <%= form.label "Product Name", class: "form-inline"%>  <%= form.select :product_id, @products.collect {|prod| [prod.name,  prod.id]}, {include_blank: true}, class: "form-control" %>
-        <%= form.label "Origin Location", class: "form-inline" %><%= form.select :origin_location_id, @locations.collect {|loc| [loc.name, loc.id]}, {include_blank: true}, class: "form-control" %>
-        <%= form.label "Destination Location" , class: "form-inline" %><%= form.select :destination_location_id,  @locations.collect {|loc| [loc.name, loc.id]}, {include_blank: true}, class: "form-control" %>
-        <%= form.label "ETA", class: "form_inline" %><%= form.date_select :eta, {start_year: Date.today.year, include_blank: true}, class: "form-control" %>
-        <%= form.label "ETD", class: "form_inline" %><%= form.date_select :etd, {start_year: Date.today.year, include_blank: true}, class: "form-control" %>
+        <%= form.label "Product Name", class: "form-inline"%>  <%= form.select :product_id, @products.collect {|prod| [prod.name,  prod.id]}, {include_blank: true}, class: "form-inline" %>
+        <%= form.label "Origin Location", class: "form-inline" %><%= form.select :origin_location_id, @locations.collect {|loc| [loc.name, loc.id]}, {include_blank: true}, class: "form-inline" %>
+        <%= form.label "Destination Location" , class: "form-inline" %><%= form.select :destination_location_id,  @locations.collect {|loc| [loc.name, loc.id]}, {include_blank: true}, class: "form-inline" %>
+        <%= form.label "ETA", class: "form_inline" %><%= form.date_select :eta, {start_year: Date.today.year, include_blank: true}, class: "form-inline" %>
+        <%= form.label "ETD", class: "form_inline" %><%= form.date_select :etd, {start_year: Date.today.year, include_blank: true}, class: "form-inline" %>
         <%= submit_tag "Search", {class: "btn btn-primary"} %>
 <% end %>
 <br \>
