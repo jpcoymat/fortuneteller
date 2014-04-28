@@ -12,11 +12,13 @@
        <p>There are no Inventory Positon records for the product and location chosen.</p>	
     <% else %>
        <p>Projections for Product <%= @inventory_position.product.name %> and Location <%= @inventory_position.location.name %></p>
-       <%= line_chart(@data, library: {
+       <%= column_chart(@data, library: {
 					series: 
-						{1 => {targetAxisIndex: 1 },
+						{0 => {type: "line"},
+						1 => {targetAxisIndex: 1 },
 						2 => {targetAxisIndex: 1 }, 
 						3 => {targetAxisIndex: 1 },
+						4 => {type: "line"},
 						5 => {targetAxisIndex: 1 }
 						}, 
 					vAxes: [{0 => {textStyle:{color: 'red'}}},{1 => {textStyle:{color: 'blue'}}}]})    %>	
