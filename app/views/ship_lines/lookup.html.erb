@@ -2,6 +2,8 @@
 
 <%= form_for :ship_line, url: lookup_ship_lines_path, html: {class: "form-search"}   do |form| %>
         <%= form.hidden_field :organization_id, value: @user.organization_id %>
+        <%= form.label "Reference Number",  class: "form-inline"%>
+        <%= form.text_field :object_reference_number    %>
         <%= form.label "Product Name", class: "form-inline"%>  
 	<%= form.select :product_id, @products.collect {|prod| [prod.name,  prod.id]}, {include_blank: true}, class: "form-inline" %>
         <%= form.label "Origin Location", class: "form-inline" %>
