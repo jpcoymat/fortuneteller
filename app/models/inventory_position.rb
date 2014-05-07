@@ -48,29 +48,28 @@ class InventoryPosition
     end
   end   
  
+  def projection_aggregate(inventory_bucket)
+    inventory_bucket_total = 0
+    self.inventory_projections.each {|projection| inventory_bucket_total += projection.attributes[inventory_bucket]}
+    inventory_bucket_total
+  end
+
+
   def on_order_quantity
-    @on_order_quantity = 0
-    self.inventory_projections.each {|projection| @on_order_quantity += projection.on_order_quantity}
-    @on_order_quantity	
+    @on_order_quantity = projection_aggregate("on_order_quantity")
   end
 
 
   def forecasted_quantity
-    @forecasted_quantity = 0
-    self.inventory_projections.each {|projection| @forecasted_quantity += projection.forecasted_quantity}
-    @forecasted_quantity
+    @forecasted_quantity = projection_aggregate("forecasted_quantity")
   end
 
   def in_transit_quantity
-    @in_transit_quantity = 0
-    self.inventory_projections.each {|projection| @in_transit_quantity += projection.in_transit_quantity}
-    @in_transit_quantity
+    @in_transit_quantity = projection_aggregate("in_transit_quantity")
   end
 
   def allocated_quantity
-    @allocated_quantity = 0
-    self.inventory_projections.each {|projection| @allocated_quantity += projection.allocated_quantity}
-    @allocated_quantity
+    @allocated_quantity = projection_aggregate("allocated_quantity")
   end
 
   def available_quantity
