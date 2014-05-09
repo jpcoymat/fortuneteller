@@ -30,7 +30,7 @@
 	<h4>Detailed Inventory Projection Data</h4>
 	<table class="table table-striped">
           <tr><th>Date</th><th>On Hand Quantity</th> <th>On Order Quantity</th><th>In Transit</th> <th>Allocated Quantity</th> <th>Forecasted Quantity</th><th>Available Quantity</th></tr>
- 	 <% @inventory_position.inventory_projections.each do |inventory_projection| %>
+ 	 <% @projections.each do |inventory_projection| %>
             <tr>	<td><%= link_to(inventory_projection.projected_for.to_s, [@inventory_position,inventory_projection]) %></td>
  		<td><%= inventory_projection.on_hand_quantity.to_s %></td>
  		<td><%= inventory_projection.on_order_quantity.to_s %></td>
