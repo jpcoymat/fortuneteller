@@ -43,5 +43,8 @@ class Location
     @carrying_capacity
   end
 
+  def geomap_data
+    @geomap_Data = self.city + ", " + self.state_providence + ", " + self.country
+  end
 
 end
