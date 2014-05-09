@@ -10,6 +10,7 @@ class Location
   field :country, type: String
   field :postal_code, type: String
   field :is_active, type: Boolean
+  field :dma_region_code, type: Integer
 
   belongs_to :organization  
 

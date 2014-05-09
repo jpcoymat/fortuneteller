@@ -23,5 +23,5 @@
 			<li><%= link_to "Shipment Confirmations", shipment_confirmations_path %></li>
 		</ul>
 	<br \><br \>
-	<%= geo_chart(@map_data, library: {options: {region: "US"}}) %> 
+	<%= geo_chart(@map_data, options: @map_options) %> 
 	<%= link_to "Log Out", login_logout_path, method: :post %>
