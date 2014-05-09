@@ -4,6 +4,7 @@ class InventoryPositionsController < ApplicationController
   before_action :set_organization
    
   def lookup
+    @user = User.find(session[:user_id])
     @products = @organization.products
     @locations = @organization.locations
     if request.post?
@@ -16,7 +17,9 @@ class InventoryPositionsController < ApplicationController
 	allocated_data = []
 	forecasted_data = []
 	available_data = []
-        @inventory_position.inventory_projections.each do |ip|
+        search_range_start = begin_date || Date.today
+        search_range_end = end_date || search_range_start + @user.organization.days_to_project.days
+        @inventory_position.inventory_projections.where(:projected_for.gte => search_range_start, :projected_for.lte => search_range_end).each do |ip|
 	  on_hand_data << [ip.projected_for.to_formatted_s(:short), ip.on_hand_quantity]
           available_data << [ip.projected_for.to_formatted_s(:short), ip.available_quantity]
 	  on_order_data << [ip.projected_for.to_formatted_s(:short), ip.on_order_quantity]
@@ -48,5 +51,23 @@ class InventoryPositionsController < ApplicationController
     def search_params
       params.require(:inventory_position_search).permit(:location_id, :product_id) 
     end
+   
+    def begin_date
+      begin_date = nil
+      unless params[:inventory_position_search]["begin_date(1i)"].blank? or params[:inventory_position_search]["begin_date(2i)"].blank? or params[:inventory_position_search]["begin_date(3i)"].blank?
+        begin_date = Date.new(params[:inventory_position_search]["begin_date(1i)"].to_i, params[:inventory_position_search]["begin_date(2i)"].to_i, params[:inventory_position_search]["begin_date(3i)"].to_i)
+      end
+      begin_date
+    end
+
+    def end_date
+      end_date = nil
+      unless params[:inventory_position_search]["end_date(1i)"].blank? or params[:inventory_position_search]["end_date(2i)"].blank? or params[:inventory_position_search]["end_date(3i)"].blank?
+        end_date = Date.new(params[:inventory_position_search]["end_date(1i)"].to_i, params[:inventory_position_search]["end_date(2i)"].to_i, params[:inventory_position_search]["end_date(3i)"].to_i)
+      end
+      end_date
+    end
+
+
 
 end
