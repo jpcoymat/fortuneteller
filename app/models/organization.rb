@@ -11,7 +11,8 @@ class Organization
   has_many :products
   has_many :locations
   has_many :movement_sources
- 
+  has_many :location_groups
+  
 
   def product_location_assignments
     @product_location_assignments = []

@@ -1,0 +1,12 @@
+  <% if @location_group.errors.any? %>
+                <div id="error_explanation">
+                <h2>This Location Group contains <%= pluralize(@location_group.errors.count, "error") %>  :</h2>
+
+                <ul>
+                        <% @location_group.errors.each do |key,value| %>
+                                <li><%= key.to_s.capitalize + " " + value %></li>
+                        <% end %>
+                </ul>
+                </div>
+        <% end %>
+

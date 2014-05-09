@@ -11,18 +11,23 @@ class LocationsController < ApplicationController
   end
  
   def edit
+    @user = User.find(session[:user_id])
+    @location_groups = @user.organization.location_groups
   end
 
   def update
     if @location.update_attributes(location_params)
       redirect_to location_path(@location)
     else
+      @user = User.find(session[:user_id])
+      @location_groups = @user.organization.location_groups
       render action: "edit"
     end
   end
 
   def new
     @user = User.find(session[:user_id])
+    @location_groups = @user.organization.location_groups
     @location = Location.new
   end
 
@@ -32,6 +37,7 @@ class LocationsController < ApplicationController
       redirect_to location_path(@location)
     else
       @user = User.find(session[:user_id])
+      @location_groups = @user.organization.location_groups
       render action: "new"
     end
   end
