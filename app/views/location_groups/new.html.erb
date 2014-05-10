@@ -1,0 +1,12 @@
+<h1>Create New Location Group</h1>
+
+        <%= render partial: "location_group_errors"  %>
+
+        <%= form_for @location_group, html: {class: "form-horizontal"} do |form|       %>
+                <%= form.hidden_field :organization_id, value: @user.organization_id    %>
+                <%= render partial: "location_group", locals: {form: form}                     %>
+                <%= submit_tag "Create Location Group", {class: "btn btn-primary"} %>
+        <% end %>
+        <br /><br />
+        <%= link_to "Location Groups", location_groups_path %>
+
