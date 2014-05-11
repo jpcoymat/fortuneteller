@@ -5,11 +5,14 @@ class MainController < ApplicationController
   def index
     @user = User.find(session[:user_id])
     @locations = @user.organization.locations
-    @map_data = [["City","On Hand Quantity"]]
+    @data_array_string = ""
+    @quantities = []
     @locations.each do |location|
-       @map_data << [location.latitude, location.longitude, location.aggregate_quantity("on_hand_quantity"), location.city]
+        qty = location.aggregate_quantity("on_hand_quantity")
+        @quantities << qty
+        @data_array_string += ",[" + location.latitude.to_s + ", " + location.longitude.to_s + ", "  + qty.to_s + "]"
     end
-    @map_options = {"region" => "us_metro", "dataMode" => "markers"}
+    @max_quantity = @quantities.max
   end
 
 
