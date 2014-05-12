@@ -10,6 +10,10 @@
         <dt>State/Prov      </dt>   <dd><%= @location.state_providence       %></dd>
 	<dt>Postal Code	</dt>	<dd><%= @location.postal_code		 %></dd>
         <dt>Country         </dt>   <dd><%= @location.country                %></dd>
+        <dt>Latitude         </dt>   <dd><%= @location.latitude.to_s		%></dd>
+        <dt>Longitude        </dt>   <dd><%= @location.longitude.to_s		%></dd>
+
+
 </dl>
 <%= link_to "Edit Location", edit_location_path(@location) %>
 <br /><br /> 
