@@ -31,7 +31,7 @@ class Location
   def aggregate_quantity(inventory_bucket)
     total_quantity = 0
     self.inventory_positions.each do |position|
-      if inventory_bucket = "on_hand_quantity"  
+      if inventory_bucket == "on_hand_quantity"  
         total_quantity += position.on_hand_quantity 
       else
         total_quantity += position.projection_aggregate(inventory_bucket)
