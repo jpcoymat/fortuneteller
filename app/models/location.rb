@@ -10,9 +10,11 @@ class Location
   field :country, type: String
   field :postal_code, type: String
   field :is_active, type: Boolean
-  field :dma_region_code, type: Integer
   field :latitude,  type: Float
   field :longitude,  type: Float
+  field :shipping_capacity, type: Float
+  field :receiving_capacity, type: Float
+  field :warehousing_capacity, type: Float
 
   belongs_to :organization  
   belongs_to :location_group

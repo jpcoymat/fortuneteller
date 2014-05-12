@@ -1,18 +1,20 @@
 <h1>Location Details </h1>
 
 <dl class="dl-horizontal">
-        <dt>Location Name   </dt>   <dd><%= @location.name                   %></dd>
-        <dt>Location Code   </dt>   <dd><%= @location.code                   %></dd>
-	<dt>Location Group  </dt>   <dd><%= @location.location_group ? @location.location_group.name : nil %></dd>
-        <dt>Address         </dt>   <dd><%= @location.address_1              %></dd>
-        <dt>Adddres 2       </dt>   <dd><%= @location.address_2              %></dd>
-        <dt>City            </dt>   <dd><%= @location.city                   %></dd>
-        <dt>State/Prov      </dt>   <dd><%= @location.state_providence       %></dd>
-	<dt>Postal Code	</dt>	<dd><%= @location.postal_code		 %></dd>
-        <dt>Country         </dt>   <dd><%= @location.country                %></dd>
-        <dt>Latitude         </dt>   <dd><%= @location.latitude.to_s		%></dd>
-        <dt>Longitude        </dt>   <dd><%= @location.longitude.to_s		%></dd>
-
+        <dt>Location Name   		</dt>   <dd><%= @location.name                   				%></dd>
+        <dt>Location Code   		</dt>   <dd><%= @location.code                   				%></dd>
+	<dt>Location Group  		</dt>   <dd><%= @location.location_group ? @location.location_group.name : nil	%></dd>
+        <dt>Address        	 	</dt>   <dd><%= @location.address_1              				%></dd>
+        <dt>Adddres 2	 	      	</dt>   <dd><%= @location.address_2              				%></dd>
+        <dt>City            		</dt>   <dd><%= @location.city                   				%></dd>
+        <dt>State/Prov  	    	</dt>   <dd><%= @location.state_providence       				%></dd>
+	<dt>Postal Code			</dt>	<dd><%= @location.postal_code		 				%></dd>
+        <dt>Country         		</dt>   <dd><%= @location.country                				%></dd>
+        <dt>Latitude         		</dt>   <dd><%= @location.latitude.to_s						%></dd>
+        <dt>Longitude        		</dt>   <dd><%= @location.longitude.to_s					%></dd>
+	<dt>Shipping Capacity		</dt>	<dd><%= @location.shipping_capacity					%></dd>
+	<dt>Receiving Capacity		</dt>	<dd><%= @location.receiving_capacity					%></dd>
+	<dt>Warehousing Capacity	</dt>	<dd><%= @location.warehousing_capacity					%></dd>
 
 </dl>
 <%= link_to "Edit Location", edit_location_path(@location) %>
