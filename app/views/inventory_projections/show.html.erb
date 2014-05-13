@@ -4,12 +4,12 @@
   <h4> Location: <%= @inventory_position.location.name %></h4>
   <h4> Projection Date: <%= @inventory_projection.projected_for.to_s %></h4> 
   <dl class="dl-horizontal">
-	<dt>On Hand Quantity 	</dt> 	<dd><%= @inventory_projection.on_hand_quantity.to_s 	%></dd>
-	<dt>On Order Quantity	</dt> 	<dd><%= @inventory_projection.on_order_quantity.to_s	%></dd>
-	<dt>In Transit Quantity 	</dt>	<dd><%= @inventory_projection.in_transit_quantity.to_s	%></dd>
-	<dt>Allocated Quantity	</dt>	<dd><%= @inventory_projection.allocated_quantity.to_s	%></dd>
-	<dt>Forecasted Quantity	</dt>	<dd><%= @inventory_projection.forecasted_quantity.to_s	%></dd>
-	<dt>Available Quantity	</dt>	<dd><%= @inventory_projection.available_quantity.to_s	%></dd>
+	<dt>On Hand  		</dt> 	<dd><%= @inventory_projection.on_hand_quantity.to_s 	%></dd>
+	<dt>On Order 		</dt> 	<dd><%= @inventory_projection.on_order_quantity.to_s	%></dd>
+	<dt>In Transit  	</dt>	<dd><%= @inventory_projection.in_transit_quantity.to_s	%></dd>
+	<dt>Allocated		</dt>	<dd><%= @inventory_projection.allocated_quantity.to_s	%></dd>
+	<dt>Planned Consumption </dt>	<dd><%= @inventory_projection.forecasted_quantity.to_s	%></dd>
+	<dt>Available 		</dt>	<dd><%= @inventory_projection.available_quantity.to_s	%></dd>
   </dl>	
 <br \><br \>
   <h4>On Order Sources </h4>
@@ -33,9 +33,9 @@
                 <%= render partial: "movement_sources", locals: {movement_sources: @inventory_projection.allocation_sources} %>
         <% end %>
 <br \><br \>
-  <h4>Forecast Sources </h4>
+  <h4>Planned Consumption Sources </h4>
         <% if @inventory_projection.forecast_sources.empty? %>
-                <p>No Forecast Sources for this product/location/date</p>
+                <p>No Planned Consumption Sources for this product/location/date</p>
         <% else %>
                 <%= render partial: "movement_sources", locals: {movement_sources: @inventory_projection.forecast_sources} %>
         <% end %>

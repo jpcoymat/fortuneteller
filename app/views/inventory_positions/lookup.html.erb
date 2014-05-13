@@ -32,7 +32,7 @@
 	 <br \> <br \><br \>
 	<h4>Detailed Inventory Projection Data</h4>
 	<table class="table table-striped">
-          <tr><th>Date</th><th>On Hand Quantity</th> <th>On Order Quantity</th><th>In Transit</th> <th>Allocated Quantity</th> <th>Forecasted Quantity</th><th>Available Quantity</th></tr>
+          <tr><th>Date</th><th>On Hand </th> <th>On Order </th><th>In Transit</th> <th>Allocated </th> <th>Planned Consumption</th><th>Available</th></tr>
  	 <% @projections.each do |inventory_projection| %>
             <tr>	<td><%= link_to(inventory_projection.projected_for.to_s, [@inventory_position,inventory_projection]) %></td>
  		<td><%= inventory_projection.on_hand_quantity.to_s %></td>
