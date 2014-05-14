@@ -134,14 +134,21 @@ class GroupingViewsController < ApplicationController
             while current_date <= proj_stop_date
 	      logger.info "Finding projections for date " + current_date.to_s 
               bucket_quantity = 0
+	      logger.info "Point 1"
               @inventory_positions.each do |position|
+                logger.info "Point 2"
                 projection = position.inventory_projections.where(projected_for: current_date).first
+                logger.info "Point 3"
                 bucket_quantity += projection.attributes[bucket_search_params["inventory_bucket"]] if projection
               end
+              logger.info "Point 4"
               location_data << [current_date.to_formatted_s(:short), bucket_quantity]
+              logger.info "Point 5"
               current_date += 1.day
             end  
+            logger.info "Point 6"
             @series_hash[@data.count] = {type: "line",  pointSize: 0}
+            logger.info "Point 7"
             @data << {name: location.name, data: location_data}
           end
         end
