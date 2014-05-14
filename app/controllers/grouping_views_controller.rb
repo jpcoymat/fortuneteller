@@ -124,10 +124,10 @@ class GroupingViewsController < ApplicationController
         location_data =[]
         @inventory_positions = inventory_positions_for_bucket_view(location)
         if @inventory_positions.count > 0
-          logger.debug "Debug - Position Count: " + @inventory_positions.all.count.to_s
+          logger.info "Debug - Position Count: " + @inventory_positions.all.count.to_s
           current_date = bucket_begin_date
           stop_date = bucket_end_date(@inventory_positions)
-          logger.debug "Debug - Beging Date: " + current_date.to_s + " - End Date: " + stop_date.to_s
+          logger.info "Debug - Beging Date: " + current_date.to_s + " - End Date: " + stop_date.to_s
           while current_date <= stop_date
             bucket_quantity = 0
             @inventory_positions.each do |position|
@@ -141,7 +141,7 @@ class GroupingViewsController < ApplicationController
           @data << {name: location.name, data: location_data}
         end
       end
-      logger.debug "Debug - Data: " + @data.to_s
+      logger.info "Debug - Data: " + @data.to_s
     end
   end
 
@@ -171,12 +171,12 @@ class GroupingViewsController < ApplicationController
     def inventory_positions_for_location_centric
       products = Product.where(organization: @user.organization)
       @inventory_positions_for_location_centric = InventoryPosition.where(location_id: location_search_params["location_id"])
-      logger.debug "Debug: " + location_search_params.to_s
+      logger.info "Debug: " + location_search_params.to_s
       products = products.where(product_category: location_search_params["product_category"]) unless location_search_params["product_category"].blank?
       products = products.where(id: location_search_params["product_id"]) unless location_search_params["product_id"].blank?
       array_of_product_ids = []
       products.each {|product| array_of_product_ids << product.id}
-      logger.debug "Debug " + array_of_product_ids.to_s
+      logger.info "Debug " + array_of_product_ids.to_s
       @inventory_positions_for_location_centric = @inventory_positions_for_location_centric.in(product_id: array_of_product_ids) if array_of_product_ids.count > 0
       @inventory_positions_for_location_centric
     end
@@ -188,7 +188,7 @@ class GroupingViewsController < ApplicationController
       if product_search_params["product_id"].blank? and product_search_params["product_category"].blank?
         return @inventory_positions_for_product_centric
       else
-	logger.debug "Debug: " + product_search_params.to_s
+	logger.info "Debug: " + product_search_params.to_s
 	prods = Product.where(organization: @user.organization)
         prods = prods.where(product_category: product_search_params["product_category"]) unless product_search_params["product_category"].blank?
 	prods = prods.where(id: product_search_params["product_id"]) unless product_search_params["product_id"].blank?
