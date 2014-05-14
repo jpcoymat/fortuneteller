@@ -46,6 +46,13 @@ Fortuneteller::Application.routes.draw do
     end
   end
 
+  controller :grouping_views do
+    get 'product_centric', action: "product_centric" 
+    post 'product_centric', action: "product_centric"
+    get 'location_centric', action: "location_centric"
+    post 'location_centric', action: "location_centric"
+   end
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
