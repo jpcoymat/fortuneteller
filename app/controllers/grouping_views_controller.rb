@@ -118,7 +118,8 @@ class GroupingViewsController < ApplicationController
     @products = @user.organization.products
     if request.post?
       @locations = Location.where(location_group_id: bucket_search_params["location_group_id"])
-      unless @locations.empty?
+      @product_params_missing = (bucket_search_params["product_id"].blank? and bucket_search_params["product_category"].blank?)
+      unless @locations.empty? or @product_params_missing
         proj_start_date = bucket_begin_date
         logger.info "Start Date: " + proj_start_date.to_s
         proj_stop_date = bucket_end_date([InventoryPosition.where(location: @locations.first).first])

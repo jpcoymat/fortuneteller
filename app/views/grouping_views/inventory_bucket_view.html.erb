@@ -1,5 +1,5 @@
 <h1>Bucket Inventory View</h1>
- <p>Please select the location group and inventory bucket you wish to view (product and data criteria are optional).</p>
+ <p>Please select the location group, product information, and inventory bucket you wish to view (data criteria are optional).</p>
   <%= form_for :bucket_search, url: inventory_bucket_view_path, html: {class: "form-inline"}  do |form| %>
         <p>
 	<%= form.label "Inventory Bucket" %> <%= form.select :inventory_bucket, [["On Hand", "on_hand_quantity"],
@@ -24,6 +24,8 @@
   <% if request.post? %>
     <% if @locations.count == 0 %>
        <p>No locations found associated to Location Group.</p>
+    <% elsif @product_params_missing %>
+      <p> Some product data must be specified.</p>
     <% else %>
        <%=  column_chart(@data, library: {
                                         curveType: 'function',
