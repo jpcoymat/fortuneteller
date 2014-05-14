@@ -119,14 +119,15 @@ class GroupingViewsController < ApplicationController
     if request.post?
       @locations = Location.where(location_group_id: bucket_search_params["location_group_id"])
       unless @locations.empty?
+        proj_start_date = bucket_begin_date
+        logger.info "Start Date: " + proj_start_date.to_s
+        proj_stop_date = bucket_end_date([InventoryPosition.where(location: @locations.first).first])
+        logger.info "End Date: " + proj_stop_date.to_s
         @data = []
         @series_hash = {}
         @locations.each do |location|
+          logger.info "Now adding trend line for location " + location.name 
           location_data =[]
-          proj_start_date = bucket_begin_date
-          proj_stop_date = bucket_end_date([InventoryPosition.where(location: location).first]) 
-          logger.info "Start Date: " + proj_start_date.to_s
-          logger.info "End Date: " + proj_stop_date.to_s
           @inventory_positions = inventory_positions_for_bucket_view(location)
           if @inventory_positions.count > 0
             logger.info "Debug - Position Count For location " + location.name + ": " + @inventory_positions.all.count.to_s
