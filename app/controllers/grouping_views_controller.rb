@@ -118,30 +118,35 @@ class GroupingViewsController < ApplicationController
     @products = @user.organization.products
     if request.post?
       @locations = Location.where(location_group_id: bucket_search_params["location_group_id"])
-      @data = []
-      @series_hash = {}
-      @locations.each do |location|
-        location_data =[]
-        @inventory_positions = inventory_positions_for_bucket_view(location)
-        if @inventory_positions.count > 0
-          logger.info "Debug - Position Count: " + @inventory_positions.all.count.to_s
-          current_date = bucket_begin_date
-          stop_date = bucket_end_date(@inventory_positions)
-          logger.info "Debug - Beging Date: " + current_date.to_s + " - End Date: " + stop_date.to_s
-          while current_date <= stop_date
-            bucket_quantity = 0
-            @inventory_positions.each do |position|
-              projection = position.inventory_projections.where(projected_for: current_date).first
-              bucket_quantity += projection.attributes[bucket_search_params["inventory_bucket"]] if projection
-            end
-            location_data << [current_date.to_formatted_s(:short), bucket_quantity]
-            current_date += 1.day
-          end  
-          @series_hash[@data.count] = {type: "line",  pointSize: 0}
-          @data << {name: location.name, data: location_data}
+      unless @locations.empty?
+        @data = []
+        @series_hash = {}
+        @locations.each do |location|
+          location_data =[]
+          proj_start_date = bucket_begin_date
+          proj_stop_date = bucket_end_date([InventoryPosition.where(location: location).first]) 
+          logger.info "Start Date: " + proj_start_date.to_s
+          logger.info "End Date: " + proj_stop_date.to_s
+          @inventory_positions = inventory_positions_for_bucket_view(location)
+          if @inventory_positions.count > 0
+            logger.info "Debug - Position Count For location " + location.name + ": " + @inventory_positions.all.count.to_s
+            current_date = proj_start_date  
+            while current_date <= proj_stop_date
+	      logger.info "Finding projections for date " + current_date.to_s 
+              bucket_quantity = 0
+              @inventory_positions.each do |position|
+                projection = position.inventory_projections.where(projected_for: current_date).first
+                bucket_quantity += projection.attributes[bucket_search_params["inventory_bucket"]] if projection
+              end
+              location_data << [current_date.to_formatted_s(:short), bucket_quantity]
+              current_date += 1.day
+            end  
+            @series_hash[@data.count] = {type: "line",  pointSize: 0}
+            @data << {name: location.name, data: location_data}
+          end
         end
+        logger.info "Debug - Data: " + @data.to_s
       end
-      logger.info "Debug - Data: " + @data.to_s
     end
   end
 
@@ -265,8 +270,8 @@ class GroupingViewsController < ApplicationController
       prods = Product.where(organization: @user.organization)
       prods = prods.where(id: bucket_search_params["product_id"]) unless bucket_search_params["product_id"].blank?
       prods = prods.where(product_category: bucket_search_params["product_category"]) unless bucket_search_params["product_category"].blank?
-      @inventory_positions = InventoryPosition.in(product_id: prods.all.map {|prod| prod.id}).where(location: location)
-      @inventory_positions
+      @inventory_positions_for_bucket_view = InventoryPosition.in(product_id: prods.all.map {|prod| prod.id}).where(location: location)
+      @inventory_positions_for_bucket_view
     end
 
 
