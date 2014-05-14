@@ -9,7 +9,7 @@ class GroupingViewsController < ApplicationController
     @location_groups = @user.organization.location_groups
     if request.post? 	
       @inventory_positions = inventory_positions_for_product_centric
-      if @inventory_positions.count > 0
+      if @inventory_positions.class != String and @inventory_positions.count > 0
         current_search_date = product_begin_date
         end_search_date = product_end_date(@inventory_positions)
         @data = []
