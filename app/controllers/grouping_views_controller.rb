@@ -113,6 +113,39 @@ class GroupingViewsController < ApplicationController
     end
   end
 
+  def inventory_bucket_view
+    @location_groups = LocationGroup.where(organization: @user.organization)
+    @products = @user.organization.products
+    if request.post?
+      @locations = Location.where(location_group_id: bucket_search_params["location_group_id"])
+      @data = []
+      @series_hash = {}
+      @locations.each do |location|
+        location_data =[]
+        @inventory_positions = inventory_positions_for_bucket_view(location)
+        if @inventory_positions.count > 0
+          logger.debug "Debug - Position Count: " + @inventory_positions.all.count.to_s
+          current_date = bucket_begin_date
+          stop_date = bucket_end_date(@inventory_positions)
+          logger.debug "Debug - Beging Date: " + current_date.to_s + " - End Date: " + stop_date.to_s
+          while current_date <= stop_date
+            bucket_quantity = 0
+            @inventory_positions.each do |position|
+              projection = position.inventory_projections.where(projected_for: current_date).first
+              bucket_quantity += projection.attributes[bucket_search_params["inventory_bucket"]] if projection
+            end
+            location_data << [current_date.to_formatted_s(:short), bucket_quantity]
+            current_date += 1.day
+          end  
+          @series_hash[@data.count] = {type: "line",  pointSize: 0}
+          @data << {name: location.name, data: location_data}
+        end
+      end
+      logger.debug "Debug - Data: " + @data.to_s
+    end
+  end
+
+
   protected
     
     def set_user
@@ -126,6 +159,14 @@ class GroupingViewsController < ApplicationController
     def product_search_params
       params.require(:product_search).permit(:product_id, :product_category, :location_id, :location_group_id)
     end
+
+    def bucket_search_params
+      params.require(:bucket_search).permit(:product_id, :product_category, :inventory_bucket, :location_group_id)
+    end
+
+    def aggregate_daily_inventory_bucket(location, projection_date, inventory_bucket)
+    end
+
 
     def inventory_positions_for_location_centric
       products = Product.where(organization: @user.organization)
@@ -200,10 +241,37 @@ class GroupingViewsController < ApplicationController
       end_date
     end
 
+    def bucket_begin_date
+      today = Date.today
+      submitted_date = Date.today - 1.day
+      unless params[:bucket_search]["begin_date(1i)"].blank? or params[:bucket_search]["begin_date(2i)"].blank? or params[:bucket_search]["begin_date(3i)"].blank?
+        submitted_date = Date.new(params[:bucket_search]["begin_date(1i)"].to_i, params[:bucket_search]["begin_date(2i)"].to_i, params[:bucket_search]["begin_date(3i)"].to_i)
+      end
+      begin_date = [today, submitted_date].max
+      begin_date
+    end
+
+    def bucket_end_date(inventory_positions)
+      end_date = nil
+      unless params[:bucket_search]["end_date(1i)"].blank? or params[:bucket_search]["end_date(2i)"].blank? or params[:bucket_search]["end_date(3i)"].blank?
+        end_date = Date.new(params[:bucket_search]["end_date(1i)"].to_i, params[:bucket_search]["end_date(2i)"].to_i, params[:bucket_search]["end_date(3i)"].to_i)
+      else
+        end_date = last_projection_date(inventory_positions)
+      end
+      end_date
+    end
+
+    def inventory_positions_for_bucket_view(location)
+      prods = Product.where(organization: @user.organization)
+      prods = prods.where(id: bucket_search_params["product_id"]) unless bucket_search_params["product_id"].blank?
+      prods = prods.where(product_category: bucket_search_params["product_category"]) unless bucket_search_params["product_category"].blank?
+      @inventory_positions = InventoryPosition.in(product_id: prods.all.map {|prod| prod.id}).where(location: location)
+      @inventory_positions
+    end
+
+
     def last_projection_date(inventory_positions)
-      @last_dates = []
-      inventory_positions.each {|position| @last_dates << position.inventory_projections.last.projected_for}
-      @last_projection_date = @last_dates.max
+      @last_projection_date = inventory_positions.first.inventory_projections.last.projected_for
     end
 
 

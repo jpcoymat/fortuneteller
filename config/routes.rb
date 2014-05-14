@@ -51,7 +51,9 @@ Fortuneteller::Application.routes.draw do
     post 'product_centric', action: "product_centric"
     get 'location_centric', action: "location_centric"
     post 'location_centric', action: "location_centric"
-   end
+    get 'inventory_bucket_view', action: "inventory_bucket_view"
+    post 'inventory_bucket_view', action: "inventory_bucket_view"
+  end
 
 
   # The priority is based upon order of creation: first created -> highest priority.

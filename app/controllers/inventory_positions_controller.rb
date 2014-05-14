@@ -42,6 +42,7 @@ class InventoryPositionsController < ApplicationController
 	@data << {name: "Available", data: available_data}
         @data << {name: "Max", data: max_quantity}
       end
+      logger.debug "Data: " + @data.to_s	
     end
   end
 

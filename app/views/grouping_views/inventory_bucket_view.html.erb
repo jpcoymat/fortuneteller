@@ -1,0 +1,40 @@
+<h1>Bucket Inventory View</h1>
+ <p>Please select the location group and inventory bucket you wish to view (product and data criteria are optional).</p>
+  <%= form_for :bucket_search, url: inventory_bucket_view_path, html: {class: "form-inline"}  do |form| %>
+        <p>
+	<%= form.label "Inventory Bucket" %> <%= form.select :inventory_bucket, [["On Hand", "on_hand_quantity"],
+										["On Order", "on_order_quantity"],
+										["In Transit", "in_transit_quantity"],
+										["Allocated", "allocated_quantity"],
+										["Planned Consumption", "forecasted_quantity"]] %>	
+        <%= form.label "Location Group" %> <%= form.select :location_group_id, @location_groups.collect {|loc_group| [loc_group.name, loc_group.id]} %>
+        </p>
+        <p>
+        <%= form.label "Product" %> <%= form.select :product_id, @products.collect {|product| [product.name, product.id]}, {include_blank: true} %>
+        <%= form.label "Product Category" %> <%= form.text_field :product_category      %>
+        </p>
+        <p>
+        <%= form.label "Begin Projection Date" %><%= form.date_select :begin_date, {start_year: Date.today.year, include_blank: true}, class: "form-inline" %>
+        <%= form.label "End Projection Date" %><%= form.date_select :end_date, {start_year: Date.today.year, include_blank: true}, class: "form-inline" %>
+        </p>
+        <%= submit_tag "Lookup Projections", class: "btn btn-primary" %>
+  <% end %>
+  <br \><br \>
+  <hr>
+  <% if request.post? %>
+    <% if @inventory_positions.count == 0 %>
+       <p>There are no Inventory Positon records for the product and location chosen.</p>
+    <% else %>
+       <%=  column_chart(@data, library: {
+                                        curveType: 'function',
+                                        title: "Inventory Projections",
+                                        legend:
+                                                {position: "bottom"},
+                                        series: @series_hash})    %>
+         <br \> <br \><br \>
+    <% end %>
+  <% end %>
+  <br \> <br \><br \>
+  <%= link_to "Main Menu", main_index_path %>
+  <br \> <br \><br \>
+  
