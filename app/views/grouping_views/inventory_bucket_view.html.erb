@@ -22,8 +22,8 @@
   <br \><br \>
   <hr>
   <% if request.post? %>
-    <% if @inventory_positions.count == 0 %>
-       <p>There are no Inventory Positon records for the product and location chosen.</p>
+    <% if @locations.count == 0 %>
+       <p>No locations found associated to Location Group.</p>
     <% else %>
        <%=  column_chart(@data, library: {
                                         curveType: 'function',
