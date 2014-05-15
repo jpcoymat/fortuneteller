@@ -39,6 +39,7 @@ Fortuneteller::Application.routes.draw do
       post 'lookup'
     end  
   end
+  resources :inventory_exceptions
   resources :products do
     collection do
       get 'lookup'

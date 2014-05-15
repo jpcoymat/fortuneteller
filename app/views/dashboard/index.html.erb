@@ -13,7 +13,7 @@ function drawMarkersMap() {
   data.addColumn('number', 'Latitude');
   data.addColumn('number', 'Longitude');
   data.addColumn('string', 'Loc Name');
-  data.addColumn('number', 'P1 Exceptions:');
+  data.addColumn('number', 'P1 Exceptions');
   data.addColumn('number', 'P2 Exceptions');
     
   <% @data_array.each do |loc_hash| %>
@@ -21,7 +21,9 @@ function drawMarkersMap() {
   <% end %>
  
   var options = {
-    displayMode: 'markers'
+    displayMode: 'markers',
+    magnifyingGlass: {enable: true, zoomFactor: 5.0},
+    colorAxis: {colors: ['blue', 'red']}
   };
   
  
@@ -32,5 +34,16 @@ function drawMarkersMap() {
    
  <div id="chart_div" style="width: 900px; height: 500px;"></div>
 
+<h3>Inventory Exception Breakdown</h3>
+  <table class="table table-striped">
+    <tr><th>Location</th><th>Priority 1 Exception Count </th> <th>Priority 2 Exception Count </th><th>Priority 3 Exception Count</th></tr>
+    <% @locations.each do |location| %>
+      <tr><td><%= link_to location.name, inventory_exceptions_path, location_id: location_id %></td>
+	  <td><%= location.inventory_exceptions.where(priority: 1).all.count %></td>
+          <td><%= location.inventory_exceptions.where(priority: 2).all.count %></td>
+          <td><%= location.inventory_exceptions.where(priority: 3).all.count %></td>
+      </tr>
+    <% end %>
+  </table> 
 
-<%= @data_array.to_s %>
+<%= link_to "Main Menu", main_index_path %> 
