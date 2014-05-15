@@ -17,7 +17,7 @@ function drawMarkersMap() {
   data.addColumn('number', 'P2 Exceptions');
     
   <% @data_array.each do |loc_hash| %>
-    data.addRow([ <%= loc_hash["lat"] %>, <%= loc_hash["long"] %>, '<%= j(loc_hash["name"]) %>', <%= loc_hash["p1"] %>, <%= loc_hash["p2"] %>])  
+    data.addRow([ <%= loc_hash["lat"] %>, <%= loc_hash["long"] %>, '<%= j(loc_hash["name"]) %>', <%= loc_hash["p1"] %>, <%= loc_hash["p2"] %>]);  
   <% end %>
  
   var options = {
