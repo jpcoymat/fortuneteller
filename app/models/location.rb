@@ -23,7 +23,7 @@ class Location
   validates_uniqueness_of :code, scope: :organization_id
   has_many :inventory_positions
   has_many :product_location_assignments
-
+  has_many :inventory_exceptions
   after_initialize :activate
 
   def activate
@@ -46,10 +46,6 @@ class Location
     @carrying_capacity = 0
     self.product_location_assignments {|pla| @carrying_capacity += pla.maximum_quantity}
     @carrying_capacity
-  end
-
-  def geomap_data
-    @geomap_Data = self.city + ", " + self.state_providence + ", " + self.country
   end
 
 end

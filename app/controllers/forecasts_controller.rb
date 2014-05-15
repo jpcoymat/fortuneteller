@@ -18,20 +18,9 @@ class ForecastsController < ApplicationController
   end
 
   def update
-    if @forecast.update_attributes(forecast_params)
-    else
-      render action: "edit"  
-    end
   end
 
   def create
-    @forecast = Forecast.new(params[:forecast])
-    if @forecast.overlaps_with_existing_orders?
-      @forecast.quantity = @forecast.original_quantity - @forecast.overlap_quantity
-    end
-    if @forecast.save
-      @inventory_position.add_movement_source(@forecast)
-    end
   end
 
   def destroy

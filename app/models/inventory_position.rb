@@ -8,30 +8,8 @@ class InventoryPosition
   belongs_to :product
   belongs_to :location
 
-  def add_movement_source(movement_source)
-    if movement_source_within_projection?(movement_source)
-      case movement_source.class.name 
-        when "Forecast"
-          add_forecast(movement_source)
-        when "OrderLine"
-          add_order_line(movement_source)
-        when "ShipLine"
-          add_ship_line(movement_source)
-      end
-    end 
-  end
-
-  def movement_source_within_projection?(movement_source)
-    @movement_source.projected_for <= latest_projection_date
-  end
-
   def latest_projection_date
     self.inventory_projections.last.projected_for
-  end
-
-  def add_forecast(forecast)
-    self.on_order_qty += forecast.quantity
-    
   end
 
   def create_projections
@@ -52,6 +30,10 @@ class InventoryPosition
     inventory_bucket_total = 0
     self.inventory_projections.each {|projection| inventory_bucket_total += projection.attributes[inventory_bucket]}
     inventory_bucket_total
+  end
+
+  def product_location_assignment
+    @product_location_assignment = ProductLocationAssignment.where(product: self.product, location: self.location).first
   end
 
 
@@ -99,6 +81,25 @@ class InventoryPosition
       inventory_projection.set_all_fields
       self.save
     end
+  end
+
+  def unfulfilled_demand_projections
+    self.inventory_projections.where(:on_hand_quantity.lt => 0).all
+  end
+  
+  def max_exceeded_projections
+    self.inventory_projections.where(:on_hand_quantity.gt => product_location_assignment.maximum_quantity).all 
+  end
+
+  def below_min_projections
+   self.inventory_projections.where(:on_hand_quantity.lt => product_location_assignment.minimum_quantity).all
+  end
+  
+
+  def inventory_exceptions
+    InventoryException.create_from_projections(unfulfilled_demand_projections, "Unfulfilled Demand")
+    InventoryException.create_from_projections(max_exceeded_projections, "Max Exceeded")
+    InventoryException.create_from_projections(below_min_projections, "Below Min") 
   end
 
 
