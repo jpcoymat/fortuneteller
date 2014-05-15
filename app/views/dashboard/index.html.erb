@@ -12,7 +12,7 @@
   dataTable.addColumn('number', 'Longitude');
   dataTable.addColumn('number', 'Exception Count');
   dataTable.addColumn({type: 'string', role: 'tooltip'});
-  dataTable.addRows([<%= @data_array_string.html_safe %> ]);
+  dataTable.addRows(<%= @data_array.to_s.html_safe %>);
 
   var options = {
     sizeAxis: { minValue: 0, maxValue: <%= @max_quantity %> },
