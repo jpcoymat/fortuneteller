@@ -7,7 +7,7 @@ class DashboardController < ApplicationController
     @locations = @user.organization.locations
     @data_array = [] 
     @locations.each do |location|
-        @data_array << [location.latitude, location.longitude, location.inventory_exceptions.count, "'" + location.name + "'"]
+        @data_array << [location.latitude, location.longitude, location.inventory_exceptions.count, location.name]
     end
   end
 
