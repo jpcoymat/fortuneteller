@@ -30,6 +30,13 @@ class Location
     self.is_active = true
   end
 
+  def grouped_exception_counts
+    @grouped_exception = {}
+    InventoryException.priorities.each {|k,v| @grouped_exception[v] = self.inventory_exceptions.where(priority: v).count}
+    @grouped_exception
+  end
+
+
   def aggregate_quantity(inventory_bucket)
     total_quantity = 0
     self.inventory_positions.each do |position|

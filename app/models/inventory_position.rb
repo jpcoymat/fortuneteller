@@ -96,10 +96,10 @@ class InventoryPosition
   end
   
 
-  def inventory_exceptions
-    InventoryException.create_from_projections(unfulfilled_demand_projections, "Unfulfilled Demand")
-    InventoryException.create_from_projections(max_exceeded_projections, "Max Exceeded")
-    InventoryException.create_from_projections(below_min_projections, "Below Min") 
+  def generate_inventory_exceptions
+    InventoryException.create_from_projections(unfulfilled_demand_projections, "Unfulfilled Demand") if unfulfilled_demand_projections.count > 0
+    InventoryException.create_from_projections(max_exceeded_projections, "Max Exceeded") if max_exceeded_projections.count > 0
+    InventoryException.create_from_projections(below_min_projections, "Below Min") if below_min_projections.count > 0
   end
 
 

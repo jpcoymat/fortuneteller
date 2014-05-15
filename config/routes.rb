@@ -55,7 +55,9 @@ Fortuneteller::Application.routes.draw do
     post 'inventory_bucket_view', action: "inventory_bucket_view"
   end
 
-
+  controller :dashboard do 
+    get 'dashboard', action: "index"
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
