@@ -17,7 +17,7 @@ function drawMarkersMap() {
   data.addColumn('number', 'P2 Exceptions');
     
   data.addRows([
-    <% j(@data_array.to_s) %>
+    <%= j(@data_array.to_s) %>
   ]);
  
   var options = {
