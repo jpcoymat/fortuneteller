@@ -6,12 +6,10 @@
  google.setOnLoadCallback(drawMarkersMap);
 
   function drawMarkersMap() {
-  var dataTable = google.visualization.DataTable();
-  
-  dataTable.addColumn('number', 'Latitude');
-  dataTable.addColumn('number', 'Longitude');
-  dataTable.addColumn('number', 'Exception Count');
-  dataTable.addRows(<%= @data_array.to_s.html_safe %>);
+  var data = google.visualization.arrayToDataTable([
+    ['Lat', 'Long', 'On Hand Quantity']
+    <%= @data_array.html_safe %>
+  ]);
 
   var options = {
     displayMode: 'markers'
@@ -19,9 +17,8 @@
 
 
   var chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
-  chart.draw(dataTable, options);
+  chart.draw(data, options);
 };
-
 </script>
 
 

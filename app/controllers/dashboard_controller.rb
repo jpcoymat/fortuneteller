@@ -7,9 +7,9 @@ class DashboardController < ApplicationController
     InventoryException.all.destroy
     InventoryPosition.all.each {|ip| ip.generate_inventory_exceptions}
     @locations = @user.organization.locations
-    @data_array = [] 
+    @data_array = "" 
     @locations.each do |location|
-        @data_array << [location.latitude, location.longitude, location.inventory_exceptions.count]
+        @data_array += ",[" + location.latitude.to_s + ", " + location.longitude.to_s + ", " + location.inventory_exceptions.count.to_s + "]"
     end
   end
 
