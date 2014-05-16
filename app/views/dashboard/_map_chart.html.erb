@@ -1,0 +1,31 @@
+<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+<script type='text/javascript'>
+google.load('visualization', '1', {'packages': ['geochart']});
+google.setOnLoadCallback(drawMarkersMap);
+
+
+function drawMarkersMap() {
+
+  var data = new google.visualization.DataTable();
+  data.addColumn('number', 'Latitude');
+  data.addColumn('number', 'Longitude');
+  data.addColumn('string', 'Loc Name');
+  data.addColumn('number', 'P1 Exceptions');
+  data.addColumn('number', 'P2 Exceptions');
+
+  <% @data_array.each do |loc_hash| %>
+    data.addRow([ <%= loc_hash["lat"] %>, <%= loc_hash["long"] %>, '<%= j(loc_hash["name"]) %>', <%= loc_hash["p1"] %>, <%= loc_hash["p2"] %>]);
+  <% end %>
+
+  var options = {
+    displayMode: 'markers',
+    magnifyingGlass: {enable: true, zoomFactor: 5.0},
+    colorAxis: {colors: ['green','yellow' ,'red']}
+  };
+
+
+  var chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
+  chart.draw(data, options);
+};
+</script>
+
