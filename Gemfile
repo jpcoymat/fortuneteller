@@ -34,6 +34,8 @@ gem 'slim-rails'
 
 gem "resque"
 gem "resque-web", require: "resque_web"
+gem 'resque-scheduler', :require => 'resque_scheduler'
+
 
 gem "twitter-bootstrap-rails"
 gem "chartkick"
