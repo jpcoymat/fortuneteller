@@ -4,8 +4,6 @@ class DashboardController < ApplicationController
 
   def index
     @user = User.find(session[:user_id])
-    InventoryException.all.destroy
-    InventoryPosition.all.each {|ip| ip.generate_inventory_exceptions}
     @locations = @user.organization.locations
     @data_array = [] 
     @locations.each do |location|
