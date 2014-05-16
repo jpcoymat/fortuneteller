@@ -1,1 +1,20 @@
-<h1>Inventory Exceptions</h1>
+<h1>Inventory Exceptions</h1>i
+
+<% if @inventory_exceptions.empty? %>
+  <p>No Inventory Exceptions Found</p>
+<% else %>
+  <table class="table table-striped">>
+    <tr><th>Priority</th><th>Exception Type</th><th><th>Product</th><th>Location</th><th>Begin Date</th></th>End Date</th></tr>
+    <% @inventory_exceptions.each do |inventory_exception| %>
+      <tr>	<td><%= inventory_exception.priority %></td> 
+		<td><%= inventory_exception.exception_type %></td>
+		<td><%= inventory_exception.product.name %></td>
+		<td><%= inventory_exception.location.name %></td>
+		<td><%= inventory_exception.begin_date.to_formatted_s(:short) %></td>
+		<td><%= inventory_exception.end_date.to_formatted_s(:short) %></td>
+      </tr>
+
+   <% end %>
+  </table>
+<% end %>
+<%= link_to "Main Menu", main_index_path %>

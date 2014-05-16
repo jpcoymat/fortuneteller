@@ -8,7 +8,7 @@ class ProductsController < ApplicationController
     @user = User.find(session[:user_id])
     if request.post?
       params[:product].delete_if {|k,v| v.blank?}
-      @products = Product.where(params[:product]).all 
+      @products = Product.where(params[:product]).order_by(:name.asc) 
     end
   end
 

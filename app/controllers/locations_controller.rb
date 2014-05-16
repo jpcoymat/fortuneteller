@@ -4,7 +4,7 @@ class LocationsController < ApplicationController
   before_action :set_location, only: [:show, :edit, :update, :destroy]
 
   def index
-    @locations = User.find(session[:user_id]).organization.locations
+    @locations = User.find(session[:user_id]).organization.locations.order_by(:name.asc)
   end
   
   def show

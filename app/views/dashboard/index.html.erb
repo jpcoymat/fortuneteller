@@ -1,6 +1,12 @@
 <h1>Inventory Dashboard</h1>
-
-
+<div class="container">
+<table class="table" width=25%:>
+  <tr><th>Priority</th> <th>Priority Description</th>
+  <% InventoryException.priorities.each do |k,v| %>
+     <tr><td>Priority  <%=v.to_s %></td><td><%= k %></td></tr>
+  <% end %>
+</table>
+</div>
 <script type='text/javascript' src='https://www.google.com/jsapi'></script>
 <script type='text/javascript'>
 google.load('visualization', '1', {'packages': ['geochart']});
@@ -38,7 +44,7 @@ function drawMarkersMap() {
   <table class="table table-striped">
     <tr><th>Location</th><th>Priority 1 Exception Count </th> <th>Priority 2 Exception Count </th><th>Priority 3 Exception Count</th></tr>
     <% @locations.each do |location| %>
-      <tr><td><%= location.name %></td>
+      <tr><td><%= link_to(location.name, inventory_exceptions_path(inventory_exception: {location_id: location.id})) %></td>
 	  <td><%= location.inventory_exceptions.where(priority: 1).all.count %></td>
           <td><%= location.inventory_exceptions.where(priority: 2).all.count %></td>
           <td><%= location.inventory_exceptions.where(priority: 3).all.count %></td>
