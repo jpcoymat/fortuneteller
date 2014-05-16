@@ -20,7 +20,7 @@ class InventoryPositionsController < ApplicationController
 	forecasted_data = []
 	available_data = []
         max_quantity = []
-        search_range_start = begin_date 
+        search_range_start = begin_date || Date.today 
         search_range_end = end_date || search_range_start + @user.organization.days_to_project.days
         @projections = @inventory_position.inventory_projections.where(:projected_for.gte => search_range_start, :projected_for.lte => search_range_end).all
         @projections.each do |ip| 
@@ -62,13 +62,13 @@ class InventoryPositionsController < ApplicationController
     end
    
     def begin_date
-      today = Date.today
+      @begin_date = nil
       submitted_date = Date.today - 1.day
       unless params[:inventory_position_search]["begin_date(1i)"].blank? or params[:inventory_position_search]["begin_date(2i)"].blank? or params[:inventory_position_search]["begin_date(3i)"].blank?
         submitted_date = Date.new(params[:inventory_position_search]["begin_date(1i)"].to_i, params[:inventory_position_search]["begin_date(2i)"].to_i, params[:inventory_position_search]["begin_date(3i)"].to_i)
       end
-      begin_date = [today, submitted_date].max
-      begin_date
+      @begin_date = submitted_date if submitted_date >= Date.today
+      @begin_date
     end
 
     def end_date

@@ -3,8 +3,8 @@
 <% if @inventory_exceptions.empty? %>
   <p>No Inventory Exceptions Found</p>
 <% else %>
-  <table class="table table-striped">>
-    <tr><th>Priority</th><th>Exception Type</th><th><th>Product</th><th>Location</th><th>Begin Date</th></th>End Date</th></tr>
+  <table class="table table-striped">
+    <tr><th>Priority</th><th>Exception Type</th><th>Product</th><th>Location</th><th>Begin Date</th><th>End Date</th></tr>
     <% @inventory_exceptions.each do |inventory_exception| %>
       <tr>	<td><%= inventory_exception.priority %></td> 
 		<td><%= inventory_exception.exception_type %></td>
@@ -12,6 +12,14 @@
 		<td><%= inventory_exception.location.name %></td>
 		<td><%= inventory_exception.begin_date.to_formatted_s(:short) %></td>
 		<td><%= inventory_exception.end_date.to_formatted_s(:short) %></td>
+ 		<td><%= button_to "View Projections", lookup_inventory_positions_path(inventory_position_search:  {location_id: inventory_exception.location_id,
+														    product_id: inventory_exception.product_id,
+														    "begin_date(1i)" => inventory_exception.begin_date.year,
+														    "begin_date(2i)" => inventory_exception.begin_date.month,
+														    "begin_date(3i)" => inventory_exception.begin_date.day,
+														    "end_date(1i)" => inventory_exception.end_date.year,
+														    "end_date(2i)" => inventory_exception.end_date.month,
+														    "end_date(3i)"  => inventory_exception.end_date.day}) %> 
       </tr>
 
    <% end %>
