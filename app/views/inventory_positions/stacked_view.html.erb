@@ -1,0 +1,37 @@
+<h1>Inventory Positions</h1>
+ <p>Please select a Product and Location to see projections.</p>
+  <%= form_for :inventory_position_search, url: stacked_view_inventory_positions_path, html: {class: "form-inline"}  do |form| %>
+	<%= form.label "Product" %> <%= form.select :product_id, @products.collect {|product| [product.name, product.id]} %>
+        <%= form.label "Location" %> <%= form.select :location_id, @locations.collect {|location| [location.name, location.id]} %>
+	<%= form.label "Begin Projection Date" %><%= form.date_select :begin_date, {start_year: Date.today.year, include_blank: true}, class: "form-inline" %> 
+        <%= form.label "End Projection Date" %><%= form.date_select :end_date, {start_year: Date.today.year, include_blank: true}, class: "form-inline" %>
+        <%= submit_tag "Lookup Projections", class: "btn btn-primary" %> 
+  <% end %>
+  <br \><br \>
+  <hr>
+  <% if request.post? %>
+    <% if @inventory_position.nil? %>
+       <p>There are no Inventory Positon records for the product and location chosen.</p>	
+    <% else %>
+       <%= render partial "stacked_chart", locals: {projections: @projections, product_location_assignment: @product_location_assignment, inventory_position: @inventory_position} %> 
+	 <br \> <br \><br \>
+	<h4>Detailed Inventory Projection Data</h4>
+	<table class="table table-striped">
+          <tr><th>Date</th><th>On Hand </th> <th>On Order </th><th>In Transit</th> <th>Allocated </th> <th>Planned Consumption</th><th>Available</th></tr>
+ 	 <% @projections.each do |inventory_projection| %>
+            <tr>	<td><%= link_to(inventory_projection.projected_for.to_s, [@inventory_position,inventory_projection]) %></td>
+ 		<td><%= inventory_projection.on_hand_quantity.to_s %></td>
+ 		<td><%= inventory_projection.on_order_quantity.to_s %></td>
+ 		<td><%= inventory_projection.in_transit_quantity.to_s %></td>
+ 		<td><%= inventory_projection.allocated_quantity.to_s %></td>
+ 		<td><%= inventory_projection.forecasted_quantity.to_s %></td>
+ 		<td><%= inventory_projection.available_quantity.to_s %></td>
+ 	  </tr>  
+          <% end %>	 
+        </table>
+    <% end %>
+  <% end %>
+  <br \> <br \><br \>
+  <%= link_to "Main Menu", main_index_path %>
+  <br \> <br \><br \>
+
