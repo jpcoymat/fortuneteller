@@ -12,6 +12,10 @@ class InventoryProjection
 
   validates :on_hand_quantity, :forecasted_quantity, :allocated_quantity, :in_transit_quantity, :on_order_quantity, :projected_for, presence: true
 
+  def projected_for_chart_format
+    self.projected_for.to_formatted_s(:long).sub('  '," ")
+  end
+
   def available_quantity 
     @available_quantity = self.on_hand_quantity + self.in_transit_quantity + self.on_order_quantity - self.allocated_quantity 
     @available_quantity

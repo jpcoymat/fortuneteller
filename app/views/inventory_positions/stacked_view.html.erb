@@ -1,4 +1,4 @@
-<h1>Inventory Positions</h1>
+<h1>Inventory Positions (Stacked View)</h1>
  <p>Please select a Product and Location to see projections.</p>
   <%= form_for :inventory_position_search, url: stacked_view_inventory_positions_path, html: {class: "form-inline"}  do |form| %>
 	<%= form.label "Product" %> <%= form.select :product_id, @products.collect {|product| [product.name, product.id]} %>
@@ -13,7 +13,8 @@
     <% if @inventory_position.nil? %>
        <p>There are no Inventory Positon records for the product and location chosen.</p>	
     <% else %>
-       <%= render partial "stacked_chart", locals: {projections: @projections, product_location_assignment: @product_location_assignment, inventory_position: @inventory_position} %> 
+     <div id="chart_div" style="width: 100%;"></div>
+       <%= render partial: "stacked_chart", locals: {projections: @projections, product_location_assignment: @product_location_assignment, inventory_position: @inventory_position} %> 
 	 <br \> <br \><br \>
 	<h4>Detailed Inventory Projection Data</h4>
 	<table class="table table-striped">
