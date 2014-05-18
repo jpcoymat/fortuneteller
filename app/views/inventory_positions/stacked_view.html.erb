@@ -13,7 +13,7 @@
     <% if @inventory_position.nil? %>
        <p>There are no Inventory Positon records for the product and location chosen.</p>	
     <% else %>
-     <div id="chart_div" style="width: 100%;"></div>
+     <div id="chart_div" style="width: 100%; height: 400px;"></div>
        <%= render partial: "stacked_chart", locals: {projections: @projections, product_location_assignment: @product_location_assignment, inventory_position: @inventory_position} %> 
 	 <br \> <br \><br \>
 	<h4>Detailed Inventory Projection Data</h4>

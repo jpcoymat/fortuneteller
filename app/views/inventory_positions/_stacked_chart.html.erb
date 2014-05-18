@@ -22,7 +22,7 @@ function drawChart() {
     var formatter_short = new google.visualization.DateFormat({formatType: 'short'}) ;
     formatter_short.format(data,0);
 	options = {
-            hAxis: {title: "Projection Date", format: 'MMM, yyyy'},
+            hAxis: {format: 'MMM, yyyy'},
             isStacked: true,
             title: "Inventory Projections",
             legend: {position: "bottom"},
