@@ -2,3 +2,8 @@ inventory_exception_job:
   cron: "*/5 * * * *"
   class: "GenerateExceptionsJob"
   description: "This job generates inventory exceptions"
+
+crawl_job:
+  cron: "30 6 * * *"
+  class: "CrawlJob"
+  description: "Move projections forward one day"
