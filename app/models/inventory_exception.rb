@@ -45,7 +45,7 @@ class InventoryException
          inventory_exception.end_date = end_date
          inventory_exception.location = location
          inventory_exception.product = product 
-         inventory_exception.save_priority 
+         inventory_exception.set_priority 
 	 inventory_exception.save 
          start_date =  projections[i].projected_for
          end_date = projections[i].projected_for
