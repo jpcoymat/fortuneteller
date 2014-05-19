@@ -39,7 +39,7 @@ class InventoryException
     location = projections.first.inventory_position.location
     product = projections.first.inventory_position.product
     for i in (1 .. projections.count-1)
-      if projections[i].projected_for - projections[i-1].projected_for > 1.day
+      if (projections[i].projected_for - projections[i-1].projected_for).to_i*86400 > 1.day
          inventory_exception = InventoryException.new(exception_type: exception_type)
          inventory_exception.begin_date = start_date
          inventory_exception.end_date = end_date
@@ -48,6 +48,7 @@ class InventoryException
          inventory_exception.save_priority 
 	 inventory_exception.save 
          start_date =  projections[i].projected_for
+         end_date = projections[i].projected_for
       else
         end_date = projections[i].projected_for  
       end 
