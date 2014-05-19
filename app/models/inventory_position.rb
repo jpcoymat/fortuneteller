@@ -92,7 +92,7 @@ class InventoryPosition
   end
 
   def below_min_projections
-   self.inventory_projections.where(:on_hand_quantity.lt => product_location_assignment.minimum_quantity).all
+   self.inventory_projections.where(:on_hand_quantity.lt => product_location_assignment.minimum_quantity, :on_hand_quantity.gte => 0).all
   end
   
 
