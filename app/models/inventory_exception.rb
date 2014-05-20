@@ -16,9 +16,13 @@ class InventoryException
   before_create :set_priority
 
   def total_days
-    @total_days = (@end_date - @begin_date).to_i    
+    @total_days = (self.end_date - self.begin_date).to_i    
   end
-   
+  
+
+  def days_to_impact
+    @days_to_impact = (self.begin_date - Date.today).to_i
+  end 
  
   def generate_description
     @description = "Product " + @product.name + " will be out of stock for " + total_days.to_s + " days at location " + @location.name

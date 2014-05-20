@@ -22,4 +22,6 @@
     <% end %>
   </table> 
 
+  <%= render partial: "bubble_chart", locals: {locations: @locations} %>
+<div id="bubble_chart_div" ></div>
 <%= link_to "Main Menu", main_index_path %> 

@@ -121,40 +121,27 @@ class GroupingViewsController < ApplicationController
       @product_params_missing = (bucket_search_params["product_id"].blank? and bucket_search_params["product_category"].blank?)
       unless @locations.empty? or @product_params_missing
         proj_start_date = bucket_begin_date
-        logger.info "Start Date: " + proj_start_date.to_s
         proj_stop_date = bucket_end_date([InventoryPosition.where(location: @locations.first).first])
-        logger.info "End Date: " + proj_stop_date.to_s
         @data = []
         @series_hash = {}
         @locations.each do |location|
-          logger.info "Now adding trend line for location " + location.name 
           location_data =[]
           @inventory_positions = inventory_positions_for_bucket_view(location)
           if @inventory_positions.count > 0
-            logger.info "Debug - Position Count For location " + location.name + ": " + @inventory_positions.all.count.to_s
             current_date = proj_start_date  
             while current_date <= proj_stop_date
-	      logger.info "Finding projections for date " + current_date.to_s 
               bucket_quantity = 0
-	      logger.info "Point 1"
               @inventory_positions.each do |position|
-                logger.info "Point 2"
                 projection = position.inventory_projections.where(projected_for: current_date).first
-                logger.info "Point 3"
                 bucket_quantity += projection.attributes[bucket_search_params["inventory_bucket"]] if projection
               end
-              logger.info "Point 4"
               location_data << [current_date.to_formatted_s(:short), bucket_quantity]
-              logger.info "Point 5"
               current_date += 1.day
             end  
-            logger.info "Point 6"
-            @series_hash[@data.count] = {type: "line",  pointSize: 0}
-            logger.info "Point 7"
+            @series_hash[@data.count] = {type: "line",  pointSize: 0}          
             @data << {name: location.name, data: location_data}
           end
         end
-        logger.info "Debug - Data: " + @data.to_s
       end
     end
   end
@@ -185,12 +172,10 @@ class GroupingViewsController < ApplicationController
     def inventory_positions_for_location_centric
       products = Product.where(organization: @user.organization)
       @inventory_positions_for_location_centric = InventoryPosition.where(location_id: location_search_params["location_id"])
-      logger.info "Debug: " + location_search_params.to_s
       products = products.where(product_category: location_search_params["product_category"]) unless location_search_params["product_category"].blank?
       products = products.where(id: location_search_params["product_id"]) unless location_search_params["product_id"].blank?
       array_of_product_ids = []
       products.each {|product| array_of_product_ids << product.id}
-      logger.info "Debug " + array_of_product_ids.to_s
       @inventory_positions_for_location_centric = @inventory_positions_for_location_centric.in(product_id: array_of_product_ids) if array_of_product_ids.count > 0
       @inventory_positions_for_location_centric
     end
@@ -202,7 +187,6 @@ class GroupingViewsController < ApplicationController
       if product_search_params["product_id"].blank? and product_search_params["product_category"].blank?
         return @inventory_positions_for_product_centric
       else
-	logger.info "Debug: " + product_search_params.to_s
 	prods = Product.where(organization: @user.organization)
         prods = prods.where(product_category: product_search_params["product_category"]) unless product_search_params["product_category"].blank?
 	prods = prods.where(id: product_search_params["product_id"]) unless product_search_params["product_id"].blank?

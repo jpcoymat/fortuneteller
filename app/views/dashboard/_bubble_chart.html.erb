@@ -1,0 +1,26 @@
+ <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawBubbleChart);
+      function drawBubbleChart() {
+        var data = google.visualization.DataTable();
+		data.addColumn('string', 'Location Name');
+		data.addColumn('number','P1 Exceptions');
+		data.addColumn('number','P2 Exceptions');
+		data.addColumn('string','Location Group');
+
+		<% @locations.each do |location| %>
+			data.addRow([ <%= location.name %>, <%= location.grouped_exception_counts[1] %>, <%= location.grouped_exception_counts[2] %>, <%=location.location_group.name %>]);
+		<% end %>
+		
+        var options = {
+          title: 'Locations by Exceptions)',
+          hAxis: {title: 'P1 Exception Count'},
+          vAxis: {title: 'P2 Exception Count'},
+          bubble: {textStyle: {fontSize: 11}}
+        };
+
+        var chart = new google.visualization.BubbleChart(document.getElementById('bubble_chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
