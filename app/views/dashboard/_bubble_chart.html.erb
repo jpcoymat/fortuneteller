@@ -10,7 +10,7 @@
 		data.addColumn('string','Location Group');
 
 		<% @locations.each do |location| %>
-			data.addRow([ <%= location.name %>, <%= location.grouped_exception_counts[1] %>, <%= location.grouped_exception_counts[2] %>, <%=location.location_group.name %>]);
+			data.addRow([' <%= location.name %>', <%= location.grouped_exception_counts[1] %>, <%= location.grouped_exception_counts[2] %>, '<%=location.location_group.name %>']);
 		<% end %>
 		
         var options = {
