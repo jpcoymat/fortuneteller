@@ -24,4 +24,6 @@
 
   <%= render partial: "bubble_chart", locals: {locations: @locations} %>
 <div id="bubble_chart_div" ></div>
+  <%= render partial: "pie_chart", locals: {locations: @locations} %>
+<div id="piechart"></div>
 <%= link_to "Main Menu", main_index_path %> 

@@ -1,0 +1,20 @@
+   <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawPieChart);
+      function drawPieChart() {
+        var piedata = new google.visualization.DataTable();
+        piedata.addColumn('string','Location Name');
+        piedata.addColumn('number','P1 Exceptions');
+        <% @locations.each do |location| %>
+          piedata.addRow(['<%= location.name%>', <%= location.grouped_exception_counts[1] %>]);
+        <% end %> 
+
+        var pieoptions = {
+          title: 'P1 Exceptions'
+        };
+
+        var piechart = new google.visualization.PieChart(document.getElementById('piechart'));
+        piechart.draw(piedata, pieoptions);
+      }
+    </script>
