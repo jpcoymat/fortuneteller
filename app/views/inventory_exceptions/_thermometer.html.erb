@@ -1,0 +1,21 @@
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawThermometer);
+
+      function drawThermometer() {
+        var data = new google.arrayToDataTable([
+          ['Exception Id', 'Days To Impact', {role: 'style'}],
+          ['<%= inventory_exception.id.to_s %>', <%= inventory_exception.days_to_impact%>, '<%= @exception_colors[inventory_exception.id] %>']
+        ]);
+   
+        var options = {
+          hAxis: {minValue: <%= @min_days_to_impact%>, maxValue: <%= @max_days_to_impact %> }
+        }; 
+ 
+        var chart = new google.visualization.BarChart(document.getElementById('thermometer_<%= inventory_exception.id.to_s %>'));
+        chart.draw(data, options); 
+        
+      }
+    </script>
+    <div id='thermometer_<%= inventory_exception.id.to_s%>'></div> 

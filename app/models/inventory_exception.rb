@@ -36,6 +36,10 @@ class InventoryException
     {"Max Exceeded" => 3, "Below Min" => 2, "Unfulfilled Demand" => 1}
   end
 
+  def self.table_colors
+    {1 => "danger", 2 => "warning", 3 => "info"}
+  end
+
 
   def self.create_from_projections(projections, exception_type)
     start_date = projections.first.projected_for
@@ -66,5 +70,11 @@ class InventoryException
   def set_priority
     self.priority = self.class.priorities[self.exception_type]
   end
+
+
+  def table_row_class
+    InventoryException.table_colors[self.priority]
+  end
+
 
 end
