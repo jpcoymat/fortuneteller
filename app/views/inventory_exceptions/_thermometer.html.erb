@@ -4,13 +4,13 @@
       google.setOnLoadCallback(drawThermometer);
 
       function drawThermometer() {
-        var data = new google.arrayToDataTable([
-          ['Exception Id', 'Days To Impact', {role: 'style'}],
-          ['<%= inventory_exception.id.to_s %>', <%= inventory_exception.days_to_impact%>, '<%= @exception_colors[inventory_exception.id] %>']
+        var data = new google.visualization.arrayToDataTable([
+          ['Exception Id', 'Days To Impact', {role: 'style'}, {role: 'annotation'}],
+          ['<%= inventory_exception.id.to_s %>', <%= inventory_exception.days_to_impact%>, '<%= @exception_colors[inventory_exception.id] %>',  <%= inventory_exception.days_to_impact%>]
         ]);
    
         var options = {
-          hAxis: {minValue: <%= @min_days_to_impact%>, maxValue: <%= @max_days_to_impact %> }
+          hAxis: {minValue: <%= @min_days_to_impact%>, maxValue: <%= @max_days_to_impact %>, gridlines: {count: 0}, legend: { position: "none" }}
         }; 
  
         var chart = new google.visualization.BarChart(document.getElementById('thermometer_<%= inventory_exception.id.to_s %>'));
@@ -18,4 +18,4 @@
         
       }
     </script>
-    <div id='thermometer_<%= inventory_exception.id.to_s%>'></div> 
+    <div id='thermometer_<%= inventory_exception.id.to_s%>' style="height: 100px; width: 100px"></div> 

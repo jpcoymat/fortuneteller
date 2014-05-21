@@ -21,7 +21,7 @@ class InventoryException
   
 
   def days_to_impact
-    @days_to_impact = (self.begin_date - Date.today).to_i
+    @days_to_impact = [(self.begin_date - Date.today).to_i, 0].max
   end 
  
   def generate_description
