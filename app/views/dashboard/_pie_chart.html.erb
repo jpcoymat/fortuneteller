@@ -11,7 +11,10 @@
         <% end %> 
 
         var pieoptions = {
-          title: 'P1 Exceptions'
+          title: 'P1 Exceptions',
+  	  pieHole: 0.4,
+          legend: {textStyle: {fontSize: 10}},
+          bubble: {textStyle: {fontSize: 10}}
         };
 
         var piechart = new google.visualization.PieChart(document.getElementById('piechart'));

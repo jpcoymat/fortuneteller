@@ -15,8 +15,8 @@ class InventoryException
 
   before_create :set_priority
 
-  def total_days
-    @total_days = (self.end_date - self.begin_date).to_i    
+  def duration
+    @duration = (self.end_date - self.begin_date).to_i    
   end
   
 
