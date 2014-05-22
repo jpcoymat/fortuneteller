@@ -22,6 +22,18 @@
     <% end %>
   </table> 
 
+
+<h3>Location Group Exception Breakdown</h3>
+  <table class="table table-striped">
+    <tr><th>Location Group</th><th>Exception Count </th> </tr>
+    <% @location_groups.each do |location_group| %>
+      <tr><td><%= link_to(location_group.name, location_group_exceptions_path(location_group_exception: {location_group_id: location_group.id})) %></td>
+          <td><%= location_group.location_group_exceptions.count %></td>
+      </tr>
+    <% end %>
+  </table>
+
+
   <%= render partial: "bubble_chart", locals: {locations: @locations} %>
 <div id="bubble_chart_div" style="width: 100%; height: 500px;"></div>
   <%= render partial: "pie_chart", locals: {locations: @locations} %>

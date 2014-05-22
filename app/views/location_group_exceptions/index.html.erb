@@ -1,0 +1,27 @@
+<h1>Location Group Exceptions</h1>
+
+  <% if @location_group_exceptions.empty? %>
+    <p>Yay! No Location Group Exceptions!</p>
+  <% else %>
+    <table  class="table table-striped">
+      <tr><th>Location Group</th><th>Product </th> <th>Aggregate Minimum</th> <th>Aggregate On Hand Quantity</th><th>Begin Date</th> <th>End Date</th></tr>
+      <% @location_group_exceptions.each do |location_group_exception|%>
+        <tr><td><%= location_group_exception.location_group.name         	%></td>
+	    <td><%= location_group_exception.product.name                	%></td>
+            <td><%= location_group_exception.aggregate_minimum           	%></td>
+            <td><%= location_group_exception.aggregate_on_hand_quantity		%></td>
+            <td><%= location_group_exception.begin_date.to_formatted_s(:short)	%></td>
+             <td><%= location_group_exception.end_date.to_formatted_s(:short)	%></td>
+            <td><%= button_to "View Projections", product_centric_path(product_search: {location_group_id: location_group_exception.location_group_id,
+											product_id: location_group_exception.product_id,
+											"begin_date(1i)" => location_group_exception.begin_date.year,
+											"begin_date(2i)" => location_group_exception.begin_date.month,
+											"begin_date(3i)" => location_group_exception.begin_date.day,
+											"end_date(1i)" => location_group_exception.end_date.year,
+											"end_date(2i)" => location_group_exception.end_date.month,
+											"end_date(3i)"  => location_group_exception.end_date.day}) %></td>
+      <% end %>  
+  <% end %>
+
+
+

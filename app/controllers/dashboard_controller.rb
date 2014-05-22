@@ -5,6 +5,7 @@ class DashboardController < ApplicationController
   def index
     @user = User.find(session[:user_id])
     @locations = @user.organization.locations
+    @location_groups = @user.organization.location_groups
     @data_array = [] 
     @locations.each do |location|
         @data_array << {"lat" => location.latitude, 

@@ -5,18 +5,11 @@ class GenerateLocationGroupExceptionsJob
   def self.perform
     cleanup
     start_date = Date.today
-    end_date = start_date + Organization.first.days_to_project.days
+    end_date = start_date + Organization.first.days_to_project.days - 1.day
     Product.each do |product|
       LocationGroup.each do |location_group|
         (start_date .. end_date).each do |current_date|
-          location_group_exception = LocationGroupException.new
-          location_group_exception.organization =  Organization.first
-          location_group_exception.product = product
-          location_group_exception.aggregate_minimum = 0
-          location_group_exception.aggregate_on_hand_quantity = 0
-          location_group_exception.location_group = location_group
-          location_group_exception.begin_date = current_date
-          location_group_exception.end_date = current_date
+          location_group_exception = LocationGroupException.new(organization: Organization.first, product: product, aggregate_minimum: 0,aggregate_on_hand_quantity: 0, location_group:location_group, begin_date: current_date, end_date: current_date)
           location_array =  Location.where(location_group: location_group).map {|loc| loc.id}
           InventoryPosition.where(product: product).in(location_id: location_array).each do |inventory_position|
              location_group_exception.aggregate_on_hand_quantity += inventory_position.inventory_projections.where(projected_for: current_date).first.try(:on_hand_quantity) || 0
