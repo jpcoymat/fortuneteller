@@ -1,0 +1,19 @@
+ <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+    <script type='text/javascript'>
+      google.load('visualization', '1', {packages:['gauge']});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Label', 'Value'],
+          ['Duration', <%= location_group_exception.duration %>]]);
+
+        var options = {
+          max: <%= @max_duration %>,
+          minorTicks: 5
+        };
+
+        var chart = new google.visualization.Gauge(document.getElementById('gauge_<%= location_group_exception.id.to_s %>'));
+        chart.draw(data, options);
+      }
+    </script>
+<div id='gauge_<%= location_group_exception.id.to_s%>' style="height: 100px; width: 100px"></div>

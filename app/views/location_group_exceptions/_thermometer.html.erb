@@ -6,18 +6,18 @@
       function drawThermometer() {
         var data = new google.visualization.arrayToDataTable([
           ['Exception Id', 'Days To Impact', {role: 'style'}, {role: 'annotation'}],
-          ['', <%= inventory_exception.days_to_impact%>, '<%= @exception_colors[inventory_exception.id] %>',  <%= inventory_exception.days_to_impact%>]
+          ['', <%= location_group_exception.days_to_impact%>, '<%= @exception_colors[location_group_exception.id] %>',  <%= location_group_exception.days_to_impact%>]
         ]);
    
         var options = {
           hAxis: {minValue: <%= @min_days_to_impact%>, maxValue: <%= @max_days_to_impact %>, gridlines: {count: 0}},
-          legend: { position: "none" },
-          vAxis: {format:''}
+          vAxis: {format:''}, 
+          legend: { position: "none" }
         }; 
  
-        var chart = new google.visualization.BarChart(document.getElementById('thermometer_<%= inventory_exception.id.to_s %>'));
+        var chart = new google.visualization.BarChart(document.getElementById('thermometer_<%= location_group_exception.id.to_s %>'));
         chart.draw(data, options); 
         
       }
     </script>
-    <div id='thermometer_<%= inventory_exception.id.to_s%>' style="height: 100px; width: 100px"></div> 
+    <div id='thermometer_<%= location_group_exception.id.to_s%>' style="height: 100px; width: 100px"></div> 
