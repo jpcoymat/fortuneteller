@@ -3,6 +3,11 @@ inventory_exception_job:
   class: "GenerateExceptionsJob"
   description: "This job generates inventory exceptions"
 
+inventory_location_group_exception_job:
+  cron: "*/6 * * * *"
+  class: "GenerateLocationGroupExceptionsJob"
+  description: "Identify and generate location group exceptions"
+
 crawl_job:
   cron: "30 6 * * *"
   class: "CrawlJob"

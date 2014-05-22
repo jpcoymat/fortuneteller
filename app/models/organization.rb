@@ -12,7 +12,7 @@ class Organization
   has_many :locations
   has_many :movement_sources
   has_many :location_groups
-  
+  has_many :location_group_exceptions  
 
   def product_location_assignments
     @product_location_assignments = []
