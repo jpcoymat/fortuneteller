@@ -19,7 +19,7 @@ class GenerateLocationGroupExceptionsJob
           location_group_exception.end_date = current_date
           location_array =  Location.where(location_group: location_group).map {|loc| loc.id}
           InventoryPosition.where(product: product).in(location_id: location_array).each do |inventory_position|
-             location_group_exception.aggregate_on_hand_quantity += inventory_position.inventory_projections.where(projected_for: current_date).try(:on_hand_quantity) || 0
+             location_group_exception.aggregate_on_hand_quantity += inventory_position.inventory_projections.where(projected_for: current_date).first.try(:on_hand_quantity) || 0
              location_group_exception.aggregate_minimum += inventory_position.product_location_assignment.try(:minimum_quantity) || 0
           end
           location_group_exception.save if location_group_exception.aggregate_on_hand_quantity < location_group_exception.aggregate_minimum 
