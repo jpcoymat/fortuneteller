@@ -4,7 +4,7 @@ class InventoryExceptionsController < ApplicationController
   
 
   def index
-    @inventory_exceptions = InventoryException.where(inventory_exception_params).order_by("priority ASC")
+    @inventory_exceptions = InventoryException.where(inventory_exception_params).order_by(:priority.asc, :begin_date.asc)
     @exception_durations = []
     @exception_days_to_impact = []
     @inventory_exceptions.each do |inventory_exception| 

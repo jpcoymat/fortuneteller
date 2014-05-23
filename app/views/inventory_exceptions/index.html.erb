@@ -4,7 +4,7 @@
   <p>No Inventory Exceptions Found</p>
 <% else %>
   <table class="table table-striped">
-    <tr><th>Priority</th><th>Exception Type</th><th>Product</th><th>Location</th> <th>Days to Impact</th><th>Begin Date</th><th>End Date</th><th>Duration</th></tr>
+    <tr><th>Priority</th><th>Exception Type</th><th>Product</th><th>Location</th> <th>Days to Impact</th> <th>Duration</th> <th>Begin Date</th><th>End Date</th></tr>
     <% @inventory_exceptions.each do |inventory_exception| %>
       <%= render partial: "gauge_chart", locals: {inventory_exception: inventory_exception, max_duration: @max_duration} %>
       <tr class="<%= inventory_exception.table_row_class %>">	<td><%= inventory_exception.priority %></td> 
@@ -12,9 +12,9 @@
 		<td><%= inventory_exception.product.name %></td>
 		<td><%= inventory_exception.location.name %></td>
 		<td><%= render partial: "thermometer", locals: {inventory_exception: inventory_exception, min_days_to_impact: @min_days_to_impact, max_days_to_impact: @max_days_to_impact, exception_colors: @exception_colors}  %></td>
+                <td><div id='chart_div_<%= inventory_exception.id.to_s%>' style="height: 100px; width: 100px"></div></td>
 		<td><%= inventory_exception.begin_date.to_formatted_s(:short) %></td>
 		<td><%= inventory_exception.end_date.to_formatted_s(:short) %></td>
-		<td><div id='chart_div_<%= inventory_exception.id.to_s%>' style="height: 100px; width: 100px"></div></td>
  		<td><%= button_to "View Projections", lookup_inventory_positions_path(inventory_position_search:  {location_id: inventory_exception.location_id,
 														    product_id: inventory_exception.product_id,
 														    "begin_date(1i)" => inventory_exception.begin_date.year,

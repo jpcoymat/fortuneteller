@@ -6,7 +6,7 @@ class LocationGroupExceptionsController < ApplicationController
   def index
     @user = User.find(session[:user_id])
     @organization = @user.organization
-    @location_group_exceptions = LocationGroupException.where(location_group_exception_params)
+    @location_group_exceptions = LocationGroupException.where(location_group_exception_params).order_by(:begin_date.asc)
 
     @exception_durations = []
     @exception_days_to_impact = []
