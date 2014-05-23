@@ -9,6 +9,7 @@ Fortuneteller::Application.routes.draw do
  
   get "login/login"
   get "main/index"
+  get "login/logout"
   post "login/logout"
   post "login/login"
   
