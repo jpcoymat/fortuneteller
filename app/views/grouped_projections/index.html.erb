@@ -1,0 +1,48 @@
+<h1>Inventory Projection Detailss</h1>
+<% if @inventory_positions.class == String %>
+  <p><%= @inventory_positions %></p>
+<% elsif @inventory_positions.count == 0 %>
+  <p>There are no Inventory Positon records for the product and location chosen.</p>
+<% else %>
+   <p><%= @inventory_positions.to_s %></p>
+   <% @inventory_positions.each do |inventory_position| %>
+
+
+     <h2>Product: <%= inventory_position.product.name %></h2>
+     <h2>Location: <%= inventory_position.location.name %></h2>
+     
+     <h4>On Order Sources </h4>
+     <% inventory_projection = inventory_position.inventory_projections.where(projected_for: @projection_date).first %>
+     <% if inventory_projection.on_order_sources.empty? %>
+       <p>No On Order Sources for this product/location/date</p>
+     <% else %>
+       <%= render partial: "movement_sources", locals: {movement_sources: inventory_projection.on_order_sources} %>
+     <% end %>
+     <br \><br \>
+
+
+     <h4>In Transit Sources </h4>
+     <% if inventory_projection.in_transit_sources.empty? %>
+       <p>No In Transit Sources for this product/location/date</p>
+     <% else %>
+       <%= render partial: "movement_sources", locals: {movement_sources: inventory_projection.in_transit_sources} %>
+     <% end %>
+     <br \><br \>
+
+     <h4>Allocation Sources </h4>
+     <% if inventory_projection.allocation_sources.empty? %>
+       <p>No Allocation Sources for this product/location/date</p>
+     <% else %>
+       <%= render partial: "movement_sources", locals: {movement_sources: inventory_projection.allocation_sources} %>
+     <% end %>
+     <br \><br \>
+
+     <h4>Planned Consumption Sources </h4>
+     <% if inventory_projection.forecast_sources.empty? %>
+       <p>No Planned Consumption Sources for this product/location/date</p>
+     <% else %>
+       <%= render partial: "movement_sources", locals: {movement_sources: inventory_projection.forecast_sources} %>
+     <% end %>
+   <% end %>
+<% end %>
+

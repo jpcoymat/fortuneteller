@@ -65,6 +65,12 @@ Fortuneteller::Application.routes.draw do
   controller :dashboard do 
     get 'dashboard', action: "index"
   end
+
+  controller :grouped_projections do 
+    get 'grouped_projections', action: "index"
+    post 'grouped_projections', action: "index"
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

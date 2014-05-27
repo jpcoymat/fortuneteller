@@ -8,6 +8,7 @@ class GroupingViewsController < ApplicationController
     @products =  @user.organization.products
     @location_groups = @user.organization.location_groups
     if request.post? 	
+      @clean_search_hash = clean_product_search_params 
       @inventory_positions = inventory_positions_for_product_centric
       if @inventory_positions.class != String and @inventory_positions.count > 0
         current_search_date = product_begin_date
@@ -167,8 +168,20 @@ class GroupingViewsController < ApplicationController
       params.require(:location_search).permit(:product_id, :product_category, :location_id)
     end
 
+    def clean_location_search_params
+      @clean_location_search_params = {}
+      location_search_params.each {|k,v| @clean_location_search_params[k] = v unless v.blank?}
+      @clean_location_search_params
+    end
+
     def product_search_params
       params.require(:product_search).permit(:product_id, :product_category, :location_id, :location_group_id)
+    end
+
+    def clean_product_search_params
+      @clean_product_search_params ={}
+      product_search_params.each {|k,v| @clean_product_search_params[k] = v unless v.blank?}
+      @clean_product_search_params
     end
 
     def bucket_search_params

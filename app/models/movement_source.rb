@@ -39,11 +39,11 @@ class MovementSource
   end
   
   def origin_location=(location)
-    self.origin_location_id = location.id
+    self.origin_location_id = location.try(:id)
   end
 
   def destination_location=(location)
-    self.destination_location_id = location.id
+    self.destination_location_id = location.try(:id)
   end
 
   def trackable?
