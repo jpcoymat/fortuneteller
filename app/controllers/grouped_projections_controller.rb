@@ -10,8 +10,8 @@ class GroupedProjectionsController < ApplicationController
     else
       @projection_date = projected_for 
       @inventory_positions = InventoryPosition.all
-      @inventory_positions.in(product_id: product_array) unless product_array.empty?
-      @inventory_positions.in(location_id: location_array) unless location_array.empty?
+      @inventory_positions = @inventory_positions.in(product_id: product_array) unless product_array.empty?
+      @inventory_positions = @inventory_positions.in(location_id: location_array) unless location_array.empty?
     end
   end
 

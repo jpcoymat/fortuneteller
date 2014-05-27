@@ -74,6 +74,7 @@ class GroupingViewsController < ApplicationController
     @locations = @user.organization.locations
     @products =  @user.organization.products
     if request.post?
+      @clean_search_hash = clean_location_search_params
       @inventory_positions = inventory_positions_for_location_centric
       if @inventory_positions.count > 0
         current_search_date = begin_date

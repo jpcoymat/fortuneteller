@@ -38,7 +38,7 @@
         <table class="table table-striped">
           <tr><th>Date</th><th>On Hand </th> <th>On Order </th><th>In Transit</th> <th>Allocated </th> <th>Planned Consumption</th><th>Available</th></tr>
          <% @inventory_hash.each do |k,v| %>
-            <tr>        <td><%= k %></td>
+            <tr>        <td><%= link_to(k,  grouped_projections_path(projection_search: @clean_search_hash.merge({"projected_for" => k}))) %></td>
                 <td><%= v["on_hand_quantity"].to_s %></td>
                 <td><%= v["on_order_quantity"].to_s %></td>
                 <td><%= v["in_transit_quantity"].to_s %></td>

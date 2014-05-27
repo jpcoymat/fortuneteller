@@ -1,15 +1,14 @@
-<h1>Inventory Projection Detailss</h1>
+<h1>Inventory Projection Details</h1>
+<br \><br \>
 <% if @inventory_positions.class == String %>
   <p><%= @inventory_positions %></p>
 <% elsif @inventory_positions.count == 0 %>
   <p>There are no Inventory Positon records for the product and location chosen.</p>
 <% else %>
-   <p><%= @inventory_positions.to_s %></p>
    <% @inventory_positions.each do |inventory_position| %>
 
 
-     <h2>Product: <%= inventory_position.product.name %></h2>
-     <h2>Location: <%= inventory_position.location.name %></h2>
+     <h2>Product: <%= inventory_position.product.name %> &nbsp; / &nbsp; Location: <%= inventory_position.location.name %></h2>
      
      <h4>On Order Sources </h4>
      <% inventory_projection = inventory_position.inventory_projections.where(projected_for: @projection_date).first %>
@@ -43,6 +42,9 @@
      <% else %>
        <%= render partial: "movement_sources", locals: {movement_sources: inventory_projection.forecast_sources} %>
      <% end %>
+     <br \> <br \><hr><br \><br \>
    <% end %>
 <% end %>
-
+<br \><br \><br \><br \>
+<%= link_to "Main Menu", main_index_path %>
+<br \><br \><br \><br \>
