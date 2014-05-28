@@ -59,7 +59,7 @@ class MovementSource
   end
 
   def parent_movement_source=(movement_source)
-    self.parent_movement_source_id = movement_source.id
+    self.parent_movement_source_id = movement_source.try(:id)
   end
   
   def child_movement_sources
