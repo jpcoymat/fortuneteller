@@ -22,7 +22,7 @@ function drawChart() {
     var formatter_short = new google.visualization.DateFormat({formatType: 'short'}) ;
     formatter_short.format(data,0);
 	options = {
-            hAxis: {format: 'MMM, yyyy'},
+            hAxis: {format: 'MMM, yyyy', textStyle: {fontSize: 12}},
             isStacked: true,
             title: "Inventory Projections",
             legend: {position: "bottom"},
@@ -37,8 +37,8 @@ function drawChart() {
 				7: {type: "line", curveType: 'function', pointSize: 0, color: "red"}
 				},
 			vAxes: [
-				{0: {textStyle:{color: 'red'}}},
-				{1: {textStyle:{color: 'blue'}}}
+				 {textStyle: {fontSize: 12}},
+				 {textStyle: {fontSize: 12}}
 			]
 	};
 	
