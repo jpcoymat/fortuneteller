@@ -18,6 +18,7 @@
     <% if @inventory_positions.count == 0 %>
        <p>There are no Inventory Positon records for the product and location chosen.</p>
     <% else %>
+       <h4>Inventory Projections for <%= @search_criteria_to_string %></h4>
        <%= column_chart(@data, library: {
                                         curveType: 'function',
                                         title: "Inventory Projections",

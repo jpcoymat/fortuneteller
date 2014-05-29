@@ -13,6 +13,7 @@ class GroupingViewsController < ApplicationController
       if @inventory_positions.class != String and @inventory_positions.count > 0
         current_search_date = product_begin_date
         end_search_date = product_end_date(@inventory_positions)
+        @search_criteria_to_string = search_criteria_to_string(@clean_search_hash.merge({"begin_date" => current_search_date, "end_date" => end_search_date}))
         @data = []
         @inventory_hash = {}
         min_quantity_data = []
@@ -79,6 +80,7 @@ class GroupingViewsController < ApplicationController
       if @inventory_positions.count > 0
         current_search_date = begin_date
         end_search_date = end_date(@inventory_positions)
+        @search_criteria_to_string = search_criteria_to_string(@clean_search_hash.merge({"begin_date" => current_search_date, "end_date" => end_search_date}))
 	@data = []
 	@inventory_hash = {}
         on_hand_data = []
@@ -294,6 +296,21 @@ class GroupingViewsController < ApplicationController
 
     def last_projection_date(inventory_positions)
       @last_projection_date = inventory_positions.first.inventory_projections.last.projected_for
+    end
+
+    def search_criteria_to_string(search_criteria)
+      @search_criteria_to_string = ""
+      search_criteria.each do |k,v|
+        @search_criteria_to_string += k.to_s.humanize + ": "
+        if k.to_s.include?("_id") 
+          class_name_to_string = k.gsub("_id","").classify
+          @search_criteria_to_string += eval class_name_to_string + ".find(\"" + v.to_s +  "\").try(:name)"
+        else
+          @search_criteria_to_string += v.to_s
+        end
+         @search_criteria_to_string += " "
+      end 
+      @search_criteria_to_string
     end
 
 
