@@ -1,0 +1,12 @@
+<% if @forecast.errors.any? %>
+        <div id="error_explanation">
+                <h2>This Forecast contains <%= pluralize(@forecast.errors.count, "error") %>  :</h2>
+
+                <ul>
+                        <% @forecast.errors.each do |key,value| %>
+                                <li><%= key.to_s.capitalize + " " + value %></li>
+                        <% end %>
+                </ul>
+                </div>
+<% end %>
+

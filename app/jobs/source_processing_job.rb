@@ -142,6 +142,8 @@ class SourceProcessingJob
   end
 
   def self.process_forecast(forecast)
+    id_count = Forecast.where(id: forecast.id).all.count
+    id_count == 0 ? process_new_forecast(forecast) : process_updated_forecast(forecast) 
   end
 
   def self.origin_position(movement_source)
@@ -214,6 +216,26 @@ class SourceProcessingJob
       end
     end
   end
+
+  def self.process_new_forecast(forecast)
+    if forecast.save
+      project_forecast(forecast)
+    end
+  end
+
+  def self.project_forecast(forecast)
+    origin_inventory_position = origin_position(forecast)
+    if origin_inventory_position
+      origin_projection = origin_inventory_position.inventory_projections.where(projected_for: forecast.etd).first
+      if origin_projection
+        origin_projection.forecasted_quantity += forecast.quantity
+        origin_projection.save
+        origin_projection.cascade
+      end
+    end
+  end
+
+
 
 end
 

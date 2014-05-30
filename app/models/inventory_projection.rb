@@ -17,7 +17,7 @@ class InventoryProjection
   end
 
   def available_quantity 
-    @available_quantity = self.on_hand_quantity + self.in_transit_quantity + self.on_order_quantity - self.allocated_quantity 
+    @available_quantity = self.on_hand_quantity + self.in_transit_quantity + self.on_order_quantity - self.allocated_quantity - self.forecasted_quantity 
     @available_quantity
   end
 
