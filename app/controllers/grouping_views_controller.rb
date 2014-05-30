@@ -44,7 +44,7 @@ class GroupingViewsController < ApplicationController
                                                                         "on_order_quantity"   => total_on_order,
                                                                         "in_transit_quantity" => total_in_transit,
                                                                         "allocated_quantity"  => total_allocated,
-                                                                        "forcasted_quantity"  => total_forecasted,
+                                                                        "forecasted_quantity"  => total_forecasted,
                                                                         "available_quantity"  => total_available,
                                                                         "max_quantity" => max_quantity
                                                                         }
