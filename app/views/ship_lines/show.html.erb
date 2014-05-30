@@ -5,8 +5,8 @@
                 <dt>ETA    			</dt>   <dd><%= @ship_line.eta.to_s			%></dd>
                 <dt>ETD	 			</dt>   <dd><%= @ship_line.etd.to_s			%></dd>
                 <dt>Product             	</dt>   <dd><%= @ship_line.product.name             	%></dd>
-                <dt>Origin Location     	</dt>   <dd><%= @ship_line.origin_location.nil? ? "" : @ship_line.origin_location.name        	%></dd>
-		<dt>Destination Location	</dt>	<dd><%= @ship_line.destination_location.nil? ? "" : @ship_line.destination_location.name	%></dd>	
+                <dt>Origin Location     	</dt>   <dd><%= @ship_line.origin_location.try(:name)        	%></dd>
+		<dt>Destination Location	</dt>	<dd><%= @ship_line.destination_location.try(:name)	%></dd>	
                 <dt>Original Quantity		</dt>	<dd><%= @ship_line.original_quantity.to_s	%></dd>
 		<dt>Remaining Quantity		</dt>	<dd><%= @ship_line.quantity.to_s		%></dd>
                 <dt>Order Line                  </dt>   <dd><%= @ship_line.parent_movement_source ? link_to(@ship_line.parent_movement_source.object_reference_number, order_line_path(@ship_line.parent_movement_source)) : "" %>              </dd>

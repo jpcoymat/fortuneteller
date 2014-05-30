@@ -16,7 +16,13 @@ Fortuneteller::Application.routes.draw do
 
   resources :users
   resources :organizations
-  resources :forecasts
+  resources :forecasts do
+    collection do
+      get 'lookup'
+      post 'lookup'
+    end
+  end
+
   resources :order_lines do
     collection do 
       get 'lookup'

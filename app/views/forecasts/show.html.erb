@@ -1,14 +1,13 @@
 <h1>Forecast Details</h1>
 <dl class="dl-horizontal">
-                <dt>Source                      </dt>   <dd><%= @forecast.source                           %></dd>
-                <dt>Reference Number            </dt>   <dd><%= @forecast.object_reference_number          %></dd>
-                <dt>Forecast Date               </dt>   <dd><%= @forecast.etd.to_s                         %></dd>
-                <dt>Product                     </dt>   <dd><%= @forecast.product.name                     %></dd>
-                <dt>Origin Location             </dt>   <dd><%= @forecast.origin_location.try(:name)       %></dd>
-                <dt>Destination Location        </dt>   <dd><%= @forecast.destination_location.try(:name)  %></dd>
-                <dt>Original Quantity           </dt>   <dd><%= @forecast.original_quantity.to_s           %></dd>
-                <dt>Remaining Quantity          </dt>   <dd><%= @forecast.quantity.to_s                    %></dd>
-                                                </dd>
+                <dt>Source              </dt>   <dd><%= @forecast.source                           %></dd>
+                <dt>Reference Number    </dt>   <dd><%= @forecast.object_reference_number          %></dd>
+                <dt>Forecast Date       </dt>   <dd><%= @forecast.etd.to_s                         %></dd>
+                <dt>Product             </dt>   <dd><%= @forecast.product.name                     %></dd>
+                <dt>Location            </dt>   <dd><%= @forecast.origin_location.try(:name)       %></dd>
+                <dt>Original Quantity   </dt>   <dd><%= @forecast.original_quantity.to_s           %></dd>
+                <dt>Remaining Quantity	</dt>   <dd><%= @forecast.quantity.to_s                    %></dd>
+                                               
         </dl>
 <br /><br />
 <%= link_to "Return to Forecasts", lookup_forecasts_path %>

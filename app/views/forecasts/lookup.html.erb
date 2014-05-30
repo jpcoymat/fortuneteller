@@ -1,0 +1,40 @@
+<h1>Forecasts</h1>
+
+<%= form_for :forecast, url: lookup_forecasts_path, html: {class: "form-search"}   do |form| %>
+        <%= form.hidden_field :organization_id, value: @user.organization_id %>
+        <%= form.label "Reference Number",  class: "form-inline"%>
+        <%= form.text_field :object_reference_number    %>
+        <%= form.label "Product Name", class: "form-inline"%>
+        <%= form.select :product_id, @products.collect {|prod| [prod.name,  prod.id]}, {include_blank: true}, class: "form-inline" %>
+        <%= form.label "Location", class: "form-inline" %>
+        <%= form.select :origin_location_id, @locations.collect {|loc| [loc.name, loc.id]}, {include_blank: true}, class: "form-inline" %>
+        <%= submit_tag "Search", {class: "btn btn-primary"} %>
+<% end %>
+<br \>
+<hr>
+<br \>
+<% if request.post? %>
+
+  <% if @forecasts.empty? %>
+    <p>No Forecasts found matching search criteria.</p>
+  <% else %>
+    <table class="table table-striped">
+      <tr><th>Forecast Reference Number </th> <th>Forecast Date</th>  <th>Product</th> <th> Location </th> <th>Quantity</th></tr>
+        <% @forecasts.each do |forecast| %>
+          <tr><td><%= forecast.object_reference_number %></td>
+              <td><%= forecast.etd.to_s %></td>
+              <td><%= forecast.product.name %></td>
+              <td><%= forecast.origin_location.try(:name) %></td>
+              <td><%= forecast.destination_location.try(:name) %></td>
+              <td><%= forecast.quantity.to_s        %></td>
+              <td><%= link_to "Details", forecast_path(forecast)  %></td>
+              </tr>
+        <% end %>
+    </table %>
+  <% end %>
+<% end %>
+<br /> <br />
+<%= link_to "Create New Forecast", new_forecast_path %>
+<br /> <br />
+<%= link_to "Main Menu", main_index_path %>
+

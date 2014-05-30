@@ -7,6 +7,16 @@ class ForecastsController < ApplicationController
     @forecasts = @user.organization.forecasts
   end
 
+  def lookup
+    @user  = User.find(session[:user_id])
+    @products = @user.organization.products
+    @locations = @user.organization.locations
+    if request.post?
+      search_params = forecast_params.delete_if {|k,v| v.blank?}
+      @forecasts = Forecast.where(search_params) 
+    end
+  end
+
   def show
   end
 
