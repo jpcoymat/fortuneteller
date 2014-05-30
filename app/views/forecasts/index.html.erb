@@ -3,19 +3,16 @@
   <p> No forecasts have been created</p>
 <% else %>
   <table class="table table-striped">
-  <tr><th>Order Line Reference Number </th> <th>ETD</th> <th>ETA</th> <th>Product</th> <th>Origin Location </th> <th>Destination Location</th> <th>Quantity</th></tr>
+  <tr><th>Order Line Reference Number </th> <th>Forecast Date</th> <th>Product</th> <th>Origin Location </th> <th>Destination Location</th> <th>Quantity</th></tr>
   <% @forecasts.each do |forecast| %>
     <tr><td><%= forecast.object_reference_number %></td>
       <td><%= forecast.etd.to_s %></td>
-      <td><%= forecast.eta.to_s %></td>
       <td><%= forecast.product.name %></td>
       <td><%= forecast.origin_location.try(:name) %></td>
       <td><%= forecast.destination_location.try(:name) %></td>
       <td><%= forecast.quantity.to_s        %></td>
-      <td><%= link_to "Details", forecast_path(forecast)  %></td>
-      <td><%= link_to "Edit", edit_forecast_path(forecast) %></td>
     </tr>
   <% end %>
   </table %>
 <% end %>
-<%= link_to "Create New Forecast", new_forecast_path %>
+<%= link_to "Create New Forecast", new_forecast_path %> | <%= link_to "Main Menu", main_index_path %>

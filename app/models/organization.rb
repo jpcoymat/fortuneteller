@@ -22,7 +22,7 @@ class Organization
   end
 
   def forecasts
-    @forecasts = Forecast.where(organziation_id: self.id).all
+    @forecasts = Forecast.where(organization_id: self.id).all
   end
 
   def order_lines
