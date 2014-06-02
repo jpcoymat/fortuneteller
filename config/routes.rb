@@ -14,7 +14,11 @@ Fortuneteller::Application.routes.draw do
   post "login/login"
   
 
-  resources :users
+  resources :users do
+    member do 
+      get 'reset_password'
+    end
+  end
   resources :organizations
   resources :forecasts do
     collection do

@@ -1,0 +1,21 @@
+<h1>Users </h1>
+
+   <% if @users.empty? %>
+     <p>No users have been created yet.</p>
+   <% else %>
+     <table  class="table table-striped">
+       <tr><th>First Name </th> <th>Last Name</th> <th>Username </th> <th>Email</th></tr>
+       <% @users.each do |user| %>
+         <tr><td><%= user.first_name %></td>
+             <td><%= user.last_name %> </td>
+             <td><%= user.username %> </td>
+             <td><%= user.email %></td>
+             <td><%= link_to "Edit", edit_user_path(user) %></td>
+             <td><%= link_to "Reset Password", reset_password_user_path(user) %></td>
+	     <td><%= button_to "Delete", user_path(user), method: :delete %></td> 
+         </tr>  
+       <% end %>
+     </table>
+   <% end %>
+   <br \><br \>
+   <%= link_to "Create New User", new_user_path %> | <%= link_to "Main Menu", main_index_path %>
