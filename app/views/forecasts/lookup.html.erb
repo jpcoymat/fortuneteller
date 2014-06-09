@@ -28,6 +28,7 @@
               <td><%= forecast.destination_location.try(:name) %></td>
               <td><%= forecast.quantity.to_s        %></td>
               <td><%= link_to "Details", forecast_path(forecast)  %></td>
+	      <td><%= link_to "Edit", edit_forecast_path(forecast) %></td>	
               </tr>
         <% end %>
     </table %>

@@ -28,9 +28,26 @@ class ForecastsController < ApplicationController
   end
 
   def edit
+    @user  = User.find(session[:user_id])
+    @products = @user.organization.products
+    @locations = @user.organization.locations
   end
 
   def update
+    @forecast.assign_attributes(forecast_params)
+    @forecast.etd = full_etd
+    @forecast.eta = @forecast.etd
+    if @forecast.valid?
+      Resque.enqueue(SourceProcessingJob, @forecast.to_json)
+      flash[:notice] = "Forecast has been queued for processing"
+      redirect_to lookup_forecasts_path
+    else
+      flash[:notice] = "Invalid Forecast data"
+      @user  = User.find(session[:user_id])
+      @products = @user.organization.products
+      @locations = @user.organization.locations
+      render action: "edit"
+    end    
   end
 
   def create
