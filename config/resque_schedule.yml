@@ -12,3 +12,13 @@ crawl_job:
   cron: "30 6 * * *"
   class: "CrawlJob"
   description: "Move projections forward one day"
+
+orders_reset:
+  cron: "30 7 * * *"
+  class: "OrdersReset"
+  description: "Recreate orders for new day"
+
+shipments_reset:
+  cron: "15 8 * * *"
+  class: "ShipmentsReset"
+  description: "fully ship out orders within 7 days and partially 7 days after"
