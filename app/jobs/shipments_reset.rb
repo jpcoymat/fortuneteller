@@ -1,4 +1,4 @@
-class ShipmenstReset
+class ShipmentsReset 
 
   @queue = :reset_data 
 
