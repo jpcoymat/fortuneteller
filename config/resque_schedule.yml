@@ -8,7 +8,7 @@ inventory_location_group_exception_job:
   class: "GenerateLocationGroupExceptionsJob"
   description: "Identify and generate location group exceptions"
 
-crawl_job:
+shift_sources_job:
   cron: "15 3 * * *"
   class: "ShiftSourcesJob"
   description: "Move orders and shipments forward one day"
