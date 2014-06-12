@@ -15,6 +15,7 @@ class MovementSource
   field :destination_location_id, type: BSON::ObjectId
   field :legacy_store_id, type: String
   field :parent_movement_source_id, type: BSON::ObjectId  
+  field :last_shift_date, type: Date
 
   belongs_to :organization
   belongs_to :product  
