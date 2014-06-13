@@ -77,7 +77,7 @@ class ForecastsController < ApplicationController
     end
 
    def forecast_params
-     params.require('forecast').permit(:object_reference_number, :product_id, :origin_location_id, :destination_location_id, :quantity, :organization_id)
+     params.require('forecast').permit(:last_shift_date, :object_reference_number, :product_id, :origin_location_id, :destination_location_id, :quantity, :organization_id)
    end
 
    def full_eta

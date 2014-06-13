@@ -2,6 +2,7 @@
 <h3>Enter new Forecast Details</h3>
 <%= render partial: "forecast_errors" %>
 <%= form_for @forecast, html: {class: "form-horizontal"} do |form| %>
+  <%= form.hidden_field :last_shift_date, value: Date.today %>
   <%= form.hidden_field :organization_id, value: @user.organization_id %>
   <%= render partial: "forecast", locals: {form: form} %>
   <%= submit_tag "Create Forecast", {class: "btn btn-primary"}  %>

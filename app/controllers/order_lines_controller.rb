@@ -75,7 +75,7 @@ class OrderLinesController < ApplicationController
   private
     
     def order_line_params
-      params.require(:order_line).permit(:object_reference_number, :product_id, :origin_location_id, :destination_location_id, :quantity, :organization_id)
+      params.require(:order_line).permit(:last_shift_date, :object_reference_number, :product_id, :origin_location_id, :destination_location_id, :quantity, :organization_id)
     end
 
     def set_order_line
