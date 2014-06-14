@@ -9,8 +9,9 @@ class ShiftSourcesJob
     today = Date.today
     MovementSource.all.each do |movement_source|
       if movement_source.last_shift_date < today
-        movement_source.etd += 1.day
-        movement_source.eta += 1.day
+        days_to_shift = today - movement_source.last_shift_date
+        movement_source.etd += days_to_shift.days
+        movement_source.eta += days_to_shift.days
         movement_source.last_shift_date = today
         Resque.enqueue(SourceProcessingJob, movement_source.to_json)	  
       end
