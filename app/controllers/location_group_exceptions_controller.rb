@@ -16,7 +16,7 @@ class LocationGroupExceptionsController < ApplicationController
     end
     @max_duration = @exception_durations.max
     @max_days_to_impact = @exception_days_to_impact.max
-    @min_days_to_impact = @exception_days_to_impact.min
+    @min_days_to_impact = 0 
     @color_increment = ((@max_days_to_impact - @min_days_to_impact)/3).floor
     @color_limits = {
                      "red_end" => @min_days_to_impact + @color_increment,
