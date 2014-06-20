@@ -10,6 +10,7 @@
  <div id="chart_div" style="width: 900px; height: 500px;"></div>
 
   <%= render partial: "map_chart", locals: {data_array: @data_array} %>
+  <%= render partial: "earth_map", locals: {data_array: @data_array} %>
 <h3>Inventory Exception Breakdown</h3>
   <table class="table table-striped">
     <tr><th>Location</th><th>Priority 1 Exception Count </th> <th>Priority 2 Exception Count </th><th>Priority 3 Exception Count</th></tr>

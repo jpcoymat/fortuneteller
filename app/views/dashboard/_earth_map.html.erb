@@ -1,0 +1,21 @@
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+  google.load("visualization", "1", {packages:["map"]});
+  google.setOnLoadCallback(drawGeoMap);
+
+  function drawGeoMap() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', 'Latitude');
+      data.addColumn('number', 'Longitude');
+      data.addColumn('string', 'Loc Name');
+      
+
+      <% @data_array.each do |loc_hash| %>
+        data.addRow([ <%= loc_hash["lat"] %>, <%= loc_hash["long"] %>, '<%= j(loc_hash["name"] + ": " + loc_hash["p1"].to_s) %>' %>]);
+      <% end %>
+     
+      var map = new google.visualization.Map(document.getElementById('geomap_div'));
+      map.draw(data, {showTip: true});
+  };
+</script>
+<div id="geomap_div" style="width: 900px; height: 500px;"></div>
