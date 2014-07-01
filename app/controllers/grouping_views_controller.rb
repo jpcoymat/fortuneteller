@@ -229,7 +229,7 @@ class GroupingViewsController < ApplicationController
     end
 
     def end_date
-      params[:group_search][:end_date].blank? ? @end_date = Date.today + @user.organization.days_to_project.days : @end_date = Date.parse(params[:group_search][:end_date])
+      params[:group_search][:end_date].blank? ? @end_date = Date.today + (@user.organization.days_to_project - 1).days : @end_date = Date.parse(params[:group_search][:end_date])
       @end_date
     end
 

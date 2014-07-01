@@ -79,7 +79,7 @@ class InventoryPositionsController < ApplicationController
     end
 
     def end_date
-      params[:inventory_position_search][:end_date].blank? ? @end_date = Date.today + User.find(session[:user_id]).organization.days_to_project.days : @end_date = Date.parse(params[:inventory_position_search][:end_date])
+      params[:inventory_position_search][:end_date].blank? ? @end_date = Date.today + (@user.organization.days_to_project - 1).days : @end_date = Date.parse(params[:inventory_position_search][:end_date])
       @end_date
     end
 
