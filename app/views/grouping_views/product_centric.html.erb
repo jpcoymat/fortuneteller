@@ -1,8 +1,8 @@
 <h1>Product Centric View</h1>
  <p>Please enter a product category or select a unique Product (location and date ranges are optional).</p>
-  <%= form_for :product_search, url: product_centric_path, html: {class: "form-inline"}  do |form| %>
+  <%= form_for :group_search, url: product_centric_path, html: {class: "form-inline"}  do |form| %>
 	<p>
-        <%= form.label "Product" %> <%= form.select :product_id, @products.collect {|product| [product.name, product.id]}, {include_blank: true} %>
+        <%= render partial: "product_autocomplete", locals: {form: form} %> 
 	<%= form.label "Product Category" %> <%= form.text_field :product_category	%>
 	</p>
 	<p>
@@ -11,8 +11,17 @@
 
 	</p>
 	<p>
-        <%= form.label "Begin Projection Date" %><%= form.date_select :begin_date, {start_year: Date.today.year, include_blank: true}, class: "form-inline" %>
-        <%= form.label "End Projection Date" %><%= form.date_select :end_date, {start_year: Date.today.year, include_blank: true}, class: "form-inline" %>
+        <%= form.label "Begin Projection Date" %>
+        <%= form.text_field :begin_date  %>
+        <script>
+          $( "#group_search_begin_date" ).datepicker({minDate: 0, maxDate: "<%=@organization.days_to_project%>D", dateFormat: "yy-mm-dd"});
+        </script>
+
+        <%= form.label "End Projection Date" %>
+        <%= form.text_field :end_date  %>
+        <script>
+          $( "#group_search_end_date" ).datepicker({minDate: 0, maxDate: "<%=@organization.days_to_project%>D", dateFormat: "yy-mm-dd"});
+        </script>
 	</p>
         <%= submit_tag "Lookup Projections", class: "btn btn-primary" %>
   <% end %>

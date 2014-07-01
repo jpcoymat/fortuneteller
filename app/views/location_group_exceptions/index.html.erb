@@ -14,11 +14,9 @@
             <td><%= render partial: "gauge_chart", locals: {location_group_exception: location_group_exception, max_duration: @max_duration} %></td>
             <td><%= location_group_exception.begin_date.to_formatted_s(:short)	%></td>
             <td><%= location_group_exception.end_date.to_formatted_s(:short)	%></td>
-            <td><%= button_to "View Projections", product_centric_path(product_search: {location_group_id: location_group_exception.location_group_id,
-											product_id: location_group_exception.product_id,
-											"end_date(1i)" => location_group_exception.end_date.year,
-											"end_date(2i)" => location_group_exception.end_date.month,
-											"end_date(3i)"  => location_group_exception.end_date.day}) %></td>
+            <td><%= button_to "View Projections", product_centric_path(group_search: {location_group_id: location_group_exception.location_group_id,
+											product_name: location_group_exception.product.name,
+											end_date: location_group_exception.end_date.strftime('%Y-%m-%d')}) %></td>
       <% end %>  
   <% end %>
 

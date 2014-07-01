@@ -4,15 +4,16 @@ class GroupingViewsController < ApplicationController
   before_action :set_user
 
   def product_centric
-    @locations = @user.organization.locations
-    @products =  @user.organization.products
-    @location_groups = @user.organization.location_groups
+    @organization = @user.organization 
+    @locations = @organization.locations
+    @products =  @organization.products
+    @location_groups = @organization.location_groups
     if request.post? 	
       @clean_search_hash = clean_product_search_params 
       @inventory_positions = inventory_positions_for_product_centric
       if @inventory_positions.class != String and @inventory_positions.count > 0
-        current_search_date = product_begin_date
-        end_search_date = product_end_date(@inventory_positions)
+        current_search_date = begin_date
+        end_search_date = end_date
         @search_criteria_to_string = search_criteria_to_string(@clean_search_hash.merge({"begin_date" => current_search_date, "end_date" => end_search_date}))
         @data = []
         @inventory_hash = {}
@@ -72,14 +73,15 @@ class GroupingViewsController < ApplicationController
   end
 
   def location_centric
-    @locations = @user.organization.locations
-    @products =  @user.organization.products
+    @organization = @user.organization
+    @locations = @organization.locations
+    @products =  @organization.products
     if request.post?
       @clean_search_hash = clean_location_search_params
       @inventory_positions = inventory_positions_for_location_centric
       if @inventory_positions.count > 0
         current_search_date = begin_date
-        end_search_date = end_date(@inventory_positions)
+        end_search_date = end_date
         @search_criteria_to_string = search_criteria_to_string(@clean_search_hash.merge({"begin_date" => current_search_date, "end_date" => end_search_date}))
 	@data = []
 	@inventory_hash = {}
@@ -128,14 +130,15 @@ class GroupingViewsController < ApplicationController
   end
 
   def inventory_bucket_view
-    @location_groups = LocationGroup.where(organization: @user.organization)
-    @products = @user.organization.products
+    @organization = @user.organization
+    @location_groups = @organization.location_groups
+    @products = @organization.products
     if request.post?
       @locations = Location.where(location_group_id: bucket_search_params["location_group_id"])
-      @product_params_missing = (bucket_search_params["product_id"].blank? and bucket_search_params["product_category"].blank?)
+      @product_params_missing = (bucket_search_params["product_name"].blank? and bucket_search_params["product_category"].blank?)
       unless @locations.empty? or @product_params_missing
-        proj_start_date = bucket_begin_date
-        proj_stop_date = bucket_end_date([InventoryPosition.where(location: @locations.first).first])
+        proj_start_date = begin_date
+        proj_stop_date = end_date
         @data = []
         @series_hash = {}
         @locations.each do |location|
@@ -168,7 +171,7 @@ class GroupingViewsController < ApplicationController
     end
 
     def location_search_params
-      params.require(:location_search).permit(:product_id, :product_category, :location_id)
+      params.require(:group_search).permit(:product_name, :product_category, :location_id)
     end
 
     def clean_location_search_params
@@ -178,7 +181,7 @@ class GroupingViewsController < ApplicationController
     end
 
     def product_search_params
-      params.require(:product_search).permit(:product_id, :product_category, :location_id, :location_group_id)
+      params.require(:group_search).permit(:product_name, :product_category, :location_id, :location_group_id)
     end
 
     def clean_product_search_params
@@ -188,18 +191,14 @@ class GroupingViewsController < ApplicationController
     end
 
     def bucket_search_params
-      params.require(:bucket_search).permit(:product_id, :product_category, :inventory_bucket, :location_group_id)
+      params.require(:group_search).permit(:product_name, :product_category, :inventory_bucket, :location_group_id)
     end
-
-    def aggregate_daily_inventory_bucket(location, projection_date, inventory_bucket)
-    end
-
 
     def inventory_positions_for_location_centric
       products = Product.where(organization: @user.organization)
       @inventory_positions_for_location_centric = InventoryPosition.where(location_id: location_search_params["location_id"])
       products = products.where(product_category: location_search_params["product_category"]) unless location_search_params["product_category"].blank?
-      products = products.where(id: location_search_params["product_id"]) unless location_search_params["product_id"].blank?
+      products = products.where(name: location_search_params["product_name"]) unless location_search_params["product_id"].blank?
       array_of_product_ids = []
       products.each {|product| array_of_product_ids << product.id}
       @inventory_positions_for_location_centric = @inventory_positions_for_location_centric.in(product_id: array_of_product_ids) if array_of_product_ids.count > 0
@@ -208,14 +207,13 @@ class GroupingViewsController < ApplicationController
 
 
     def inventory_positions_for_product_centric
-      prods = Product.where(organization: @user.organization)
       @inventory_positions_for_product_centric = "Please enter a Product Category or select a Product" 
-      if product_search_params["product_id"].blank? and product_search_params["product_category"].blank?
+      if product_search_params["product_name"].blank? and product_search_params["product_category"].blank?
         return @inventory_positions_for_product_centric
       else
 	prods = Product.where(organization: @user.organization)
         prods = prods.where(product_category: product_search_params["product_category"]) unless product_search_params["product_category"].blank?
-	prods = prods.where(id: product_search_params["product_id"]) unless product_search_params["product_id"].blank?
+	prods = prods.where(name: product_search_params["product_name"]) unless product_search_params["product_name"].blank?
 	locs = Location.where(organization: @user.organization)
 	locs = locs.where(location_group_id: product_search_params["location_group_id"]) unless product_search_params["location_group_id"].blank?
 	locs = locs.where(id: product_search_params["location_id"]) unless product_search_params["location_id"].blank?
@@ -226,68 +224,19 @@ class GroupingViewsController < ApplicationController
 
 
     def begin_date
-      today = Date.today
-      submitted_date = Date.today - 1.day
-      unless params[:location_search]["begin_date(1i)"].blank? or params[:location_search]["begin_date(2i)"].blank? or params[:location_search]["begin_date(3i)"].blank?
-        submitted_date = Date.new(params[:location_search]["begin_date(1i)"].to_i, params[:location_search]["begin_date(2i)"].to_i, params[:location_search]["begin_date(3i)"].to_i)
-      end
-      begin_date = [today, submitted_date].max
-      begin_date
+      params[:group_search][:begin_date].blank? ? @begin_date = Date.today : @begin_date = Date.parse(params[:group_search][:begin_date])
+      @begin_date
     end
 
-    def end_date(inventory_positions)
-      end_date = nil
-      unless params[:location_search]["end_date(1i)"].blank? or params[:location_search]["end_date(2i)"].blank? or params[:location_search]["end_date(3i)"].blank?
-        end_date = Date.new(params[:location_search]["end_date(1i)"].to_i, params[:location_search]["end_date(2i)"].to_i, params[:location_search]["end_date(3i)"].to_i)
-      else
-        end_date = last_projection_date(inventory_positions)
-      end
-      end_date
+    def end_date
+      params[:group_search][:end_date].blank? ? @end_date = Date.today + @user.organization.days_to_project.days : @end_date = Date.parse(params[:group_search][:end_date])
+      @end_date
     end
 
-    def product_begin_date
-      today = Date.today
-      submitted_date = Date.today - 1.day
-      unless params[:product_search]["begin_date(1i)"].blank? or params[:product_search]["begin_date(2i)"].blank? or params[:product_search]["begin_date(3i)"].blank?
-        submitted_date = Date.new(params[:product_search]["begin_date(1i)"].to_i, params[:product_search]["begin_date(2i)"].to_i, params[:product_search]["begin_date(3i)"].to_i)
-      end
-      begin_date = [today, submitted_date].max
-      begin_date
-    end
-
-    def product_end_date(inventory_positions)
-      end_date = nil
-      unless params[:product_search]["end_date(1i)"].blank? or params[:product_search]["end_date(2i)"].blank? or params[:product_search]["end_date(3i)"].blank?
-        end_date = Date.new(params[:product_search]["end_date(1i)"].to_i, params[:product_search]["end_date(2i)"].to_i, params[:product_search]["end_date(3i)"].to_i)
-      else
-        end_date = last_projection_date(inventory_positions)
-      end
-      end_date
-    end
-
-    def bucket_begin_date
-      today = Date.today
-      submitted_date = Date.today - 1.day
-      unless params[:bucket_search]["begin_date(1i)"].blank? or params[:bucket_search]["begin_date(2i)"].blank? or params[:bucket_search]["begin_date(3i)"].blank?
-        submitted_date = Date.new(params[:bucket_search]["begin_date(1i)"].to_i, params[:bucket_search]["begin_date(2i)"].to_i, params[:bucket_search]["begin_date(3i)"].to_i)
-      end
-      begin_date = [today, submitted_date].max
-      begin_date
-    end
-
-    def bucket_end_date(inventory_positions)
-      end_date = nil
-      unless params[:bucket_search]["end_date(1i)"].blank? or params[:bucket_search]["end_date(2i)"].blank? or params[:bucket_search]["end_date(3i)"].blank?
-        end_date = Date.new(params[:bucket_search]["end_date(1i)"].to_i, params[:bucket_search]["end_date(2i)"].to_i, params[:bucket_search]["end_date(3i)"].to_i)
-      else
-        end_date = last_projection_date(inventory_positions)
-      end
-      end_date
-    end
 
     def inventory_positions_for_bucket_view(location)
       prods = Product.where(organization: @user.organization)
-      prods = prods.where(id: bucket_search_params["product_id"]) unless bucket_search_params["product_id"].blank?
+      prods = prods.where(name: bucket_search_params["product_name"]) unless bucket_search_params["product_name"].blank?
       prods = prods.where(product_category: bucket_search_params["product_category"]) unless bucket_search_params["product_category"].blank?
       @inventory_positions_for_bucket_view = InventoryPosition.in(product_id: prods.all.map {|prod| prod.id}).where(location: location)
       @inventory_positions_for_bucket_view

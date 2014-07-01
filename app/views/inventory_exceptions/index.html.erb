@@ -16,10 +16,8 @@
 		<td><%= inventory_exception.begin_date.to_formatted_s(:short) %></td>
 		<td><%= inventory_exception.end_date.to_formatted_s(:short) %></td>
  		<td><%= button_to "View Projections", lookup_inventory_positions_path(inventory_position_search:  {location_id: inventory_exception.location_id,
-														    product_id: inventory_exception.product_id,	
-														    "end_date(1i)" => inventory_exception.end_date.year,
-														    "end_date(2i)" => inventory_exception.end_date.month,
-														    "end_date(3i)"  => inventory_exception.end_date.day}) %></td> 
+														product_name: inventory_exception.product.name,	
+														end_date:  inventory_exception.end_date.strftime('%Y-%m-%d')})  %></td> 
       </tr>
 
    <% end %>

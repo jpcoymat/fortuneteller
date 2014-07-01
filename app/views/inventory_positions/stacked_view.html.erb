@@ -1,11 +1,19 @@
 <h1>Inventory Positions (Stacked View)</h1>
  <p>Please select a Product and Location to see projections.</p>
   <%= form_for :inventory_position_search, url: stacked_view_inventory_positions_path, html: {class: "form-inline"}  do |form| %>
-	<%= form.label "Product" %> <%= form.select :product_id, @products.collect {|product| [product.name, product.id]} %>
         <%= form.label "Location" %> <%= form.select :location_id, @locations.collect {|location| [location.name, location.id]} %>
-	<%= form.label "Begin Projection Date" %><%= form.date_select :begin_date, {start_year: Date.today.year, include_blank: true}, class: "form-inline" %> 
-        <%= form.label "End Projection Date" %><%= form.date_select :end_date, {start_year: Date.today.year, include_blank: true}, class: "form-inline" %>
-        <%= submit_tag "Lookup Projections", class: "btn btn-primary" %> 
+        <%= render partial: "product_autocomplete", locals: {form: form} %>
+        <%= form.label "Begin Projection Date" %>
+        <%= form.text_field :begin_date %>
+        <script>
+          $( "#inventory_position_search_begin_date" ).datepicker({minDate: 0, maxDate: "<%=@organization.days_to_project%>D", dateFormat: "yy-mm-dd"});
+        </script>
+        <%= form.label "End Projection Date" %>
+        <%= form.text_field :end_date  %>
+        <script>
+          $( "#inventory_position_search_end_date" ).datepicker({minDate: 0, maxDate: "<%=@organization.days_to_project%>D", dateFormat: "yy-mm-dd"});
+        </script>
+        <%= submit_tag "Lookup Projections", class: "btn btn-primary" %>
   <% end %>
   <br \><br \>
   <hr>

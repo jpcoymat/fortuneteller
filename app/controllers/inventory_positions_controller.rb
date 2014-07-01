@@ -53,11 +53,11 @@ class InventoryPositionsController < ApplicationController
     @products = @organization.products
     @locations = @organization.locations
     if request.post?
-      @inventory_position = InventoryPosition.where(search_params).first
+      @inventory_position = InventoryPosition.where(search_params).where(product: product).first
       if @inventory_position
         @product_location_assignment = ProductLocationAssignment.where(product: @inventory_position.product, location: @inventory_position.location).first
-        search_range_start = begin_date || Date.today
-        search_range_end = end_date || search_range_start + @user.organization.days_to_project.days
+        search_range_start = begin_date
+        search_range_end = end_date
         @projections = @inventory_position.inventory_projections.where(:projected_for.gte => search_range_start, :projected_for.lte => search_range_end).all
       end
     end
@@ -74,17 +74,12 @@ class InventoryPositionsController < ApplicationController
     end
    
     def begin_date
-      submitted_date = Date.parse(params[:inventory_position_search][:begin_date]) unless params[:inventory_position_search][:begin_date].blank?
-      @begin_date = [submitted_date, Date.today].max
+      params[:inventory_position_search][:begin_date].blank? ? @begin_date = Date.today : @begin_date = Date.parse(params[:inventory_position_search][:begin_date])
       @begin_date
     end
 
     def end_date
-      if params[:inventory_position_search][:end_date].blank?
-        @end_date = Date.today + User.find(session[:user_id]).organization.days_to_project.days
-      else
-        @end_date = Date.parse(params[:inventory_position_search][:end_date])
-      end
+      params[:inventory_position_search][:end_date].blank? ? @end_date = Date.today + User.find(session[:user_id]).organization.days_to_project.days : @end_date = Date.parse(params[:inventory_position_search][:end_date])
       @end_date
     end
 
