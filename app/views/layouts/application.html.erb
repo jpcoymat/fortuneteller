@@ -2,11 +2,12 @@
 <html>
 <head>
   <title>Fortuneteller</title>
+  <%= stylesheet_link_tag "application" %>
   <%= stylesheet_link_tag "bootstrap" %>
-  <%= stylesheet_link_tag "bootstrap-theme-min" %>
-  <%= stylesheet_link_tag "bootstrap-theme" %>
-  <%= stylesheet_link_tag "bootstrap-min" %>
+
   <%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
+  <%= javascript_include_tag "application" %>
+
   <%= csrf_meta_tags %>
 </head>
 <body>

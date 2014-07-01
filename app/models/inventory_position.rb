@@ -8,6 +8,22 @@ class InventoryPosition
   belongs_to :product
   belongs_to :location
 
+  def product_name  
+    self.product.name if self.product
+  end
+
+  def product_name=(name)
+    self.product_id = Product.where(name: name).first unless name.blank?
+  end
+
+  def location_name
+    self.location.name if self.location
+  end
+
+  def location_name=(name)
+    self.location_id = Location.where(name: name).first. unless name.blank?
+  end
+
   def latest_projection_date
     self.inventory_projections.last.projected_for
   end

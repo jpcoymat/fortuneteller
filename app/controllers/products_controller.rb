@@ -3,6 +3,16 @@ class ProductsController < ApplicationController
   before_filter :authorize  
   before_action :set_product, only: [:show, :edit, :update, :destroy]
 
+  def index
+    @user = User.find(session[:user_id])
+    @products = @user.organization.products
+    respond_to do |format|
+      format.html
+      format.xml {render xml: @products}
+      format.json {render json: @products}
+    end
+  end
+
 
   def lookup
     @user = User.find(session[:user_id])

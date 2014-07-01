@@ -2,9 +2,11 @@ class InventoryPositionsController < ApplicationController
 
   before_filter :authorize
   before_action :set_organization
-   
+  
+ 
   def lookup
     @user = User.find(session[:user_id])
+    @organization = @user.organization
     @products = @organization.products
     @locations = @organization.locations
     if request.post?
