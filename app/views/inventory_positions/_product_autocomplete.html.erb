@@ -1,0 +1,16 @@
+
+<%= form.label "Product Name" %>
+<script>
+$(function() {
+    var product_names = [
+      <% @products.each do |product| %>
+        "<%= product.name %>", 
+      <% end %>
+    ""];
+    $( "#product_names" ).autocomplete({
+      source: product_names
+    });
+});
+</script>
+<%= form.text_field :product_name, id: "product_names" %>
+
