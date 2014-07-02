@@ -84,11 +84,11 @@ class ShipLinesController < ApplicationController
     end
 
     def full_eta
-      eta = Date.new(params[:ship_line]["eta(1i)"].to_i, params[:ship_line]["eta(2i)"].to_i, params[:ship_line]["eta(3i)"].to_i)
+      eta = Date.parse(params[:ship_line][:eta])
     end
    
     def full_etd
-      etd = Date.new(params[:ship_line]["eta(1i)"].to_i, params[:ship_line]["eta(2i)"].to_i, params[:ship_line]["eta(3i)"].to_i)
+      etd = Date.parse(params[:ship_line][:eta])
     end
 
 end

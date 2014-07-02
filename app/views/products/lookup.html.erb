@@ -3,8 +3,10 @@
 
 <%= form_for :product, url: lookup_products_path, html: {class: "form-search"}   do |form| %>
 	<%= form.hidden_field :organization_id, value: @user.organization_id %>
-
-        	<%= form.label "Product Name", class: "form-inline"%>  <%= form.text_field :name, class: "input-medium search-query" %> <%= form.label "Product Code", class: "form-inline" %><%= form.text_field :code, class: "input-medium search-query" %>
+	<%= form.label "Product Name", class: "form-inline"%>  
+	<%= form.text_field :name, class: "input-medium search-query" %> 
+	<%= form.label "Product Code", class: "form-inline" %>
+	<%= form.text_field :code, class: "input-medium search-query" %>
       
         <%= submit_tag "Search", {class: "btn btn-primary"} %>
 <% end %>

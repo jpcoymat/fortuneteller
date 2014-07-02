@@ -67,6 +67,15 @@ class MovementSource
     @child_movement_sources = MovementSource.where(parent_movement_source_id: self.id).all
   end
 
+
+  def product_name
+    self.product.try(:name)
+  end
+
+  def product_name=(name)
+    self.product_id = Product.where(name: name).first.id
+  end
+
   protected
 
     def set_original_quantity

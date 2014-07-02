@@ -1,0 +1,15 @@
+
+  <%= form.label "Reference Number" %>
+  <script>
+    $(function() {
+      var forecasts = [
+        <% movement_sources.each do |forecast| %>
+          "<%= forecast.object_reference_number %>",
+        <% end %>
+      ""];
+      $( "#<%= source_type%>_object_reference_number" ).autocomplete({
+        source: forecasts
+      });
+    });
+  </script>
+  <%= form.text_field :object_reference_number %>

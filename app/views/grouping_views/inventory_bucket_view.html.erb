@@ -10,7 +10,7 @@
         <%= form.label "Location Group" %> <%= form.select :location_group_id, @location_groups.collect {|loc_group| [loc_group.name, loc_group.id]} %>
         </p>
         <p>
-        <%= render partial: "product_autocomplete", locals: {form: form} %>
+        <%= render partial: "shared/product_autocomplete", locals: {form: form} %>
         <%= form.label "Product Category" %> <%= form.text_field :product_category      %>
         </p>
         <p>

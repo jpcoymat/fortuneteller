@@ -2,7 +2,7 @@
  <p>Please select a Product and Location to see projections.</p>
   <%= form_for :inventory_position_search, url: stacked_view_inventory_positions_path, html: {class: "form-inline"}  do |form| %>
         <%= form.label "Location" %> <%= form.select :location_id, @locations.collect {|location| [location.name, location.id]} %>
-        <%= render partial: "product_autocomplete", locals: {form: form} %>
+        <%= render partial: "shared/product_autocomplete", locals: {form: form} %>
         <%= form.label "Begin Projection Date" %>
         <%= form.text_field :begin_date %>
         <script>

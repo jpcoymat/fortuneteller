@@ -2,7 +2,7 @@
  <p>Please enter a product category or select a unique Product (location and date ranges are optional).</p>
   <%= form_for :group_search, url: product_centric_path, html: {class: "form-inline"}  do |form| %>
 	<p>
-        <%= render partial: "product_autocomplete", locals: {form: form} %> 
+        <%= render partial: "shared/product_autocomplete", locals: {form: form} %> 
 	<%= form.label "Product Category" %> <%= form.text_field :product_category	%>
 	</p>
 	<p>
