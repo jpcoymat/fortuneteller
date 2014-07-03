@@ -13,7 +13,6 @@ class ForecastsController < ApplicationController
     @all_forecasts = Forecast.where(organization: @user.organization)
     @locations = @user.organization.locations
     if request.post?
-      search_params = forecast_params.delete_if {|k,v| v.blank?}
       @forecasts = Forecast.where(search_params) 
     end
   end
@@ -87,6 +86,15 @@ class ForecastsController < ApplicationController
 
    def full_etd
      etd = Date.parse(params[:forecast][:etd])
+   end
+
+   def search_params
+     search_params = forecast_params.delete_if {|k,v| v.blank?}
+     if search_params.key?("product_name")
+       search_params["product_id"] =  Product.where(name: search_params["product_name"]).first.id
+       search_params.delete("product_name")
+     end
+     search_params
    end
    
 end

@@ -9,8 +9,7 @@ class OrderLinesController < ApplicationController
     @locations = @user.organization.locations
     @all_order_lines = OrderLine.where(organization: @user.organization)
     if request.post?
-      params[:order_line].delete_if {|k,v| v.blank?}
-      @order_lines = OrderLine.where(params[:order_line])
+      @order_lines = OrderLine.where(search_params)
     end	
   end
 
@@ -91,6 +90,16 @@ class OrderLinesController < ApplicationController
     def full_etd
       etd = Date.parse(params[:order_line][:etd])
     end
+
+    def search_params
+      search_params = order_line_params.delete_if {|k,v| v.blank?}
+      if search_params.key?("product_name")
+        search_params["product_id"] =  Product.where(name: search_params["product_name"]).first.id
+        search_params.delete("product_name")
+      end
+      search_params
+    end
+
 
 end
 

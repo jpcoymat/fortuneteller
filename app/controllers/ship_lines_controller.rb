@@ -13,8 +13,7 @@ class ShipLinesController < ApplicationController
     @locations = @user.organization.locations
     @all_ship_lines = ShipLine.where(organization: @user.organization)
     if request.post?
-      params[:ship_line].delete_if {|k,v| v.blank?}
-      @ship_lines = ShipLine.where(params[:ship_line])
+      @ship_lines = ShipLine.where(search_params)
     end
   end
 
@@ -91,5 +90,15 @@ class ShipLinesController < ApplicationController
     def full_etd
       etd = Date.parse(params[:ship_line][:eta])
     end
+
+    def search_params
+      search_params = ship_line_params.delete_if {|k,v| v.blank?}
+      if search_params.key?("product_name")
+        search_params["product_id"] =  Product.where(name: search_params["product_name"]).first.id
+        search_params.delete("product_name")
+      end
+      search_params
+    end
+
 
 end

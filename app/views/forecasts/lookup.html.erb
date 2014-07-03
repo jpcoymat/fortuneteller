@@ -23,7 +23,6 @@
               <td><%= forecast.etd.to_s %></td>
               <td><%= forecast.product.name %></td>
               <td><%= forecast.origin_location.try(:name) %></td>
-              <td><%= forecast.destination_location.try(:name) %></td>
               <td><%= forecast.quantity.to_s        %></td>
               <td><%= link_to "Details", forecast_path(forecast)  %></td>
 	      <td><%= link_to "Edit", edit_forecast_path(forecast) %></td>	
