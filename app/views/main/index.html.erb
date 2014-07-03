@@ -1,6 +1,24 @@
 <h1>Main Menu </h1>
-
-	<h4>Configuration </h4>
+  <script>
+  $(function() {
+    var tabs = $( "#tabs" ).tabs();
+    tabs.find( ".ui-tabs-nav" ).sortable({
+      axis: "x",
+      stop: function() {
+        tabs.tabs( "refresh" );
+      }
+    });
+  });
+  </script>
+  <div id="tabs">
+    <ul>
+      <li><a href="#dashboard-tab">Dashboard</a></li>
+      <li><a href="#projections-tab">Projections</a></li>
+      <li><a href="#sources-tab">Sources</a></li>
+      <li><a href="#adjustments-tab">Adjustments</a></li>
+      <li><a href="#configuration-tab">Configuration</a></li>
+    </ul>
+	<div id="configuration-tab">
 		<ul class="nav">
 			<li><%= link_to "Users", users_path %></li>
 			<li><%= link_to "Products", lookup_products_path %></li>
@@ -8,11 +26,13 @@
 			<li><%= link_to "Location Groups", location_groups_path %></li>
 			<li><%= link_to "Product Location Assignment", product_location_assignments_path %></li>
 		</ul>
-	<h4>Dashboard</h4>
+	</div>
+	<div id="dashboard-tab">
 		<ul class="nav">
 			<li><%= link_to "Dashboard", dashboard_path %></li>
 		</ul>
-	<h4>Projections</h4>
+	</div>
+	<div id="projections-tab">
 		<ul class="nav">
 			<li><%= link_to "Projections", lookup_inventory_positions_path %></li>
 			<li><%= link_to "Product View", product_centric_path %></li>
@@ -20,19 +40,21 @@
 			<li><%= link_to "Inventory Bucket View", inventory_bucket_view_path %></li>
 			<li><%= link_to "Stacked View",  stacked_view_inventory_positions_path %>
 		</ul>
-	<h4>Sources</h4>
+	</div>
+	<div id="sources-tab">
 		<ul class="nav">
 			<li><%= link_to "Ship Lines", lookup_ship_lines_path %></li>
 			<li><%= link_to "Order Lines", lookup_order_lines_path %></li>
 			<li><%= link_to "Forecasts", lookup_forecasts_path %></li>
 		</ul>
-  	<h4>Adjusments</h4>
+	</div>
+  	<div id="adjustments-tab">
 		<ul class="nav">
 			<li><%= link_to "Inventory Advice", inventory_advices_path %></li>
 			<li><%= link_to "Receipts", receipts_path %></li>
 			<li><%= link_to "Shipment Confirmations", shipment_confirmations_path %></li>
 		</ul>
+	</div>
+  </div>
 	<br \><br \>
-
-       
 	<%= link_to "Log Out", login_logout_path, method: :post %>
