@@ -2,13 +2,13 @@
   <%= form.label "Reference Number" %>
   <script>
     $(function() {
-      var forecasts = [
-        <% movement_sources.each do |forecast| %>
-          "<%= forecast.object_reference_number %>",
+      var movement_sources = [
+        <% movement_sources.each do |ms| %>
+          "<%= ms.object_reference_number %>",
         <% end %>
       ""];
       $( "#<%= source_type%>_object_reference_number" ).autocomplete({
-        source: forecasts
+        source: movement_sources
       });
     });
   </script>

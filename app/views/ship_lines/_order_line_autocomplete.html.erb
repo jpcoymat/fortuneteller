@@ -1,0 +1,15 @@
+  <%= form.label "Order Line Ref Number" %>
+  <script>
+    $(function() {
+      var order_lines = [
+        <% @order_lines.each do |order_line| %>
+          "<%= order_line.object_reference_number %>",
+        <% end %>
+      ""];
+      $( "#ship_line_parent_movement_source_object_reference_number" ).autocomplete({
+        source: order_lines 
+      });
+    });
+  </script>
+  <%= form.text_field :parent_movement_source_object_reference_number %>
+

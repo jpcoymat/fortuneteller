@@ -4,25 +4,17 @@
     <%= form.text_field :object_reference_number, class: "form-control" %>
   </div>
 </div>
-<div class="form-group">
-  <%= form.label "Order Line", class: "col-sm-2 control-label" %>
-  <div class="col-xs-4">
-    <%= form.select :parent_movement_source_id, @order_lines.collect {|ol| [ol.object_reference_number, ol.id]}, {include_blank: true}, class: "form-control" %>
-  </div>
-</div>
-
+<%= render partial: "order_line_autocomplete", locals: {form: form} %>
 <div class="form-group">
   <%= form.label "ETA", class: "col-sm-2 control-label" %>
   <div class="col-xs-2"> 
-    <%= form.date_select :eta, {start_year: Date.today.year}, class: "form-control"  %>
+    <%= form.text_field :eta %>
+    <script>
+      $( "#ship_line_eta" ).datepicker({minDate: 0, dateFormat: "yy-mm-dd"});
+    </script>  
   </div> 
 </div>
-<div class="form-group">
-  <%= form.label "Product", class: "col-sm-2 control-label" %>
-  <div class="col-xs-4">
-    <%= form.select :product_id, @products.collect {|product| [product.name, product.id]}, class: "form-control" %>
-  </div>
-</div>
+<%= render partial: "shared/product_form_auto", locals: {form: form} %>
 <div class="form-group">
   <%= form.label "Origin Location", class: "col-sm-2 control-label" %>
   <div class="col-xs-4">
@@ -32,7 +24,7 @@
 <div class="form-group">
   <%= form.label "Destination Location", class: "col-sm-2 control-label" %>
   <div class="col-xs-4">
-		<%= form.select :destination_location_id, @locations.collect {|loc| [loc.name, loc.id]}, {include_blank: true}, class: "form-control" %>
+    <%= form.select :destination_location_id, @locations.collect {|loc| [loc.name, loc.id]}, {include_blank: true}, class: "form-control" %>
   </div>
 </div>
 <div class="form-group">

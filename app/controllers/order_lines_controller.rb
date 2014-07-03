@@ -1,11 +1,13 @@
 class OrderLinesController < ApplicationController
+
   before_filter :authorize
   before_action :set_order_line, only: [:show,:edit,:update,:destroy]
 
   def lookup
     @user = User.find(session[:user_id])
-    @products = Product.all
-    @locations = Location.all
+    @products = @user.organization.products
+    @locations = @user.organization.locations
+    @all_order_lines = OrderLine.where(organization: @user.organization)
     if request.post?
       params[:order_line].delete_if {|k,v| v.blank?}
       @order_lines = OrderLine.where(params[:order_line])
@@ -75,7 +77,7 @@ class OrderLinesController < ApplicationController
   private
     
     def order_line_params
-      params.require(:order_line).permit(:last_shift_date, :object_reference_number, :product_id, :origin_location_id, :destination_location_id, :quantity, :organization_id)
+      params.require(:order_line).permit(:product_name, :last_shift_date, :object_reference_number, :product_id, :origin_location_id, :destination_location_id, :quantity, :organization_id)
     end
 
     def set_order_line
@@ -83,11 +85,11 @@ class OrderLinesController < ApplicationController
     end  
 
     def full_eta
-      eta = Date.new(params[:order_line]["eta(1i)"].to_i, params[:order_line]["eta(2i)"].to_i, params[:order_line]["eta(3i)"].to_i)
+      eta = Date.parse(params[:order_line][:eta])
     end
 
     def full_etd
-      etd = Date.new(params[:order_line]["etd(1i)"].to_i, params[:order_line]["etd(2i)"].to_i, params[:order_line]["etd(3i)"].to_i)
+      etd = Date.parse(params[:order_line][:etd])
     end
 
 end

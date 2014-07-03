@@ -9,8 +9,9 @@ class ShipLinesController < ApplicationController
 
   def lookup
     @user = User.find(session[:user_id])
-    @products = Product.all
-    @locations = Location.all
+    @products = @user.organization.products 
+    @locations = @user.organization.locations
+    @all_ship_lines = ShipLine.where(organization: @user.organization)
     if request.post?
       params[:ship_line].delete_if {|k,v| v.blank?}
       @ship_lines = ShipLine.where(params[:ship_line])
@@ -76,7 +77,7 @@ class ShipLinesController < ApplicationController
   private
 
     def ship_line_params
-       params.require(:ship_line).permit(:last_shift_date, :parent_movement_source_id, :organization_id, :origin_location_id, :destination_location_id, :product_id, :quantity, :object_reference_number)
+       params.require(:ship_line).permit(:parent_movement_source_object_reference_number, :product_id, :product_name, :last_shift_date, :parent_movement_source_id, :organization_id, :origin_location_id, :destination_location_id, :quantity, :object_reference_number)
     end
 
     def set_ship_line

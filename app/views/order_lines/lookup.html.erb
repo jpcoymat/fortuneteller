@@ -3,10 +3,8 @@
 
 <%= form_for :order_line, url: lookup_order_lines_path, html: {class: "form-search"}   do |form| %>
         <%= form.hidden_field :organization_id, value: @user.organization_id %>
-	<%= form.label "Reference Number",  class: "form-inline"%>
-	<%= form.text_field :object_reference_number	%>
-	<%= form.label "Product Name", class: "form-inline"%>  
-	<%= form.select :product_id, @products.collect {|prod| [prod.name,  prod.id]}, {include_blank: true}, class: "form-inline" %>
+	<%= render partial: "shared/reference_number_autocomplete", locals: {form: form, movement_sources: @all_order_lines, source_type: "order_line"} %>
+	<%= render partial: "shared/product_autocomplete", locals: {form: form} %>
 	<%= form.label "Origin Location", class: "form-inline" %>
 	<%= form.select :origin_location_id, @locations.collect {|loc| [loc.name, loc.id]}, {include_blank: true}, class: "form-inline" %>
   	<%= form.label "Destination Location" , class: "form-inline" %>
