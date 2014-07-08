@@ -1,13 +1,28 @@
   <%= form.label "Order Line Ref Number" %>
   <script>
+    var order_lines = [
+      <% @order_lines.each do |order_line| %>
+        "<%= order_line.object_reference_number %>",
+      <% end %>
+    ""];
+
+    var order_lines_ids = new Object();
+    <% @order_lines.each do |order_line| %>
+      order_lines_ids["<%= order_line.object_reference_number %>"] = "<%= order_line.id.to_s %>";
+    <% end %>
+
     $(function() {
-      var order_lines = [
-        <% @order_lines.each do |order_line| %>
-          "<%= order_line.object_reference_number %>",
-        <% end %>
-      ""];
       $( "#ship_line_parent_movement_source_object_reference_number" ).autocomplete({
-        source: order_lines 
+        source: order_lines
+      });
+    });
+	
+    $(function() {
+      $( "#ship_line_parent_movement_source_object_reference_number" ).change(function() {
+        var order_ref_number = this.value;
+	var order_id = order_lines_ids[order_ref_number];
+	var order_json = $.getJSON('/order_lines/' + order_id);
+	console.log(order_json);
       });
     });
   </script>

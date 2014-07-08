@@ -8,13 +8,13 @@
 	</p>
 	<p>
         <%= form.label "Begin Projection Date" %>
-        <%= form.text_field :begin_date %>
+        <%= form.text_field :begin_date, value: @begin_date.strftime("%Y-%m-%d") %>
         <script>
           $( "#group_search_begin_date" ).datepicker({minDate: 0, maxDate: "<%=@organization.days_to_project%>D", dateFormat: "yy-mm-dd"});
         </script>
         
         <%= form.label "End Projection Date" %>
-        <%= form.text_field :end_date  %>
+        <%= form.text_field :end_date, value: @end_date.strftime("%Y-%m-%d")  %>
         <script>
           $( "#group_search_end_date" ).datepicker({minDate: 0, maxDate: "<%=@organization.days_to_project%>D", dateFormat: "yy-mm-dd"});
         </script>

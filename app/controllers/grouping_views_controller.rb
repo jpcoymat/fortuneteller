@@ -1,7 +1,7 @@
 class GroupingViewsController < ApplicationController
 
   before_filter :authorize
-  before_action :set_user
+  before_action :set_user, :set_selected_product, :set_begin_and_end_dates
 
   def product_centric
     @organization = @user.organization 
@@ -12,9 +12,7 @@ class GroupingViewsController < ApplicationController
       @clean_search_hash = clean_product_search_params 
       @inventory_positions = inventory_positions_for_product_centric
       if @inventory_positions.class != String and @inventory_positions.count > 0
-        current_search_date = begin_date
-        end_search_date = end_date
-        @search_criteria_to_string = search_criteria_to_string(@clean_search_hash.merge({"begin_date" => current_search_date, "end_date" => end_search_date}))
+        @search_criteria_to_string = search_criteria_to_string(@clean_search_hash.merge({"begin_date" => @begin_date, "end_date" => @end_date}))
         @data = []
         @inventory_hash = {}
         min_quantity_data = []
@@ -25,7 +23,8 @@ class GroupingViewsController < ApplicationController
         forecasted_data = []
         available_data = []
         max_quantity_data = []
-        while current_search_date <= end_search_date
+        current_search_date = @begin_date
+        while current_search_date <= @end_date
           min_quantity, total_on_hand, total_on_order, total_in_transit, total_allocated, total_forecasted, total_available, max_quantity = 0,0,0,0,0,0,0,0
           @inventory_positions.each do |position|
             projection = position.inventory_projections.where(projected_for: current_search_date).first
@@ -80,9 +79,8 @@ class GroupingViewsController < ApplicationController
       @clean_search_hash = clean_location_search_params
       @inventory_positions = inventory_positions_for_location_centric
       if @inventory_positions.count > 0
-        current_search_date = begin_date
-        end_search_date = end_date
-        @search_criteria_to_string = search_criteria_to_string(@clean_search_hash.merge({"begin_date" => current_search_date, "end_date" => end_search_date}))
+        current_search_date = @begin_date
+        @search_criteria_to_string = search_criteria_to_string(@clean_search_hash.merge({"begin_date" => @begin_date, "end_date" => @end_date}))
 	@data = []
 	@inventory_hash = {}
         on_hand_data = []
@@ -91,7 +89,7 @@ class GroupingViewsController < ApplicationController
         allocated_data = []
         forecasted_data = []
         available_data = []        
-        while current_search_date <= end_search_date
+        while current_search_date <= @end_date
           total_on_hand, total_on_order, total_in_transit, total_allocated, total_forecasted, total_available = 0,0,0,0,0,0
           @inventory_positions.each do |position|
 	    projection = position.inventory_projections.where(projected_for: current_search_date).first
@@ -137,16 +135,14 @@ class GroupingViewsController < ApplicationController
       @locations = Location.where(location_group_id: bucket_search_params["location_group_id"])
       @product_params_missing = (bucket_search_params["product_name"].blank? and bucket_search_params["product_category"].blank?)
       unless @locations.empty? or @product_params_missing
-        proj_start_date = begin_date
-        proj_stop_date = end_date
+        current_date = @begin_date 
         @data = []
         @series_hash = {}
         @locations.each do |location|
           location_data =[]
           @inventory_positions = inventory_positions_for_bucket_view(location)
           if @inventory_positions.count > 0
-            current_date = proj_start_date  
-            while current_date <= proj_stop_date
+            while current_date <= @end_date
               bucket_quantity = 0
               @inventory_positions.each do |position|
                 projection = position.inventory_projections.where(projected_for: current_date).first
@@ -224,15 +220,33 @@ class GroupingViewsController < ApplicationController
 
 
     def begin_date
-      params[:group_search][:begin_date].blank? ? @begin_date = Date.today : @begin_date = Date.parse(params[:group_search][:begin_date])
+      if params[:group_search].nil? or params[:group_search][:begin_date].blank?
+        @begin_date = Date.today 
+      else
+        @begin_date = Date.parse(params[:group_search][:begin_date])
+      end
       @begin_date
     end
 
     def end_date
-      params[:group_search][:end_date].blank? ? @end_date = Date.today + (@user.organization.days_to_project - 1).days : @end_date = Date.parse(params[:group_search][:end_date])
+      if params[:group_search].nil? or params[:group_search][:end_date].blank?
+        @end_date = Date.today + (@user.organization.days_to_project - 1).days
+      else
+        @end_date = Date.parse(params[:group_search][:end_date])
+      end
       @end_date
     end
 
+    def set_begin_and_end_dates
+      begin_date
+      end_date
+    end
+
+
+    def set_selected_product
+      params[:group_search] ? @selected_product =  params[:group_search][:product_name] : @selected_product = ""
+      @selected_product
+    end
 
     def inventory_positions_for_bucket_view(location)
       prods = Product.where(organization: @user.organization)
@@ -241,6 +255,7 @@ class GroupingViewsController < ApplicationController
       @inventory_positions_for_bucket_view = InventoryPosition.in(product_id: prods.all.map {|prod| prod.id}).where(location: location)
       @inventory_positions_for_bucket_view
     end
+
 
 
     def last_projection_date(inventory_positions)

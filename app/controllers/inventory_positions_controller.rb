@@ -1,14 +1,14 @@
 class InventoryPositionsController < ApplicationController
 
   before_filter :authorize
-  before_action :set_organization
+  before_action :set_user, :set_organization, :set_begin_and_end_dates
   
  
   def lookup
     @user = User.find(session[:user_id])
     @organization = @user.organization
     @products = @organization.products
-    @locations = @organization.locations
+    @locations = @organization.locations 
     if request.post?
       @inventory_position = InventoryPosition.where(search_params).where(product: product).first
       if @inventory_position
@@ -22,9 +22,7 @@ class InventoryPositionsController < ApplicationController
 	forecasted_data = []
 	available_data = []
         max_quantity = []
-        search_range_start = begin_date 
-        search_range_end = end_date
-        @projections = @inventory_position.inventory_projections.where(:projected_for.gte => search_range_start, :projected_for.lte => search_range_end).all
+        @projections = @inventory_position.inventory_projections.where(:projected_for.gte => @begin_date, :projected_for.lte => @end_date).all
         @projections.each do |ip| 
           min_quantity << [ip.projected_for.to_formatted_s(:short),  @product_location_assignment.minimum_quantity]
 	  on_hand_data << [ip.projected_for.to_formatted_s(:short), ip.on_hand_quantity]
@@ -56,15 +54,18 @@ class InventoryPositionsController < ApplicationController
       @inventory_position = InventoryPosition.where(search_params).where(product: product).first
       if @inventory_position
         @product_location_assignment = ProductLocationAssignment.where(product: @inventory_position.product, location: @inventory_position.location).first
-        search_range_start = begin_date
-        search_range_end = end_date
-        @projections = @inventory_position.inventory_projections.where(:projected_for.gte => search_range_start, :projected_for.lte => search_range_end).all
+        @projections = @inventory_position.inventory_projections.where(:projected_for.gte => @begin_date, :projected_for.lte => @end_date).all
       end
     end
   end
   
 
   private 
+    
+    def set_user
+      @user = User.find(session[:user_id])
+    end
+
     def set_organization
       @organization = User.find(session[:user_id]).organization
     end
@@ -74,13 +75,26 @@ class InventoryPositionsController < ApplicationController
     end
    
     def begin_date
-      params[:inventory_position_search][:begin_date].blank? ? @begin_date = Date.today : @begin_date = Date.parse(params[:inventory_position_search][:begin_date])
+      if params[:inventory_position_search].nil? or params[:inventory_position_search][:begin_date].blank?  
+        @begin_date = Date.today 
+      else
+        @begin_date = Date.parse(params[:inventory_position_search][:begin_date])
+      end
       @begin_date
     end
 
     def end_date
-      params[:inventory_position_search][:end_date].blank? ? @end_date = Date.today + (@user.organization.days_to_project - 1).days : @end_date = Date.parse(params[:inventory_position_search][:end_date])
+      if params[:inventory_position_search].nil? or params[:inventory_position_search][:end_date].blank? 
+        @end_date = Date.today + (@user.organization.days_to_project - 1).days 
+      else
+        @end_date = Date.parse(params[:inventory_position_search][:end_date])
+      end
       @end_date
+    end
+
+    def set_begin_and_end_dates
+      begin_date
+      end_date
     end
 
     def product

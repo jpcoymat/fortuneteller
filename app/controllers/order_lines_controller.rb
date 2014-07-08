@@ -10,6 +10,10 @@ class OrderLinesController < ApplicationController
     @all_order_lines = OrderLine.where(organization: @user.organization)
     if request.post?
       @order_lines = OrderLine.where(search_params)
+      respond_to do |format|
+        format.html
+        format.json {render json: @order_lines}
+      end
     end	
   end
 
@@ -20,6 +24,10 @@ class OrderLinesController < ApplicationController
   end
 
   def show
+    respond_to do |format|
+      format.html
+      format.json {render json: @order_line} 
+    end
   end
 
   def edit
