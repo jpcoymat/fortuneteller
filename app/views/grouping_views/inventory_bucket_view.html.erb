@@ -7,11 +7,17 @@
 										["In Transit", "in_transit_quantity"],
 										["Allocated", "allocated_quantity"],
 										["Planned Consumption", "forecasted_quantity"]] %>	
-        <%= form.label "Location Group" %> <%= form.select :location_group_id, @location_groups.collect {|loc_group| [loc_group.name, loc_group.id]} %>
+        <%= form.label "Location Group" %> 
+        <%= form.select :location_group_id, @location_groups.collect {|loc_group| [loc_group.name, loc_group.id]} %>
+        <script>
+          <% if @location_group %>
+            $("#group_search_location_group_id").val('<%= @location_group.id.to_s %>');
+          <% end %>
+        </script>
         </p>
         <p>
         <%= render partial: "shared/product_autocomplete", locals: {form: form} %>
-        <%= form.label "Product Category" %> <%= form.text_field :product_category      %>
+        <%= form.label "Product Category" %> <%= form.text_field :product_category, value: @product_category      %>
         </p>
         <p>
         <%= form.label "Begin Projection Date" %>

@@ -2,9 +2,15 @@
  <p>Please select a Location to see projections (product and date ranges are optional).</p>
   <%= form_for :group_search, url: location_centric_path, html: {class: "form-inline"}  do |form| %>
 	<p>
-        <%= form.label "Location" %> <%= form.select :location_id, @locations.collect {|location| [location.name, location.id]} %>
+        <%= form.label "Location" %> 
+        <%= form.select :location_id, @locations.collect {|location| [location.name, location.id]} %>
+        <script>
+          <% if @location %>
+            $("#group_search_location_id").val('<%= @location.id.to_s %>');
+          <% end %>
+        </script>
         <%= render partial: "shared/product_autocomplete", locals: {form: form} %> 
-	<%= form.label "Product Category" %> <%= form.text_field :product_category	%>
+	<%= form.label "Product Category" %> <%= form.text_field :product_category, value: @product_category	%>
 	</p>
 	<p>
         <%= form.label "Begin Projection Date" %>

@@ -3,12 +3,23 @@
   <%= form_for :group_search, url: product_centric_path, html: {class: "form-inline"}  do |form| %>
 	<p>
         <%= render partial: "shared/product_autocomplete", locals: {form: form} %> 
-	<%= form.label "Product Category" %> <%= form.text_field :product_category	%>
+	<%= form.label "Product Category" %> <%= form.text_field :product_category, value: @product_category	%>
 	</p>
 	<p>
-	<%= form.label "Location Group" %> <%= form.select :location_group_id, @location_groups.collect {|loc_group| [loc_group.name, loc_group.id]}, {include_blank: true} %>
-	<%= form.label "Location" %> <%= form.select :location_id, @locations.collect {|location| [location.name, location.id]}, {include_blank: true} %>
+	<%= form.label "Location Group" %> 
+        <%= form.select :location_group_id, @location_groups.collect {|loc_group| [loc_group.name, loc_group.id]}, {include_blank: true} %>
+        <script>
+          <% if @location_group %>
+            $("#group_search_location_group_id").val('<%= @location_group.id.to_s %>');
+          <% end %>
+        </script>
 
+	<%= form.label "Location" %> <%= form.select :location_id, @locations.collect {|location| [location.name, location.id]}, {include_blank: true} %>
+        <script>
+          <% if @location %>
+            $("#group_search_location_id").val('<%= @location.id.to_s %>');	
+          <% end %>
+        </script>
 	</p>
 	<p>
         <%= form.label "Begin Projection Date" %>

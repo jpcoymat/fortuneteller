@@ -1,7 +1,7 @@
 class InventoryPositionsController < ApplicationController
 
   before_filter :authorize
-  before_action :set_user, :set_organization, :set_begin_and_end_dates
+  before_action :set_user, :set_organization, :set_begin_and_end_dates, :set_product, :set_location
   
  
   def lookup
@@ -10,7 +10,7 @@ class InventoryPositionsController < ApplicationController
     @products = @organization.products
     @locations = @organization.locations 
     if request.post?
-      @inventory_position = InventoryPosition.where(search_params).where(product: product).first
+      @inventory_position = InventoryPosition.where(search_params).where(product: @product).first
       if @inventory_position
         @product_location_assignment = ProductLocationAssignment.where(product: @inventory_position.product, location: @inventory_position.location).first
         @data = []
@@ -51,7 +51,7 @@ class InventoryPositionsController < ApplicationController
     @products = @organization.products
     @locations = @organization.locations
     if request.post?
-      @inventory_position = InventoryPosition.where(search_params).where(product: product).first
+      @inventory_position = InventoryPosition.where(search_params).where(product: @product).first
       if @inventory_position
         @product_location_assignment = ProductLocationAssignment.where(product: @inventory_position.product, location: @inventory_position.location).first
         @projections = @inventory_position.inventory_projections.where(:projected_for.gte => @begin_date, :projected_for.lte => @end_date).all
@@ -97,9 +97,23 @@ class InventoryPositionsController < ApplicationController
       end_date
     end
 
-    def product
-      @product = Product.where(name: params[:inventory_position_search][:product_name]).first unless params[:inventory_position_search][:product_name].blank?
+    def set_product
+      if  params[:inventory_position_search].nil? or  params[:inventory_position_search][:product_name].blank?
+        @product = nil
+      else
+        @product = Product.where(name: params[:inventory_position_search][:product_name]).first unless params[:inventory_position_search][:product_name].blank?
+      end
+      @product
     end
+
+   def set_location
+     if params[:inventory_position_search].nil? or  params[:inventory_position_search][:location_id].blank?
+       @location = nil
+     else
+       @location = Location.find(params[:inventory_position_search][:location_id])
+     end
+     @location
+   end
 
 
 end

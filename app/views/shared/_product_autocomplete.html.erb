@@ -12,5 +12,5 @@ $(function() {
     });
 });
 </script>
-<%= form.text_field :product_name, id: "product_names" %>
+<%= form.text_field :product_name, id: "product_names", value: @product.try(:name) %>
 

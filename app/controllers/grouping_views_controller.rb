@@ -1,7 +1,7 @@
 class GroupingViewsController < ApplicationController
 
   before_filter :authorize
-  before_action :set_user, :set_selected_product, :set_begin_and_end_dates
+  before_action :set_user, :set_product, :set_begin_and_end_dates, :set_location, :set_location_group, :set_product_category
 
   def product_centric
     @organization = @user.organization 
@@ -132,7 +132,7 @@ class GroupingViewsController < ApplicationController
     @location_groups = @organization.location_groups
     @products = @organization.products
     if request.post?
-      @locations = Location.where(location_group_id: bucket_search_params["location_group_id"])
+      @locations = Location.where(location_group: @location_group)
       @product_params_missing = (bucket_search_params["product_name"].blank? and bucket_search_params["product_category"].blank?)
       unless @locations.empty? or @product_params_missing
         current_date = @begin_date 
@@ -192,9 +192,9 @@ class GroupingViewsController < ApplicationController
 
     def inventory_positions_for_location_centric
       products = Product.where(organization: @user.organization)
-      @inventory_positions_for_location_centric = InventoryPosition.where(location_id: location_search_params["location_id"])
-      products = products.where(product_category: location_search_params["product_category"]) unless location_search_params["product_category"].blank?
-      products = products.where(name: location_search_params["product_name"]) unless location_search_params["product_id"].blank?
+      @inventory_positions_for_location_centric = InventoryPosition.where(location: @location)
+      products = products.where(product_category: @product_category) unless @product_category.blank?
+      products = products.where(id: @product.id) if @product
       array_of_product_ids = []
       products.each {|product| array_of_product_ids << product.id}
       @inventory_positions_for_location_centric = @inventory_positions_for_location_centric.in(product_id: array_of_product_ids) if array_of_product_ids.count > 0
@@ -205,19 +205,18 @@ class GroupingViewsController < ApplicationController
     def inventory_positions_for_product_centric
       @inventory_positions_for_product_centric = "Please enter a Product Category or select a Product" 
       if product_search_params["product_name"].blank? and product_search_params["product_category"].blank?
-        return @inventory_positions_for_product_centric
+        @inventory_positions_for_product_centric
       else
 	prods = Product.where(organization: @user.organization)
-        prods = prods.where(product_category: product_search_params["product_category"]) unless product_search_params["product_category"].blank?
-	prods = prods.where(name: product_search_params["product_name"]) unless product_search_params["product_name"].blank?
+        prods = prods.where(product_category: @product_category) unless @product_category.blank?
+	prods = prods.where(id: @product.id) if @product
 	locs = Location.where(organization: @user.organization)
-	locs = locs.where(location_group_id: product_search_params["location_group_id"]) unless product_search_params["location_group_id"].blank?
-	locs = locs.where(id: product_search_params["location_id"]) unless product_search_params["location_id"].blank?
+	locs = locs.where(location_group: @location_group) if @location_group
+	locs = locs.where(id: @location.id) if @location
 	@inventory_positions_for_product_centric = InventoryPosition.in(product_id: prods.all.map {|prod| prod.id}).in(location_id: locs.all.map {|loc| loc.id})
-	return @inventory_positions_for_product_centric
+	@inventory_positions_for_product_centric
       end
     end
-
 
     def begin_date
       if params[:group_search].nil? or params[:group_search][:begin_date].blank?
@@ -242,24 +241,29 @@ class GroupingViewsController < ApplicationController
       end_date
     end
 
+    def set_product
+      if params[:group_search].nil? or  params[:group_search][:product_name].blank?
+        @product = nil
+      else
+        @product = Product.where(name: params[:group_search][:product_name]).first 
+      end
+      @product
+    end
 
-    def set_selected_product
-      params[:group_search] ? @selected_product =  params[:group_search][:product_name] : @selected_product = ""
-      @selected_product
+    def set_location
+      @location = nil
+      if params[:group_search] and !(params[:group_search][:location_id].blank?)
+        @location = Location.find(params[:group_search][:location_id])
+      end
+      @location
     end
 
     def inventory_positions_for_bucket_view(location)
       prods = Product.where(organization: @user.organization)
-      prods = prods.where(name: bucket_search_params["product_name"]) unless bucket_search_params["product_name"].blank?
+      prods = prods.where(id: @product.id) if @product
       prods = prods.where(product_category: bucket_search_params["product_category"]) unless bucket_search_params["product_category"].blank?
       @inventory_positions_for_bucket_view = InventoryPosition.in(product_id: prods.all.map {|prod| prod.id}).where(location: location)
       @inventory_positions_for_bucket_view
-    end
-
-
-
-    def last_projection_date(inventory_positions)
-      @last_projection_date = inventory_positions.first.inventory_projections.last.projected_for
     end
 
     def search_criteria_to_string(search_criteria)
@@ -277,5 +281,21 @@ class GroupingViewsController < ApplicationController
       @search_criteria_to_string
     end
 
+   def set_location_group
+     @location_group = nil
+     if params[:group_search] and !(params[:group_search][:location_group_id].blank?)
+       @location_group = LocationGroup.find(params[:group_search][:location_group_id]) 
+     end
+     @location_group
+   end
+
+   def set_product_category
+     @product_category = ""
+     if params[:group_search] and !(params[:group_search][:product_category].blank?)
+       @product_category = params[:group_search][:product_category]
+     end
+     @product_category
+   end
+ 
 
 end
