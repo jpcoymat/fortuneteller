@@ -1,5 +1,4 @@
-
-<%= form.label "Product Name" %>
+<%= form.label "Product Name", {class: "col-sm-1 control-label"} %>
 <script>
 $(function() {
     var product_names = [
@@ -12,5 +11,6 @@ $(function() {
     });
 });
 </script>
-<%= form.text_field :product_name, id: "product_names", value: @product.try(:name) %>
-
+<div class="col-sm-2">
+  <%= form.text_field :product_name, id: "product_names", value: @product.try(:name), class: "form-control" %>
+</div>
