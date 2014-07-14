@@ -54,36 +54,10 @@
        <p>There are no Inventory Positon records for the product and location chosen.</p>
     <% else %>
        <h4>Inventory Projections for <%= @search_criteria_to_string %></h4>
-       <%= column_chart(@data, library: {
-                                        curveType: 'function',
-                                        title: "Inventory Projections",
-                                        legend:
-                                                {position: "bottom"},
-                                        series:
-                                                {
-                                                0 => {type: "line", pointSize: 0, color: "#336699" },
-                                                1 => {targetAxisIndex: 1, color: "#FF6600" },
-                                                2 => {targetAxisIndex: 1, color: "#666633" },
-                                                3 => {targetAxisIndex: 1, color: "#FFCC00" },
-                                                4 => {targetAxisIndex: 1, color: "#26ba26" },
-                                                5 => {type: "line", pointSize: 0, color: "#E96D63"}
-                                                },
-                                        vAxes: [{0 => {textStyle:{color: 'red'}}},{1 => {textStyle:{color: 'blue'}}}]})    %>
+       <%= render partial: "shared/googlechart"  %>
          <br \> <br \><br \>
         <h4>Detailed Inventory Projection Data</h4>
-        <table class="table table-striped">
-          <tr><th>Date</th><th>On Hand </th> <th>On Order </th><th>In Transit</th> <th>Allocated </th> <th>Planned Consumption</th><th>Available</th></tr>
-         <% @inventory_hash.each do |k,v| %>
-            <tr>        <td><%= link_to(k,  grouped_projections_path(projection_search: @clean_search_hash.merge({"projected_for" => k}))) %></td>
-                <td><%= v["on_hand_quantity"].to_s %></td>
-                <td><%= v["on_order_quantity"].to_s %></td>
-                <td><%= v["in_transit_quantity"].to_s %></td>
-                <td><%= v["allocated_quantity"].to_s %></td>
-                <td><%= v["forecasted_quantity"].to_s %></td>
-                <td><%= v["available_quantity"].to_s %></td>
-          </tr>
-          <% end %>
-        </table>
+        <%= render partial: "inventory_table" %>
     <% end %>
   <% end %>
   <br \> <br \><br \>

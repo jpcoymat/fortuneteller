@@ -2,49 +2,23 @@ class InventoryPositionsController < ApplicationController
 
   before_filter :authorize
   before_action :set_user, :set_organization, :set_begin_and_end_dates, :set_product, :set_location
-  
- 
+
   def lookup
-    @user = User.find(session[:user_id])
-    @organization = @user.organization
     @products = @organization.products
-    @locations = @organization.locations 
+    @locations = @organization.locations
     if request.post?
       @inventory_position = InventoryPosition.where(search_params).where(product: @product).first
       if @inventory_position
         @product_location_assignment = ProductLocationAssignment.where(product: @inventory_position.product, location: @inventory_position.location).first
         @data = []
-        min_quantity = []
-        on_hand_data = []
-	on_order_data =[]
-	in_transit_data = []
-	allocated_data = []
-	forecasted_data = []
-	available_data = []
-        max_quantity = []
         @projections = @inventory_position.inventory_projections.where(:projected_for.gte => @begin_date, :projected_for.lte => @end_date).all
-        @projections.each do |ip| 
-          min_quantity << [ip.projected_for.to_formatted_s(:short),  @product_location_assignment.minimum_quantity]
-	  on_hand_data << [ip.projected_for.to_formatted_s(:short), ip.on_hand_quantity]
-          available_data << [ip.projected_for.to_formatted_s(:short), ip.available_quantity]
-	  on_order_data << [ip.projected_for.to_formatted_s(:short), ip.on_order_quantity]
- 	  in_transit_data << [ip.projected_for.to_formatted_s(:short), ip.in_transit_quantity]
-	  allocated_data << [ip.projected_for.to_formatted_s(:short), ip.allocated_quantity]
-	  forecasted_data << [ip.projected_for.to_formatted_s(:short), ip.forecasted_quantity]
-          max_quantity << [ip.projected_for.to_formatted_s(:short), @product_location_assignment.maximum_quantity]
+        @projections.each do |ip|
+          @data << [ip.projected_for.to_formatted_s(:short),  @product_location_assignment.minimum_quantity,  ip.on_hand_quantity, ip.available_quantity, ip.on_order_quantity, ip.in_transit_quantity, ip.allocated_quantity, ip.forecasted_quantity, @product_location_assignment.maximum_quantity]
         end
-        @data << {name: "Min", data: min_quantity}
-        @data << {name: "On Hand", data: on_hand_data}
-	@data << {name: "In Transit", data: in_transit_data}
-	@data << {name: "On Order", data: on_order_data}
-	@data << {name: "Allocated", data: allocated_data}
-	@data << {name: "Planned Consumption", data: forecasted_data}
-	@data << {name: "Available", data: available_data}
-        @data << {name: "Max", data: max_quantity}
       end
-      logger.debug "Data: " + @data.to_s	
     end
   end
+
 
   def stacked_view
     @user = User.find(session[:user_id])

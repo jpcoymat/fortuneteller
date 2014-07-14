@@ -14,15 +14,6 @@ class GroupingViewsController < ApplicationController
       if @inventory_positions.class != String and @inventory_positions.count > 0
         @search_criteria_to_string = search_criteria_to_string(@clean_search_hash.merge({"begin_date" => @begin_date, "end_date" => @end_date}))
         @data = []
-        @inventory_hash = {}
-        min_quantity_data = []
-        on_hand_data = []
-        on_order_data =[]
-        in_transit_data = []
-        allocated_data = []
-        forecasted_data = []
-        available_data = []
-        max_quantity_data = []
         current_search_date = @begin_date
         while current_search_date <= @end_date
           min_quantity, total_on_hand, total_on_order, total_in_transit, total_allocated, total_forecasted, total_available, max_quantity = 0,0,0,0,0,0,0,0
@@ -39,33 +30,9 @@ class GroupingViewsController < ApplicationController
               max_quantity += position.product_location_assignment.maximum_quantity
             end
           end
-          @inventory_hash[current_search_date.to_formatted_s(:short)] = {"min_quantity" => min_quantity,
-                                                                        "on_hand_quantity"   => total_on_hand,
-                                                                        "on_order_quantity"   => total_on_order,
-                                                                        "in_transit_quantity" => total_in_transit,
-                                                                        "allocated_quantity"  => total_allocated,
-                                                                        "forecasted_quantity"  => total_forecasted,
-                                                                        "available_quantity"  => total_available,
-                                                                        "max_quantity" => max_quantity
-                                                                        }
-          min_quantity_data << [current_search_date.to_formatted_s(:short), min_quantity] 
-          on_hand_data << [current_search_date.to_formatted_s(:short), total_on_hand]
-          on_order_data << [current_search_date.to_formatted_s(:short), total_on_order]
-          in_transit_data << [current_search_date.to_formatted_s(:short), total_in_transit]
-          allocated_data << [current_search_date.to_formatted_s(:short), total_allocated]
-          forecasted_data << [current_search_date.to_formatted_s(:short), total_forecasted]
-          available_data << [current_search_date.to_formatted_s(:short), total_available]
-          max_quantity_data << [current_search_date.to_formatted_s(:short),max_quantity]
+          @data << [current_search_date.to_formatted_s(:short), min_quantity,total_on_hand, total_available, total_on_order, total_in_transit, total_allocated, total_forecasted,  max_quantity]
           current_search_date += 1.day
         end
-        @data << {name: "Min", data: min_quantity_data}
-        @data << {name: "On Hand", data: on_hand_data}
-        @data << {name: "In Transit", data: in_transit_data}
-        @data << {name: "On Order", data: on_order_data}
-        @data << {name: "Allocated", data: allocated_data}
-        @data << {name: "Planned Consumption", data: forecasted_data}
-        @data << {name: "Available", data: available_data}
-        @data << {name: "Max", data: max_quantity_data}
       end
     end
     
@@ -81,48 +48,25 @@ class GroupingViewsController < ApplicationController
       if @inventory_positions.count > 0
         current_search_date = @begin_date
         @search_criteria_to_string = search_criteria_to_string(@clean_search_hash.merge({"begin_date" => @begin_date, "end_date" => @end_date}))
-	@data = []
-	@inventory_hash = {}
-        on_hand_data = []
-        on_order_data =[]
-        in_transit_data = []
-        allocated_data = []
-        forecasted_data = []
-        available_data = []        
+	@data = []    
         while current_search_date <= @end_date
-          total_on_hand, total_on_order, total_in_transit, total_allocated, total_forecasted, total_available = 0,0,0,0,0,0
+          total_min, total_on_hand, total_on_order, total_in_transit, total_allocated, total_forecasted, total_available, total_max = 0,0,0,0,0,0,0,0
           @inventory_positions.each do |position|
 	    projection = position.inventory_projections.where(projected_for: current_search_date).first
 	    if projection
+              total_min += position.product_location_assignment.minimum_quantity
               total_on_hand += projection.on_hand_quantity
 	      total_on_order += projection.on_order_quantity
 	      total_in_transit += projection.in_transit_quantity
 	      total_allocated +=  projection.allocated_quantity
 	      total_forecasted += projection.forecasted_quantity
               total_available += projection.available_quantity
+              total_max += position.product_location_assignment.maximum_quantity
 	    end
           end 
-	  @inventory_hash[current_search_date.to_formatted_s(:short)] = {"on_hand_quantity"   => total_on_hand,
-									"on_order_quantity"   => total_on_order,
-									"in_transit_quantity" => total_in_transit,
-									"allocated_quantity"  => total_allocated,
-									"forcasted_quantity"  => total_forecasted,
-									"available_quantity"  => total_available
-									}
-	  on_hand_data << [current_search_date.to_formatted_s(:short), total_on_hand]
-          on_order_data << [current_search_date.to_formatted_s(:short), total_on_order]
-          in_transit_data << [current_search_date.to_formatted_s(:short), total_in_transit]
-          allocated_data << [current_search_date.to_formatted_s(:short), total_allocated]
-          forecasted_data << [current_search_date.to_formatted_s(:short), total_forecasted]
-          available_data << [current_search_date.to_formatted_s(:short), total_available]
+	  @data << [current_search_date.to_formatted_s(:short), total_min, total_on_hand, total_available, total_on_order, total_in_transit, total_allocated, total_forecasted, total_max]
           current_search_date += 1.day
         end
-        @data << {name: "On Hand", data: on_hand_data}
-        @data << {name: "In Transit", data: in_transit_data}
-        @data << {name: "On Order", data: on_order_data}
-        @data << {name: "Allocated", data: allocated_data}
-        @data << {name: "Planned Consumption", data: forecasted_data}
-        @data << {name: "Available", data: available_data}
       end      
     end
   end
