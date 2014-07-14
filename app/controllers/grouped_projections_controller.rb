@@ -18,7 +18,7 @@ class GroupedProjectionsController < ApplicationController
   protected
 
    def projection_search_params
-     params.require('projection_search').permit(:location_id, :location_group_id, :product_id, :product_category, :projected_for)
+     params.require('projection_search').permit(:product_name, :location_id, :location_group_id, :product_id, :product_category, :projected_for)
    end
 
    def projected_for
@@ -32,7 +32,9 @@ class GroupedProjectionsController < ApplicationController
      unless projection_search_params["product_category"].blank?
        @product_array = Product.where(product_category: projection_search_params["product_category"]).all.map {|product| product.id}
      end
-     @product_array << projection_search_params["product_id"] unless projection_search_params["product_id"].blank?
+     unless projection_search_params["product_name"].blank?
+       @product_array = Product.where(name: projection_search_params["product_name"]).all.map {|product| product.id}
+     end
      @product_array
    end
    

@@ -2,7 +2,7 @@
   <tr><th>Date</th><th>On Hand </th> <th>On Order </th><th>In Transit</th> <th>Allocated </th> <th>Planned Consumption</th><th>Available</th></tr>
   <% @data.each do |daily_entry| %>
     <tr>        
-      <td><%= link_to(daily_entry[0], grouped_projections_path(projection_search: @clean_search_hash.merge({"projected_for" => daily_entry[0]}))) %></td>
+      <td><%= link_to(daily_entry[0].to_formatted_s(:short), grouped_projections_path(projection_search: @clean_search_hash.merge({"projected_for" => daily_entry[0].strftime('%Y-%m-%d')}))) %></td>
       <td><%= daily_entry[2].to_s %></td>
       <td><%= daily_entry[4].to_s %></td>
       <td><%= daily_entry[5].to_s %></td>

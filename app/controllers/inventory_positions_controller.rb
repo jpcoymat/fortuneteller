@@ -13,7 +13,7 @@ class InventoryPositionsController < ApplicationController
         @data = []
         @projections = @inventory_position.inventory_projections.where(:projected_for.gte => @begin_date, :projected_for.lte => @end_date).all
         @projections.each do |ip|
-          @data << [ip.projected_for.to_formatted_s(:short),  @product_location_assignment.minimum_quantity,  ip.on_hand_quantity, ip.available_quantity, ip.on_order_quantity, ip.in_transit_quantity, ip.allocated_quantity, ip.forecasted_quantity, @product_location_assignment.maximum_quantity]
+          @data << [ip.projected_for,  @product_location_assignment.minimum_quantity,  ip.on_hand_quantity, ip.available_quantity, ip.on_order_quantity, ip.in_transit_quantity, ip.allocated_quantity, ip.forecasted_quantity, @product_location_assignment.maximum_quantity]
         end
       end
     end

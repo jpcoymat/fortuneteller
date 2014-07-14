@@ -18,7 +18,7 @@ function drawChart() {
   data_array.addColumn('number', 'Max Qty');
 
   <% @data.each do |daily| %>
-    data_array.addRow(['<%= daily[0]%>', <%= daily[1]%>, <%= daily[2]%>, <%= daily[3]%>, <%= daily[4]%>, <%= daily[5]%>, <%= daily[6]%>, <%= daily[7]%>, <%= daily[8]%>]);
+    data_array.addRow(['<%= daily[0].to_formatted_s(:short)%>', <%= daily[1]%>, <%= daily[2]%>, <%= daily[3]%>, <%= daily[4]%>, <%= daily[5]%>, <%= daily[6]%>, <%= daily[7]%>, <%= daily[8]%>]);
   <% end %>
     
   // Instantiate and draw our chart, passing in some options.

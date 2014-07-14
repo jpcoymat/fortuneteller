@@ -53,7 +53,7 @@
       <table class="table table-striped">
         <tr><th>Date</th><th>On Hand </th> <th>On Order </th><th>In Transit</th> <th>Allocated </th> <th>Planned Consumption</th><th>Available</th></tr>
  	<% @projections.each do |inventory_projection| %>
-          <tr>	<td><%= link_to(inventory_projection.projected_for.to_s, [@inventory_position,inventory_projection]) %></td>
+          <tr>	<td><%= link_to(inventory_projection.projected_for.to_formatted_s(:short), [@inventory_position,inventory_projection]) %></td>
  		<td><%= inventory_projection.on_hand_quantity.to_s %></td>
  		<td><%= inventory_projection.on_order_quantity.to_s %></td>
  		<td><%= inventory_projection.in_transit_quantity.to_s %></td>

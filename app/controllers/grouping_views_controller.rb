@@ -30,7 +30,7 @@ class GroupingViewsController < ApplicationController
               max_quantity += position.product_location_assignment.maximum_quantity
             end
           end
-          @data << [current_search_date.to_formatted_s(:short), min_quantity,total_on_hand, total_available, total_on_order, total_in_transit, total_allocated, total_forecasted,  max_quantity]
+          @data << [current_search_date, min_quantity,total_on_hand, total_available, total_on_order, total_in_transit, total_allocated, total_forecasted,  max_quantity]
           current_search_date += 1.day
         end
       end
@@ -64,7 +64,7 @@ class GroupingViewsController < ApplicationController
               total_max += position.product_location_assignment.maximum_quantity
 	    end
           end 
-	  @data << [current_search_date.to_formatted_s(:short), total_min, total_on_hand, total_available, total_on_order, total_in_transit, total_allocated, total_forecasted, total_max]
+	  @data << [current_search_date, total_min, total_on_hand, total_available, total_on_order, total_in_transit, total_allocated, total_forecasted, total_max]
           current_search_date += 1.day
         end
       end      
