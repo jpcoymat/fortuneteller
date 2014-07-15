@@ -1,19 +1,25 @@
+<div class="container bs-docs-container">
 <h1> Location Group</h1>
 
 <% if @location_groups.empty? %>
   <p> No Location Groups have been created</p>
 <% else %>
-  <table  class="table table-striped">
-   <tr><th>Location Group Code </th> <th>Location Name</th></tr>\
-   <% @location_groups.each do |location_group| %>
-     <tr><td><%= location_group.code %> </td>
-	 <td><%= location_group.name %> </td>
-         <td><%= link_to "Edit", edit_location_group_path(location_group) %></td>
-     </tr>
-   <% end %>
-   </table>
+  <div class="row">
+    <div class="col-md-6">
+      <table  class="table table-striped"> 
+        <tr><th>Location Group Code </th> <th>Location Name</th></tr>
+        <% @location_groups.each do |location_group| %>
+          <tr><td><%= location_group.code %> </td>
+	    <td><%= location_group.name %> </td>
+            <td><%= link_to "Edit", edit_location_group_path(location_group) %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
 <% end %>
 <br \><br \>
 <%= link_to "Create New Location Group", new_location_group_path %>
 <br \><br \>
 <%= link_to "Main Menu", main_index_path %>
+</div>

@@ -1,33 +1,55 @@
 <h1>Products</h1>
 <h4>Please enter your search criteria </h4>
 
-<%= form_for :product, url: lookup_products_path, html: {class: "form-search"}   do |form| %>
-	<%= form.hidden_field :organization_id, value: @user.organization_id %>
-	<%= form.label "Product Name", class: "form-inline"%>  
-	<%= form.text_field :name, class: "input-medium search-query" %> 
-	<%= form.label "Product Code", class: "form-inline" %>
-	<%= form.text_field :code, class: "input-medium search-query" %>
-      
+<div class="container-fluid">
+  <%= form_for :product, url: lookup_products_path, html: {class: "form-horizontal"}   do |form| %>
+    <%= form.hidden_field :organization_id, value: @user.organization_id %>
+    <div class="form-group">
+      <%= form.label "Product Name", class: "col-sm-1 control-label"%>  
+      <div class="col-sm-2">
+        <%= form.text_field :name, class: "form-control" %> 
+      </div>
+      <%= form.label "Product Code", class: "col-sm-1 control-label" %>
+      <div class="col-sm-2">
+        <%= form.text_field :code, class: "form-control" %>     
+      </div>
+      <%= form.label "Product Category", class: "col-sm-2 control-label" %>
+      <div class="col-sm-2">
+        <%= form.text_field :product_category, class: "form-control" %>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-1"></div>
+      <div class="col-sm-1">
         <%= submit_tag "Search", {class: "btn btn-primary"} %>
-<% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
 <br \>
 <hr>
 <br \>
 <% if request.post? %>
-
-	<% if @products.empty? %>
-		<p>No products match your search criteria </p>
-   	<% else %>
-		<table class="table table-striped">
-			<tr><th>Product Name</th><th>Product Code</th><th>Product Category</th></tr>
-			<% for product in @products %>
-				<tr>	<td><%= product.name %></td><td><%= product.code %></td><td><%= product.product_category %></td>
-					<td><%= link_to "Edit", edit_product_path(product) %></td>
-				</tr>
- 			<% end %>
-		</table>
-	<% end %>
+  <% if @products.empty? %>
+    <p>No products match your search criteria </p>
+  <% else %>
+    <div class="row">
+      <div class="col-md-8">
+        <table class="table table-striped">
+          <tr><th>Product Name</th><th>Product Code</th><th>Product Category</th></tr>
+          <% for product in @products %>
+          <tr><td><%= product.name %></td>
+            <td><%= product.code %></td>
+            <td><%= product.product_category %></td>
+            <td><%= link_to "Edit", edit_product_path(product) %></td>
+          </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  <% end %>
 <% end %>
 
 
 <%= link_to "Main Menu", main_index_path %> || <%= link_to "Add New Product", new_product_path %>
+
