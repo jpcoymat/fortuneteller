@@ -1,5 +1,5 @@
 
-  <%= form.label "Reference Number" %>
+  <%= form.label "Reference Number", {class: "col-sm-1 control-label"} %>
   <script>
     $(function() {
       var movement_sources = [
@@ -12,4 +12,6 @@
       });
     });
   </script>
-  <%= form.text_field :object_reference_number %>
+  <div class="col-sm-2"> 
+    <%= form.text_field :object_reference_number, class: "form-control" %>
+  </div>
