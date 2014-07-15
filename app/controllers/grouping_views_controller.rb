@@ -72,32 +72,29 @@ class GroupingViewsController < ApplicationController
   end
 
   def inventory_bucket_view
+    set_inventory_bucket
     @organization = @user.organization
     @location_groups = @organization.location_groups
     @products = @organization.products
     if request.post?
-      @locations = Location.where(location_group: @location_group)
+      @locations = Location.where(location_group: @location_group).all.entries
       @product_params_missing = (bucket_search_params["product_name"].blank? and bucket_search_params["product_category"].blank?)
       unless @locations.empty? or @product_params_missing
-        current_date = @begin_date 
+        current_date = @begin_date
         @data = []
-        @series_hash = {}
-        @locations.each do |location|
-          location_data =[]
-          @inventory_positions = inventory_positions_for_bucket_view(location)
-          if @inventory_positions.count > 0
-            while current_date <= @end_date
-              bucket_quantity = 0
-              @inventory_positions.each do |position|
-                projection = position.inventory_projections.where(projected_for: current_date).first
-                bucket_quantity += projection.attributes[bucket_search_params["inventory_bucket"]] if projection
-              end
-              location_data << [current_date.to_formatted_s(:short), bucket_quantity]
-              current_date += 1.day
-            end  
-            @series_hash[@data.count] = {type: "line",  pointSize: 0}          
-            @data << {name: location.name, data: location_data}
+        while current_date <= @end_date
+          daily_entry = [current_date.to_formatted_s(:short)]
+          @locations.each do |location|
+            bucket_quantity = 0
+            @inventory_positions = inventory_positions_for_bucket_view(location)
+            @inventory_positions.each do |ip|
+	      projection = ip.inventory_projections.where(projected_for: current_date).first
+              bucket_quantity += projection.attributes[bucket_search_params["inventory_bucket"]] if projection			  
+	    end
+	  daily_entry << bucket_quantity
           end
+          @data << daily_entry
+          current_date += 1.day
         end
       end
     end
@@ -193,6 +190,14 @@ class GroupingViewsController < ApplicationController
       end
       @product
     end
+
+   def set_inventory_bucket
+     @inventory_bucket = nil
+     if params[:group_search] and !(params[:group_search][:inventory_bucket].blank?)
+       @inventory_bucket = params[:group_search][:inventory_bucket]
+     end
+     @inventory_bucket
+   end
 
     def set_location
       @location = nil

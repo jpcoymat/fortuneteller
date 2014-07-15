@@ -7,10 +7,10 @@
      <%= form.label "Inventory Bucket", {class: "col-sm-2 control-label"} %> 
      <div class="col-sm-2">
        <%= form.select :inventory_bucket, [["On Hand", "on_hand_quantity"],
-										["On Order", "on_order_quantity"],
-										["In Transit", "in_transit_quantity"],
-										["Allocated", "allocated_quantity"],
-										["Planned Consumption", "forecasted_quantity"]], {}, {class: "form-control"} %>
+					   ["On Order", "on_order_quantity"],
+				           ["In Transit", "in_transit_quantity"],
+					   ["Allocated", "allocated_quantity"],
+					   ["Planned Consumption", "forecasted_quantity"]], {selected: @inventory_bucket}, {class: "form-control"} %>
      </div>	
 
      <%= form.label "Location Group", {class: "col-sm-2 control-label"} %>
@@ -63,12 +63,7 @@
     <% elsif @product_params_missing %>
       <p> Some product data must be specified.</p>
     <% else %>
-       <%=  column_chart(@data, library: {
-                                        curveType: 'function',
-                                        title: "Inventory Projections",
-                                        legend:
-                                                {position: "bottom"},
-                                        series: @series_hash})    %>
+       <%= render partial: "bucket_graph" %>
          <br \> <br \><br \>
     <% end %>
   <% end %>
