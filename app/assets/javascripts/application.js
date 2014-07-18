@@ -13,4 +13,10 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
-//= require jquery-ui
+//= require jquery-ui/datepicker
+//= require jquery-ui/core
+//= require jquery-ui/widget
+//= require jquery-ui/mouse
+//= require jquery-ui/position
+//= require jquery-ui/autocomplete 
+//= require jquery-ui/tabs
