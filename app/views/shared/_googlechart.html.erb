@@ -3,6 +3,81 @@
   google.load('visualization', '1', {packages: ['corechart']});
 </script>
 <script type="text/javascript">
+
+
+function aggregateByWeek() {
+  
+  var weeklyAggregate = new google.visualization.DataTable();  
+
+  weeklyAggregate.addColumn('string', 'Date'); 
+  weeklyAggregate.addColumn('number', 'Min Qty');
+  weeklyAggregate.addColumn('number', 'On Hand');
+  weeklyAggregate.addColumn('number', 'Available');
+  weeklyAggregate.addColumn('number', 'On Order');
+  weeklyAggregate.addColumn('number', 'In Transit');
+  weeklyAggregate.addColumn('number', 'Allocated');
+  weeklyAggregate.addColumn('number', 'Forecasted');
+  weeklyAggregate.addColumn('number', 'Max Qty');
+
+  var minWeeklyTotal = google.visualization.data.group(data_array, [10], [{'column': 1, 'aggregation': google.visualization.data.sum, 'type': 'number'}]);
+  var onOrderWeeklyTotal = google.visualization.data.group(data_array, [10], [{'column': 4, 'aggregation': google.visualization.data.sum, 'type': 'number'}]);
+  var inTransitWeeklyTotal = google.visualization.data.group(data_array, [10], [{'column': 5, 'aggregation': google.visualization.data.sum, 'type': 'number'}]);
+  var allocatedWeeklyTotal = google.visualization.data.group(data_array, [10], [{'column': 6, 'aggregation': google.visualization.data.sum, 'type': 'number'}]);
+  var forecastWeeklyTotal = google.visualization.data.group(data_array, [10], [{'column': 7, 'aggregation': google.visualization.data.sum, 'type': 'number'}]);
+  var maxWeeklyTotal = google.visualization.data.group(data_array, [10], [{'column': 8, 'aggregation': google.visualization.data.sum, 'type': 'number'}]);
+
+  for (var weekRowNumber = 0, maxrows = minWeeklyTotal.getNumberOfRows(); weekRowNumber < maxrows; weekRowNumber++) {
+
+    var weekNumber = minWeeklyTotal.getValue(weekRowNumber, 0);
+    var weeklySubset = data_array.getFilteredRows([{column: 10, value: weekNumber}]);
+    var firstIndexOfWeek = Math.min.apply(Math, weeklySubset);
+    var lastIndexOfWeek = Math.max.apply(Math, weeklySubset);	
+    var onHandQuantity = data_array.getValue(firstIndexOfWeek, 2);
+    var availableQuantity = data_array.getValue(lastIndexOfWeek, 3);
+
+    var minQty = minWeeklyTotal.getValue(weekRowNumber,1);
+    var onOrder = onOrderWeeklyTotal.getValue(weekRowNumber,1);
+    var inTransit = inTransitWeeklyTotal.getValue(weekRowNumber,1);
+    var allocated = allocatedWeeklyTotal.getValue(weekRowNumber,1);
+    var forecasted = forecastWeeklyTotal.getValue(weekRowNumber,1);
+    var maxQty = maxWeeklyTotal.getValue(weekRowNumber, 1);
+
+    weeklyAggregate.addRow([weekNumber, minQty, onHandQuantity,availableQuantity, onOrder, inTransit, allocated, forecasted, maxQty]);
+
+  }
+  return weeklyAggregate;
+}
+
+
+Date.prototype.getWeek = function () {  
+    // Create a copy of this date object  
+    var target  = new Date(this.valueOf());  
+  
+    // ISO week date weeks start on monday  
+    // so correct the day number  
+    var dayNr   = (this.getDay() + 6) % 7;  
+  
+    // ISO 8601 states that week 1 is the week  
+    // with the first thursday of that year.  
+    // Set the target date to the thursday in the target week  
+    target.setDate(target.getDate() - dayNr + 3);  
+  
+    // Store the millisecond value of the target date  
+    var firstThursday = target.valueOf();  
+  
+    // Set the target to the first thursday of the year  
+    // First set the target to january first  
+    target.setMonth(0, 1);  
+    // Not a thursday? Correct the date to the next thursday  
+    if (target.getDay() != 4) {  
+        target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7);  
+    }  
+  
+    // The weeknumber is the number of weeks between the   
+    // first thursday of the year and the thursday in the target week  
+    return 1 + Math.ceil((firstThursday - target) / 604800000); // 604800000 = 7 * 24 * 3600 * 1000  
+}
+
 function drawChart() {
 
   var data_array = new google.visualization.DataTable();  
@@ -16,11 +91,14 @@ function drawChart() {
   data_array.addColumn('number', 'Allocated');
   data_array.addColumn('number', 'Forecasted');
   data_array.addColumn('number', 'Max Qty');
+  data_array.addColumn('date', 'Date Obj');
+  data_array.addColumn('string', 'Week Number');
 
   <% @data.each do |daily| %>
-    data_array.addRow(['<%= daily[0].to_formatted_s(:short)%>', <%= daily[1]%>, <%= daily[2]%>, <%= daily[3]%>, <%= daily[4]%>, <%= daily[5]%>, <%= daily[6]%>, <%= daily[7]%>, <%= daily[8]%>]);
+    var projectionDate = new Date('<%= daily[0].to_s %> 12:00');
+    data_array.addRow(['<%= daily[0].to_formatted_s(:short)%>', <%= daily[1]%>, <%= daily[2]%>, <%= daily[3]%>, <%= daily[4]%>, <%= daily[5]%>, <%= daily[6]%>, <%= daily[7]%>, <%= daily[8]%>, projectionDate, projectionDate.getWeek().toString() + "-" + projectionDate.getFullYear().toString()]); 
   <% end %>
-    
+   
   // Instantiate and draw our chart, passing in some options.
   var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
 

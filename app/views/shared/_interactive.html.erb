@@ -1,0 +1,190 @@
+<div id="dashboard">
+  <div id="interactivechart_div" style="width: 100%; height: 500px;"></div>
+  <div id="control" style='width: 100%; height: 50px;'></div>
+</div>
+<script type="text/javascript">
+  google.load('visualization', '1.1', {packages: ['corechart', 'controls']});
+</script>
+
+<script type="text/javascript">
+function drawInteractiveChart() {
+  
+  var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard')); 
+
+  var seriesMap = [{
+    column: 1,
+    display: true,
+    formatSettings: {type: "line", pointSize: 0, color: "red"}}, 
+	{column: 2,
+    display: true,
+    formatSettings: {type: "line", pointSize: 0, color: "#336699", curveType: 'function'}},
+	{column: 3,
+    display: true,
+    formatSettings: {type: "line", pointSize: 0, color: "#E96D63", curveType: 'function' }},
+	{column: 4,
+    display: true,
+    formatSettings: {targetAxisIndex: 1, color: "#666633" }},
+	{ column: 5,
+    display: true,
+    formatSettings: {targetAxisIndex: 1, color: "#FFCC00" }},
+	{column: 6,
+    display: true,
+    formatSettings: {targetAxisIndex: 1, color: "#26ba26" }},
+	{column: 7,
+    display: true,
+    formatSettings: {targetAxisIndex: 1, color: "#FF6600" }},
+	{column: 8,
+    display: true,
+    formatSettings: {type: "line", pointSize: 0, color: "red"}}
+  ];
+  
+  var data_array = new google.visualization.DataTable();
+
+  data_array.addColumn('date', 'Date');
+  data_array.addColumn('number', 'Min Qty');
+  data_array.addColumn('number', 'On Hand');
+  data_array.addColumn('number', 'Available');
+  data_array.addColumn('number', 'On Order');
+  data_array.addColumn('number', 'In Transit');
+  data_array.addColumn('number', 'Allocated');
+  data_array.addColumn('number', 'Forecasted');
+  data_array.addColumn('number', 'Max Qty');
+ 
+  var projectionDate;
+  <% @data.each do |daily| %>
+    projectionDate = new Date('<%= daily[0].to_s %> 12:00');
+    data_array.addRow([projectionDate, <%= daily[1]%>, <%= daily[2]%>, <%= daily[3]%>, <%= daily[4]%>, <%= daily[5]%>, <%= daily[6]%>, <%= daily[7]%>, <%= daily[8]%>]);
+  <% end %>
+
+  var dateFormatter = new google.visualization.DateFormat({pattern: "d MMM"});
+  dateFormatter.format(data_array, 0);
+
+  var control = new google.visualization.ControlWrapper({
+    controlType: 'ChartRangeFilter',
+    containerId: 'control',
+    options: {
+      // Filter by the date axis.
+      filterColumnIndex: 0,
+      ui: {
+            chartType: 'LineChart',
+            chartOptions: {
+              chartArea: {width: '90%'},
+              hAxis: {format: "d MMM", baselineColor: 'none'}
+            },
+       // Display a single series that shows the closing value of the stock.
+       // Thus, this view has two columns: the date (axis) and the stock value (line series).
+       chartView: {columns: [0, 3]},
+       // 1 day in milliseconds = 24 * 60 * 60 * 1000 = 86,400,000
+       minRangeSize: 86400000
+      }
+    },
+    // Initial range: 2012-02-09 to 2012-03-20.
+    state: {range: {start: data_array.getColumnRange(0).min, end: data_array.getColumnRange(0).max}}
+  });  
+
+
+  var wrapper = new google.visualization.ChartWrapper({
+    'chartType': 'ComboChart',
+    'containerId': 'interactivechart_div' });
+  
+  // create columns array
+  var columns = [0];
+  /* the series map is an array of data series
+  * "column" is the index of the data column to use for the series
+  * "display" is a boolean, set to true to make the series visible on the initial draw
+  */
+
+  var columnsMap = {};
+
+  var series = {};
+
+  for (var i = 0; i < seriesMap.length; i++) {
+    var col = seriesMap[i].column;
+    columnsMap[col] = i;
+    // set the default series option
+    series[i] = seriesMap[i]["formatSettings"];
+    if (seriesMap[i].display) {
+      // if the column is the domain column or in the default list, display the series
+      columns.push(col);
+    }
+    else {
+      // otherwise, hide it
+      columns.push({
+        label: data_array.getColumnLabel(col),
+        type: data_array.getColumnType(col),
+        sourceColumn: col,
+        calc: function () {
+          return null;
+        }
+      });
+      // backup the default color (if set)
+      if (typeof(series[i].color) !== 'undefined') {
+        series[i].backupColor = series[i].color;
+      }
+      series[i].color = '#CCCCCC';
+    }
+  }
+
+
+  var options = {
+    fontName: 'verdana',
+    fontSize: 12,
+    seriesType: "bars",
+    legend: {position: "bottom"},
+    title : 'Inventory Projections',
+    hAxis: {format: "d MMM"},
+    vAxes: [{0: {textStyle:{color: 'red'}}},{1: {textStyle:{color: 'blue'}}}],
+    series: series
+  }
+
+  wrapper.setOptions(options);
+
+  function showHideSeries () {
+    var sel = wrapper.getChart().getSelection();
+    // if selection length is 0, we deselected an element
+    if (sel.length > 0) {
+      // if row is undefined, we clicked on the legend
+      if (sel[0].row == null) {
+        var col = sel[0].column;
+        if (typeof(columns[col]) == 'number') {
+          var src = columns[col];
+          // hide the data series
+          columns[col] = {
+            label: data_array.getColumnLabel(src),
+            type: data_array.getColumnType(src),
+            sourceColumn: src,
+            calc: function () {
+              return null;
+            }
+          };
+          series[columnsMap[src]].backupColor = series[columnsMap[src]].color;
+          // grey out the legend entry
+          series[columnsMap[src]].color = '#CCCCCC';
+        }
+        else {
+          var src = columns[col].sourceColumn;
+          // show the data series
+          columns[col] = src;
+          series[columnsMap[src]].color = series[columnsMap[src]].backupColor;
+          //series[columnsMap[src]].color = null;
+        }
+        var view = new google.visualization.DataView(data_array);
+        view.setColumns(columns);
+        chart.draw(view, options);
+      }
+    }
+  }
+
+  var chart;
+  google.visualization.events.addListener(wrapper, 'ready', setChart);
+  dashboard.bind(control, wrapper);
+  dashboard.draw(data_array);
+  
+  function setChart() { 
+    chart = wrapper.getChart();
+    google.visualization.events.addListener(chart, 'select', showHideSeries);
+  }
+}
+
+google.setOnLoadCallback(drawInteractiveChart);
+</script>
