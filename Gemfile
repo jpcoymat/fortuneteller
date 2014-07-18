@@ -39,7 +39,6 @@ gem 'resque-scheduler',  '~> 2.5.5', require: 'resque_scheduler'
 
 gem "twitter-bootstrap-rails"
 
-
 group :test do
   gem "rspec-rails"
   gem "cucumber-rails", require: false
