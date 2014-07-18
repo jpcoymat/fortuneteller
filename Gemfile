@@ -38,7 +38,7 @@ gem 'resque-scheduler',  '~> 2.5.5', require: 'resque_scheduler'
 
 
 gem "twitter-bootstrap-rails"
-gem "chartkick"
+
 
 group :test do
   gem "rspec-rails"
