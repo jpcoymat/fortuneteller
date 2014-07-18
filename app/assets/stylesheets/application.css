@@ -10,7 +10,7 @@
  *
  *= require_self
  *= require_tree .
- *= require jquery.ui.autocomplete
- *= require jquery.ui.datepicker
- *= require jquery.ui.tabs
+ *= require jquery-ui/autocomplete
+ *= require jquery-ui/datepicker
+ *= require jquery-ui/tabs
  */
