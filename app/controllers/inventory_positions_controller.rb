@@ -10,10 +10,17 @@ class InventoryPositionsController < ApplicationController
       @inventory_position = InventoryPosition.where(search_params).where(product: @product).first
       if @inventory_position
         @product_location_assignment = ProductLocationAssignment.where(product: @inventory_position.product, location: @inventory_position.location).first
-        @data = []
+        @min_qty, @on_hand, @available, @on_order, @in_transit, @allocated, @forecasted, @max_qty = [], [],[],[],[],[],[],[]
         @projections = @inventory_position.inventory_projections.where(:projected_for.gte => @begin_date, :projected_for.lte => @end_date).all
         @projections.each do |ip|
-          @data << [ip.projected_for,  @product_location_assignment.minimum_quantity,  ip.on_hand_quantity, ip.available_quantity, ip.on_order_quantity, ip.in_transit_quantity, ip.allocated_quantity, ip.forecasted_quantity, @product_location_assignment.maximum_quantity]
+          @min_qty << @product_location_assignment.minimum_quantity  
+          @on_hand << ip.on_hand_quantity
+          @available <<  ip.available_quantity
+          @on_order <<  ip.on_order_quantity
+          @in_transit <<  ip.in_transit_quantity
+          @allocated <<  ip.allocated_quantity
+          @forecasted <<  ip.forecasted_quantity
+          @max_qty <<  @product_location_assignment.maximum_quantity
         end
       end
     end

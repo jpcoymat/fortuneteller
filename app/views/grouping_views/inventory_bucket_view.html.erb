@@ -63,8 +63,11 @@
     <% elsif @product_params_missing %>
       <p> Some product data must be specified.</p>
     <% else %>
-       <%= render partial: "bucket_graph" %>
-         <br \> <br \><br \>
+      <% content_for :head do %>
+        <%= javascript_include_tag "http://www.google.com/jsapi" %>
+      <% end %>
+      <%= render partial: "bucket_graph" %>
+      <br \> <br \><br \>
     <% end %>
   <% end %>
   <br \> <br \><br \>

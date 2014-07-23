@@ -1,0 +1,131 @@
+<div id="highcart_container"></div>
+<div id="report" style="font: 0.8em sans-serif"></div>
+<script type="text/javascript" src="http://code.highcharts.com/stock/highstock.src.js"></script>
+<script type="text/javascript" src="http://code.highcharts.com/stock/modules/exporting.src.js"></script>
+<script type="text/javascript" src="http://code.highcharts.com/highcharts.src.js"></script>
+<script type="text/javascript" src="https://rawgithub.com/d-nation/highstock-beyond-extremes/master/beyond-extremes.js"></script>
+<script type="text/javascript">
+
+var datesAndIds = {
+  
+<% @projections.each do |projection| %>
+  '<%= projection.projected_for.year %>-<%= projection.projected_for.month - 1%>-<%= projection.projected_for.day %>': '<%= projection.id.to_s %>',
+<% end %>
+  lastEntry: true
+};
+
+
+
+$(function () {
+  $('#highcart_container').highcharts('StockChart',{
+    rangeSelector: {
+      selected: 1,
+      beyondExtremes: true
+    },
+    title: {
+      text: 'Inventory Projections for Product <%= @inventory_position.product.name %> at Location <%= @inventory_position.location.name %>'
+      //enabled: false
+    },
+    subtitle: {
+      text: document.ontouchstart === undefined ? 'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+    },
+    xAxis: {
+      type: 'datetime',
+      events: {
+        setExtremes: function(e) {
+   			/*Could fetch new data for the new extremes here*/                    
+           $('#report').html('<b>Set extremes:</b> e.min: '+ Highcharts.dateFormat(null, e.min) + ' | e.max: '+ Highcharts.dateFormat(null, e.max) + ' | e.trigger: ' + e.trigger);
+	}
+      },
+      ordinal: false,
+      minRange: 2 * 24 * 3600000 // 2 days
+    },
+    yAxis: [
+      {title: {text: 'Quantity'}, opposite: false}, 
+      {title: {text: 'Quantity'}, opposite: true}
+    ],
+    tooltip: {
+      shared: false,
+      useHTML: true,
+      formatter: function()
+      {                                
+        var projectionDate = new Date(this.x);
+        var hashKey = projectionDate.getFullYear() + '-' + projectionDate.getMonth() + '-' + projectionDate.getDate();
+        var s = '<a href="/inventory_positions/<%= @inventory_position.id.to_s %>/inventory_projections/' + datesAndIds[hashKey] + '">' + projectionDate.toDateString() +'</a>' + '<br />';
+        s += this.series.name + ': ' + this.y; 
+        return s;
+      }
+    },
+	series: [
+	  {type: 'spline', 
+          pointInterval: 24 * 3600 * 1000,
+          pointStart: Date.UTC(<%= @projections.min(:projected_for).year %>, <%= @projections.min(:projected_for).month - 1%>, <%= @projections.min(:projected_for).day %>, 12,0),
+	  name: 'Min Qty',
+          color: "#FF0000",
+          marker: {enabled: false},  
+	  data: <%= @min_qty %>
+	  },
+	  {type: 'spline', 
+	  pointInterval: 24 * 3600 * 1000,
+          pointStart: Date.UTC(<%= @projections.min(:projected_for).year %>, <%= @projections.min(:projected_for).month - 1%>, <%= @projections.min(:projected_for).day %>, 12,0),
+	  name: 'On Hand',
+          color: "#336699",
+          marker: {enabled: false},
+	  data: <%= @on_hand %>
+	  },
+	  {type: 'column', 
+          pointInterval: 24 * 3600 * 1000,
+          pointStart: Date.UTC(<%= @projections.min(:projected_for).year %>, <%= @projections.min(:projected_for).month - 1%>, <%= @projections.min(:projected_for).day %>, 12,0),
+	  name: 'On Order',
+          color: "#666633",
+	  yAxis: 1,
+	  data: <%= @on_order %>
+	  },
+	  {type: 'column', 
+          pointInterval: 24 * 3600 * 1000,
+          pointStart: Date.UTC(<%= @projections.min(:projected_for).year %>, <%= @projections.min(:projected_for).month - 1%>, <%= @projections.min(:projected_for).day %>, 12,0),
+	  name: 'In Transit',
+          color: "#FFCC00",
+	  yAxis: 1,
+	  data: <%= @in_transit %>
+	  },
+	  {type: 'column', 
+          pointInterval: 24 * 3600 * 1000,
+          pointStart: Date.UTC(<%= @projections.min(:projected_for).year %>, <%= @projections.min(:projected_for).month - 1%>, <%= @projections.min(:projected_for).day %>, 12,0),
+	  name: 'Allocated',
+          color: "#26ba26",
+	  yAxis: 1,
+	  data: <%= @allocated %>
+	  },
+	  {type: 'column', 
+	  name: 'Forecasted',
+          color: "#FF6600",
+          pointInterval: 24 * 3600 * 1000,
+          pointStart: Date.UTC(<%= @projections.min(:projected_for).year %>, <%= @projections.min(:projected_for).month - 1%>, <%= @projections.min(:projected_for).day %>, 12,0),
+	  yAxis: 1,
+	  data: <%= @forecasted %>
+	  },
+          {type: 'spline',
+          pointInterval: 24 * 3600 * 1000,
+          pointStart: Date.UTC(<%= @projections.min(:projected_for).year %>, <%= @projections.min(:projected_for).month - 1%>, <%= @projections.min(:projected_for).day %>, 12,0),
+          name: 'Available',
+          color: "#E96D63",
+          marker: {enabled: false},
+          data: <%= @available %>
+          },
+          {
+          type: 'spline',
+          pointInterval: 24 * 3600 * 1000,
+          pointStart: Date.UTC(<%= @projections.min(:projected_for).year %>, <%= @projections.min(:projected_for).month - 1%>, <%= @projections.min(:projected_for).day %>, 12,0),
+          marker: {enabled: false},
+          name: 'Max Qty',
+          color: "#FF0000",
+          data: <%= @max_qty %>
+          }
+	]
+  });
+});
+</script>
+	  
+	  
+	  

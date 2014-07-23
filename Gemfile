@@ -36,6 +36,7 @@ gem "resque"
 gem "resque-web", require: "resque_web"
 gem 'resque-scheduler',  '~> 2.5.5', require: 'resque_scheduler'
 
+gem "highcharts-rails", "~> 3.0.0"
 
 gem "twitter-bootstrap-rails"
 

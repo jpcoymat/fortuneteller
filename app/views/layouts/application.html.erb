@@ -4,10 +4,8 @@
   <title>Fortuneteller</title>
   <%= stylesheet_link_tag "application" %>
   <%= stylesheet_link_tag "bootstrap" %>
-
-  <%= javascript_include_tag "http://www.google.com/jsapi" %>
   <%= javascript_include_tag "application" %>
-
+  <%= yield :head %>
   <%= csrf_meta_tags %>
  
 </head>
