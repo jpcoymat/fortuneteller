@@ -2,7 +2,7 @@ class GroupingViewsController < ApplicationController
 
   before_filter :authorize
   before_action :set_user, :set_product, :set_begin_and_end_dates, :set_location, :set_location_group, :set_product_category
-
+=begin
   def product_centric
     @organization = @user.organization 
     @locations = @organization.locations
@@ -37,6 +37,53 @@ class GroupingViewsController < ApplicationController
     end
     
   end
+=end
+
+  def product_centric
+    @organization = @user.organization
+    @locations = @organization.locations
+    @products =  @organization.products
+    @location_groups = @organization.location_groups
+    if request.post?
+      @clean_search_hash = clean_product_search_params
+      @inventory_positions = inventory_positions_for_product_centric
+      if @inventory_positions.class != String and @inventory_positions.count > 0
+        @search_criteria_to_string = search_criteria_to_string(@clean_search_hash.merge({"begin_date" => @begin_date, "end_date" => @end_date}))
+        @projections, @min_qty, @on_hand, @on_order, @in_transit, @allocated, @forecasted, @available, @max_qty = [],[],[],[],[],[],[],[],[]
+        current_search_date = @begin_date
+        while current_search_date <= @end_date
+          min_quantity, total_on_hand, total_on_order, total_in_transit, total_allocated, total_forecasted, total_available, max_quantity = 0,0,0,0,0,0,0,0
+          @inventory_positions.each do |position|
+            projection = position.inventory_projections.where(projected_for: current_search_date).first
+            if projection
+              min_quantity += position.product_location_assignment.minimum_quantity
+              total_on_hand += projection.on_hand_quantity
+              total_on_order += projection.on_order_quantity
+              total_in_transit += projection.in_transit_quantity
+              total_allocated +=  projection.allocated_quantity
+              total_forecasted += projection.forecasted_quantity
+              total_available += projection.available_quantity
+              max_quantity += position.product_location_assignment.maximum_quantity
+            end
+          end
+          @projections << {projected_for: current_search_date}
+       	  @min_qty << min_quantity
+          @on_hand << total_on_hand
+          @available << total_available
+          @on_order << total_on_order
+ 	  @in_transit << total_in_transit
+	  @allocated << total_allocated
+	  @forecasted << total_forecasted
+	  @max_qty << max_quantity
+          current_search_date += 1.day
+        end
+      end
+    end
+
+  end
+
+
+
 
   def location_centric
     @organization = @user.organization

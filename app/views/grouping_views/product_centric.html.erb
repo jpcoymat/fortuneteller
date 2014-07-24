@@ -71,11 +71,11 @@
         <%= javascript_include_tag "http://www.google.com/jsapi" %> 
       <% end %>
        <h4>Inventory Projection for <%= @search_criteria_to_string %></h4>
-       <%= render partial: "shared/googlechart" %>
+       <%= render partial: "shared/highchart_grouped" %>
 
          <br \> <br \><br \>
         <h4>Detailed Inventory Projection Data</h4>
-        <%= render partial: "inventory_table"  %>
+        
     <% end %>
   <% end %>
   <br \> <br \><br \>
