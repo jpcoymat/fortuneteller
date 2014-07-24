@@ -8,6 +8,9 @@
 
 $(function () {
   $('#highcart_container').highcharts('StockChart',{
+    chart: {
+      height: 500
+    },
     rangeSelector: {
       selected: 1,
       beyondExtremes: true
