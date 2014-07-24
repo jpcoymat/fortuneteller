@@ -2,42 +2,6 @@ class GroupingViewsController < ApplicationController
 
   before_filter :authorize
   before_action :set_user, :set_product, :set_begin_and_end_dates, :set_location, :set_location_group, :set_product_category
-=begin
-  def product_centric
-    @organization = @user.organization 
-    @locations = @organization.locations
-    @products =  @organization.products
-    @location_groups = @organization.location_groups
-    if request.post? 	
-      @clean_search_hash = clean_product_search_params 
-      @inventory_positions = inventory_positions_for_product_centric
-      if @inventory_positions.class != String and @inventory_positions.count > 0
-        @search_criteria_to_string = search_criteria_to_string(@clean_search_hash.merge({"begin_date" => @begin_date, "end_date" => @end_date}))
-        @data = []
-        current_search_date = @begin_date
-        while current_search_date <= @end_date
-          min_quantity, total_on_hand, total_on_order, total_in_transit, total_allocated, total_forecasted, total_available, max_quantity = 0,0,0,0,0,0,0,0
-          @inventory_positions.each do |position|
-            projection = position.inventory_projections.where(projected_for: current_search_date).first
-            if projection
-              min_quantity += position.product_location_assignment.minimum_quantity
-              total_on_hand += projection.on_hand_quantity
-              total_on_order += projection.on_order_quantity
-              total_in_transit += projection.in_transit_quantity
-              total_allocated +=  projection.allocated_quantity
-              total_forecasted += projection.forecasted_quantity
-              total_available += projection.available_quantity
-              max_quantity += position.product_location_assignment.maximum_quantity
-            end
-          end
-          @data << [current_search_date, min_quantity,total_on_hand, total_available, total_on_order, total_in_transit, total_allocated, total_forecasted,  max_quantity]
-          current_search_date += 1.day
-        end
-      end
-    end
-    
-  end
-=end
 
   def product_centric
     @organization = @user.organization
@@ -82,9 +46,6 @@ class GroupingViewsController < ApplicationController
 
   end
 
-
-
-
   def location_centric
     @organization = @user.organization
     @locations = @organization.locations
@@ -95,28 +56,36 @@ class GroupingViewsController < ApplicationController
       if @inventory_positions.count > 0
         current_search_date = @begin_date
         @search_criteria_to_string = search_criteria_to_string(@clean_search_hash.merge({"begin_date" => @begin_date, "end_date" => @end_date}))
-	@data = []    
+        @min_qty, @on_hand, @on_order, @in_transit, @allocated, @forecasted, @available, @max_qty = [], [], [], [], [], [], [], []
         while current_search_date <= @end_date
           total_min, total_on_hand, total_on_order, total_in_transit, total_allocated, total_forecasted, total_available, total_max = 0,0,0,0,0,0,0,0
           @inventory_positions.each do |position|
-	    projection = position.inventory_projections.where(projected_for: current_search_date).first
-	    if projection
+            projection = position.inventory_projections.where(projected_for: current_search_date).first
+            if projection
               total_min += position.product_location_assignment.minimum_quantity
               total_on_hand += projection.on_hand_quantity
-	      total_on_order += projection.on_order_quantity
-	      total_in_transit += projection.in_transit_quantity
-	      total_allocated +=  projection.allocated_quantity
-	      total_forecasted += projection.forecasted_quantity
+              total_on_order += projection.on_order_quantity
+              total_in_transit += projection.in_transit_quantity
+              total_allocated +=  projection.allocated_quantity
+              total_forecasted += projection.forecasted_quantity
               total_available += projection.available_quantity
               total_max += position.product_location_assignment.maximum_quantity
-	    end
-          end 
-	  @data << [current_search_date, total_min, total_on_hand, total_available, total_on_order, total_in_transit, total_allocated, total_forecasted, total_max]
+            end
+          end
+          @min_qty << total_min
+          @on_hand << total_on_hand
+          @available << total_available 
+          @on_order << total_on_order
+          @in_transit << total_in_transit
+          @allocated << total_allocated
+          @forecasted << total_forecasted
+          @max_qty << total_max
           current_search_date += 1.day
         end
-      end      
+      end
     end
   end
+
 
   def inventory_bucket_view
     set_inventory_bucket
@@ -127,21 +96,19 @@ class GroupingViewsController < ApplicationController
       @locations = Location.where(location_group: @location_group).all.entries
       @product_params_missing = (bucket_search_params["product_name"].blank? and bucket_search_params["product_category"].blank?)
       unless @locations.empty? or @product_params_missing
-        current_date = @begin_date
-        @data = []
-        while current_date <= @end_date
-          daily_entry = [current_date.to_formatted_s(:short)]
-          @locations.each do |location|
-            bucket_quantity = 0
-            @inventory_positions = inventory_positions_for_bucket_view(location)
-            @inventory_positions.each do |ip|
-	      projection = ip.inventory_projections.where(projected_for: current_date).first
-              bucket_quantity += projection.attributes[bucket_search_params["inventory_bucket"]] if projection			  
-	    end
-	  daily_entry << bucket_quantity
+        @series = []
+        @locations.each do |location|
+          location_data = []
+          @inventory_positions = inventory_positions_for_bucket_view(location)
+          for current_date in (@begin_date .. @end_date)
+            daily_quantity = 0
+            @inventory_positions.each do |inventory_position|
+              projection = inventory_position.inventory_projections.where(projected_for: current_date).first
+              daily_quantity += projection.attributes[bucket_search_params["inventory_bucket"]] if projection
+            end 
+            location_data << daily_quantity
           end
-          @data << daily_entry
-          current_date += 1.day
+          @series << {"location_name" => location.name, "data"=> location_data} 
         end
       end
     end

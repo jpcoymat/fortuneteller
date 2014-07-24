@@ -24,22 +24,7 @@ class InventoryPositionsController < ApplicationController
         end
       end
     end
-  end
-
-
-  def stacked_view
-    @user = User.find(session[:user_id])
-    @products = @organization.products
-    @locations = @organization.locations
-    if request.post?
-      @inventory_position = InventoryPosition.where(search_params).where(product: @product).first
-      if @inventory_position
-        @product_location_assignment = ProductLocationAssignment.where(product: @inventory_position.product, location: @inventory_position.location).first
-        @projections = @inventory_position.inventory_projections.where(:projected_for.gte => @begin_date, :projected_for.lte => @end_date).all
-      end
-    end
-  end
-  
+  end 
 
   private 
     

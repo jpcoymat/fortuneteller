@@ -50,8 +50,6 @@ Fortuneteller::Application.routes.draw do
     collection do
       get 'lookup'
       post 'lookup'
-      get 'stacked_view'
-      post 'stacked_view'
     end  
   end
   resources :inventory_exceptions
