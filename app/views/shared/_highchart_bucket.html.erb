@@ -42,7 +42,6 @@ $(function () {
           pointStart: Date.UTC(<%= @begin_date.year %>, <%= @begin_date.month - 1%>, <%= @begin_date.day %>, 12,0),
           marker: {enabled: false},
           name: '<%= srs["location_name"] %>',
-          color: "#FF0000",
           data: <%= srs["data"] %>
           },
         <% end %>
