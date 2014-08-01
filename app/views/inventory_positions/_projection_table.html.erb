@@ -1,0 +1,15 @@
+
+<table class="table table-striped">
+<tr><th>Date</th> <th>On Hand Quantity</th> <th>On Order Quantity</th> <th>In Transit Quantity</th> <th>Allocated Quantity</th><th>Planned Consumption</th> <th>Available Quantity </th></tr>
+<% @projections.each do |projection| %>
+  <tr><td><%= link_to(projection.projected_for.to_formatted_s(:short), inventory_position_inventory_projection_path(@inventory_position, projection)) %></td>
+      <td><%= projection.on_hand_quantity %></td>
+      <td><%= projection.on_order_quantity %></td>
+      <td><%= projection.in_transit_quantity %></td>
+      <td><%= projection.allocated_quantity %></td>
+      <td><%= projection.forecasted_quantity %></td>
+      <td><%= projection.available_quantity %></td>
+  </tr>
+<% end %>
+</table>
+

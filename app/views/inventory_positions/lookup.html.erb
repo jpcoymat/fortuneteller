@@ -1,3 +1,6 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "flip" %>
+<% end %>
 <h1>Inventory Positions</h1>
  <p>Please select a Product and Location to see projections.</p>
  <div class="container-fluid">  
@@ -28,14 +31,35 @@
   </div>
   <br \><br \>
   <hr>
+<div>
+<br \>
+<%= link_to "Main Menu", main_index_path %>
+<br \>
+</div>
+
   <% if request.post? %>
     <% if @inventory_position.nil? %>
        <p>There are no Inventory Positon records for the product and location chosen.</p>	
     <% else %>
-      <%= render partial: "shared/highchart" %>
+      <button type="button" id="go">FLIP</button>
+      <div class="flip-container" style="width: 98%">
+        <div class="page1" style="width: 100%">
+          <%= render partial: "shared/highchart" %>
+        </div>
+        <div class="page2">
+          <%= render partial: "projection_table" %>
+        </div>
+      </div>
+      <script type="text/javascript">
+        $('#go').click(function() {
+          var page1 = $('.page1');
+          var page2 = $('.page2');
+          var toHide = page1.is(':visible') ? page1 : page2;
+          var toShow = page2.is(':visible') ? page1 : page2;
+           
+          toHide.removeClass('flip in').addClass('flip out').hide();
+          toShow.removeClass('flip out').addClass('flip in').show();
+        });
+      </script>
     <% end %>
   <% end %>
-<br \> <br \><br \>
-<%= link_to "Main Menu", main_index_path %>
-<br \> <br \><br \>
-
