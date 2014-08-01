@@ -55,7 +55,7 @@ class ProductLocationAssignmentsController < ApplicationController
     end
 
     def product_location_assignment_params
-      params.require(:product_location_assignment).permit(:minimum_quantity, :maximum_quantity, :product_id, :location_id)
+      params.require(:product_location_assignment).permit(:product_name, :minimum_quantity, :maximum_quantity, :product_id, :location_id)
     end
 
 

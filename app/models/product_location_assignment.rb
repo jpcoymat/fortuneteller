@@ -8,6 +8,7 @@ class ProductLocationAssignment
   belongs_to :product
   belongs_to :location
 
+  validates :location_id, presence: true
   validates :product_id, uniqueness: {scope: :location_id}
 
   def create_inventory_position
@@ -16,5 +17,15 @@ class ProductLocationAssignment
       @inventory_position.create_projections
     end
   end
+
+  def product_name
+    self.product.try(:name)
+  end
+
+  def product_name=(name)
+    self.product_id = Product.where(name: name).first.id
+  end
+
+
 
 end

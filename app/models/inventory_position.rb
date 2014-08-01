@@ -102,5 +102,13 @@ class InventoryPosition
     InventoryException.create_from_projections(below_min_projections, "Below Min") if below_min_projections.count > 0
   end
 
+  def product_name
+    self.product.try(:name)
+  end
+
+  def product_name=(name)
+    self.product_id = Product.where(name: name).first.id
+  end
+
 
 end
