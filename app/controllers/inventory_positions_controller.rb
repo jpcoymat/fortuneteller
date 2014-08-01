@@ -9,7 +9,7 @@ class InventoryPositionsController < ApplicationController
     if request.post?
       @inventory_position = InventoryPosition.where(search_params).where(product: @product).first
       if @inventory_position
-        @product_location_assignment = ProductLocationAssignment.where(product: @inventory_position.product, location: @inventory_position.location).first
+        @product_location_assignment = @inventory_position.product_location_assignment
         @min_qty, @on_hand, @available, @on_order, @in_transit, @allocated, @forecasted, @max_qty = [], [],[],[],[],[],[],[]
         @projections = @inventory_position.inventory_projections.where(:projected_for.gte => @begin_date, :projected_for.lte => @end_date).all
         @projections.each do |ip|
@@ -67,7 +67,7 @@ class InventoryPositionsController < ApplicationController
       if  params[:inventory_position_search].nil? or  params[:inventory_position_search][:product_name].blank?
         @product = nil
       else
-        @product = Product.where(name: params[:inventory_position_search][:product_name]).first unless params[:inventory_position_search][:product_name].blank?
+        @product = Product.where(name: params[:inventory_position_search][:product_name]).first
       end
       @product
     end

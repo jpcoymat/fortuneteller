@@ -1,0 +1,18 @@
+<div class="form-group">
+  <%= form.label "Reference Number",  class: "col-sm-2 control-label" %>
+  <script>
+    $(function() {
+      var movement_sources = [
+        <% movement_sources.each do |ms| %>
+          "<%= ms.object_reference_number %>",
+        <% end %>
+      ""];
+      $( "#<%= source_type%>_object_reference_number" ).autocomplete({
+        source: movement_sources
+      });
+    });
+  </script>
+  <div class="col-xs-4"> 
+    <%= form.text_field :object_reference_number, {class: "form-control"} %>
+  </div>
+</div>

@@ -1,9 +1,4 @@
-<div class="form-group">
-  <%= form.label  "Product",  class: "col-sm-2 control-label" %>
-  <div class="col-xs-4">
-    <%= form.select :product_id, @products.collect {|product| [product.name, product.id] }, {}, {class: "form-control"} %>
-  </div>
-</div>
+<%= render partial: "shared/product_form_auto", locals: {form: form} %>
 <div class="form-group">
   <%= form.label "Location",  class: "col-sm-2 control-label" %>
   <div class="col-xs-4">
