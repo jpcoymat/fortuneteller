@@ -1,15 +1,38 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "fixtableheader" %>
+<% end %>
 
-<table class="table table-striped">
-<tr><th>Date</th> <th>On Hand Quantity</th> <th>On Order Quantity</th> <th>In Transit Quantity</th> <th>Allocated Quantity</th><th>Planned Consumption</th> <th>Available Quantity </th></tr>
+<table id="myTable" class="table table-fixedheader">
+<thead>
+  <tr>
+    <th width="10%">Date</th> 
+    <th width="10%">On Hand</th> 
+    <th width="10%">On Order</th> 
+    <th width="10%">In Transit</th> 
+    <th width="10%">Allocated</th>
+    <th width="10%">Planned </th> 
+    <th width="10%">Available </th>
+  </tr>
+</thead>
+<tbody style="height:450px">
 <% @projections.each do |projection| %>
-  <tr><td><%= link_to(projection.projected_for.to_formatted_s(:short), inventory_position_inventory_projection_path(@inventory_position, projection)) %></td>
-      <td><%= projection.on_hand_quantity %></td>
-      <td><%= projection.on_order_quantity %></td>
-      <td><%= projection.in_transit_quantity %></td>
-      <td><%= projection.allocated_quantity %></td>
-      <td><%= projection.forecasted_quantity %></td>
-      <td><%= projection.available_quantity %></td>
+  <% if projection.available_quantity < 0 %>
+    <tr class="danger" >
+  <% elsif projection.available_quantity < @product_location_assignment.minimum_quantity %>
+    <tr class="warning">
+  <% else %>
+    <tr>
+  <% end %> 
+    <td width="10%"><%= link_to(projection.projected_for.to_formatted_s(:short), inventory_position_inventory_projection_path(@inventory_position, projection)) %></td>
+    <td width="10%"><%= projection.on_hand_quantity %></td>
+    <td width="10%"><%= projection.on_order_quantity %></td>
+    <td width="10%"><%= projection.in_transit_quantity %></td>
+    <td width="10%"><%= projection.allocated_quantity %></td>
+    <td width="10%"><%= projection.forecasted_quantity %></td>
+    <td width="10%"><%= projection.available_quantity %></td>
   </tr>
 <% end %>
+</tbody>
 </table>
+
 

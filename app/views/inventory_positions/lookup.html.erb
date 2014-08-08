@@ -41,12 +41,12 @@
     <% if @inventory_position.nil? %>
        <p>There are no Inventory Positon records for the product and location chosen.</p>	
     <% else %>
-      <button type="button" id="go">FLIP</button>
+      <button type="button" id="go">Switch View Format</button>
       <div class="flip-container" style="width: 98%">
         <div class="page1" style="width: 100%">
           <%= render partial: "shared/highchart" %>
         </div>
-        <div class="page2">
+        <div class="page2" style="width: 100%">
           <%= render partial: "projection_table" %>
         </div>
       </div>
