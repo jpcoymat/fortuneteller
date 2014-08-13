@@ -1,0 +1,45 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "chosen" %>
+  <%= javascript_include_tag "chosen-jquery" %>
+<% end %>
+<h1>Multi Select View</h1>
+ <p>Please enter a product category or select a unique Product (location and date ranges are optional).</p>
+  <div class="container-fluid">
+  <%= form_for :group_search, url: multichoose_view_path, html: {class: "form-horizontal"}  do |form| %>
+    <div class="form-group"> 
+      <%= render partial: "shared/product_chosen", locals: {form: form} %>
+
+      <%= form.label "Location", {class: "col-sm-1 control-label"} %>
+      <div class="col-md-4"> 
+        <%= form.select :locations, @locations.collect {|location| [location.name, location.id]}, {include_blank: true}, {multiple: true, class: "form-control chosen-select"} %>
+        <script type="text/javascript">
+          $("#group_search_locations").chosen({max_selected_options: 5});
+        </script>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-1">
+      </div>
+      <div class="col-sm-2">
+        <%= submit_tag "Lookup Projections", class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+  </div>
+  <br \><br \>
+  <hr>
+  <% if request.post? %>
+    <% if @inventory_positions.class == String %>
+        <p><%= @inventory_positions %></p> 
+    <% elsif @inventory_positions.count == 0 %>
+       <p>There are no Inventory Positon records for the product and location chosen.</p>
+       <p><%= @inventory_positions.selector.to_s %></p>
+    <% else %>
+      <h4>Inventory Projections </h4>
+      <%= render partial: "shared/highchart_grouped2" %>  
+    <% end %>
+  <% end %>
+  <br \> <br \><br \>
+  <%= link_to "Main Menu", main_index_path %>
+  <br \> <br \><br \>
+

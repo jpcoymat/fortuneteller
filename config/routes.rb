@@ -68,6 +68,8 @@ Fortuneteller::Application.routes.draw do
     post 'location_centric', action: "location_centric"
     get 'inventory_bucket_view', action: "inventory_bucket_view"
     post 'inventory_bucket_view', action: "inventory_bucket_view"
+    get 'multichoose_view', action: "multichoose_view"
+    post 'multichoose_view', action: "multichoose_view"
   end
 
   controller :dashboard do 

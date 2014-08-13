@@ -115,6 +115,49 @@ class GroupingViewsController < ApplicationController
   end
 
 
+  def multichoose_view
+    @organization = @user.organization
+    @products = @organization.products
+    @locations = @organization.locations
+    if request.post?
+      if validate_multichoose_parameters > 0
+        @inventory_positions = multichoose_inventory_positions
+        if @inventory_positions.count >= 1
+          current_search_date = @begin_date
+          @min_qty, @on_hand, @on_order, @in_transit, @allocated, @forecasted, @available, @max_qty = [], [], [], [], [], [], [], []
+          while current_search_date <= @end_date
+            total_min, total_on_hand, total_on_order, total_in_transit, total_allocated, total_forecasted, total_available, total_max = 0,0,0,0,0,0,0,0
+            @inventory_positions.each do |position|
+              projection = position.inventory_projections.where(projected_for: current_search_date).first
+              if projection
+                total_min += position.product_location_assignment.minimum_quantity
+                total_on_hand += projection.on_hand_quantity
+                total_on_order += projection.on_order_quantity
+                total_in_transit += projection.in_transit_quantity
+                total_allocated +=  projection.allocated_quantity
+                total_forecasted += projection.forecasted_quantity
+                total_available += projection.available_quantity
+                total_max += position.product_location_assignment.maximum_quantity
+              end
+            end
+            @min_qty << total_min
+            @on_hand << total_on_hand
+            @available << total_available
+            @on_order << total_on_order
+            @in_transit << total_in_transit
+            @allocated << total_allocated
+            @forecasted << total_forecasted
+            @max_qty << total_max
+            current_search_date += 1.day
+          end
+        end      
+      else
+        @inventory_positions = "Invalid params " + validate_multichoose_parameters.to_s + " - " + multichoose_params.to_s
+      end     
+    end
+  end
+
+
   protected
     
     def set_user
@@ -215,7 +258,7 @@ class GroupingViewsController < ApplicationController
 
     def set_location
       @location = nil
-      if params[:group_search] and !(params[:group_search][:location_id].blank?)
+      if params[:group_search] and params[:group_search].has_key?(:location_id) and !(params[:group_search][:location_id].blank?)
         @location = Location.find(params[:group_search][:location_id])
       end
       @location
@@ -259,6 +302,32 @@ class GroupingViewsController < ApplicationController
      end
      @product_category
    end
- 
+
+   def multichoose_params
+     params.require(:group_search).permit(:locations, :products) 
+   end 
+
+   def validate_multichoose_parameters
+     products = params[:group_search]["products"]
+     if products.nil? 
+       return -3
+     elsif products.count == 1 and products[0] = ""
+       return -1
+     else
+       locations = params[:group_search]["locations"]
+       if locations.nil? or (locations.count == 1 and locations[0] = "")
+         return -2
+       else
+         return 1
+       end
+     end
+   end
+
+   def multichoose_inventory_positions
+     input_products = params[:group_search]["products"]
+     input_locations = params[:group_search]["locations"]
+     @multichoose_inventory_positions = InventoryPosition.in(product_id: input_products).in(location_id: input_locations)
+     @multichoose_inventory_positions
+   end
 
 end
