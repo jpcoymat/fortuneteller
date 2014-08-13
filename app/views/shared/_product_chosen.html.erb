@@ -3,6 +3,6 @@
   <%= form.select :products, @products.collect {|product| [product.name, product.id]}, {}, {multiple: true, class: "form-control chosen-select"}%>
 </div>
 <script type="text/javascript">
-  $("#group_search_products").chosen({max_selected_options: 5});
+  $("#group_search_products").chosen({search_contains: true});
 </script>
 

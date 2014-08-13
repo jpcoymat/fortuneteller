@@ -324,9 +324,9 @@ class GroupingViewsController < ApplicationController
    end
 
    def multichoose_inventory_positions
-     input_products = params[:group_search]["products"]
-     input_locations = params[:group_search]["locations"]
-     @multichoose_inventory_positions = InventoryPosition.in(product_id: input_products).in(location_id: input_locations)
+     @input_products = params[:group_search]["products"]
+     @input_locations = params[:group_search]["locations"]
+     @multichoose_inventory_positions = InventoryPosition.in(product_id: @input_products).in(location_id: @input_locations)
      @multichoose_inventory_positions
    end
 

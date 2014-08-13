@@ -79,6 +79,8 @@ Fortuneteller::Application.routes.draw do
   controller :grouped_projections do 
     get 'grouped_projections', action: "index"
     post 'grouped_projections', action: "index"
+    get 'multi_product_location', action: "multi_product_location"
+    post 'multi_product_location', action: "multi_product_location"
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
