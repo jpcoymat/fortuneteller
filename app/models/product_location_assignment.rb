@@ -26,6 +26,12 @@ class ProductLocationAssignment
     self.product_id = Product.where(name: name).first.id
   end
 
+  def location_name
+    self.location.try(:name)
+  end
 
+  def location_name=(name)
+    self.location_id = Location.where(name: name).first.id
+  end
 
 end

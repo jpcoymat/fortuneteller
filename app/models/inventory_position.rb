@@ -28,7 +28,7 @@ class InventoryPosition
  
   def projection_aggregate(inventory_bucket)
     inventory_bucket_total = 0
-    self.inventory_projections.each {|projection| inventory_bucket_total += projection.attributes[inventory_bucket]}
+    self.inventory_projections.each {|projection| inventory_bucket_total += projection.attributes[inventory_bucket]} if self.inventory_projections.first.has_key?(inventory_bucket) 
     inventory_bucket_total
   end
 
