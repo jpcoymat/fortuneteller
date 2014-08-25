@@ -105,7 +105,7 @@ $(function () {
 	  data: <%= @allocated %>
 	  },
 	  {type: 'column', 
-	  name: 'Forecasted',
+	  name: 'Planned Consumption',
           color: "#FF6600",
           pointInterval: 24 * 3600 * 1000,
           pointStart: Date.UTC(<%= @begin_date.year %>, <%= @begin_date.month - 1%>, <%= @begin_date.day %>, 12,0),

@@ -6,11 +6,11 @@
 <thead>
   <tr>
     <th width="10%">Date</th> 
-    <th width="15%">On Hand Quantity</th> 
+    <th width="10%">On Hand Quantity</th> 
     <th width="15%">On Order Quantity</th> 
     <th width="15%">In Transit Quantity</th> 
     <th width="15%">Allocated Quantity</th>
-    <th width="15%">Planned Quantity</th> 
+    <th width="20%">Planned Consumption Quantity</th> 
     <th width="15%">Available Quantity</th>
   </tr>
 </thead>
@@ -24,11 +24,11 @@
     <tr>
   <% end %> 
     <td width="10%"><%= link_to(projection.projected_for.to_formatted_s(:short), inventory_position_inventory_projection_path(@inventory_position, projection)) %></td>
-    <td width="15%"><%= projection.on_hand_quantity %></td>
+    <td width="10%"><%= projection.on_hand_quantity %></td>
     <td width="15%"><%= projection.on_order_quantity %></td>
     <td width="15%"><%= projection.in_transit_quantity %></td>
     <td width="15%"><%= projection.allocated_quantity %></td>
-    <td width="15%"><%= projection.forecasted_quantity %></td>
+    <td width="20%"><%= projection.forecasted_quantity %></td>
     <td width="15%"><%= projection.available_quantity %></td>
   </tr>
 <% end %>

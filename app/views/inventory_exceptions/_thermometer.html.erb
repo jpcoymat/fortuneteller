@@ -10,6 +10,11 @@
         ]);
    
         var options = {
+          annotations: {
+            textStyle: {
+              fontSize: 18
+            }
+          },
           hAxis: {minValue: <%= @min_days_to_impact%>, maxValue: <%= @max_days_to_impact %>, gridlines: {count: 0}},
           legend: { position: "none" },
           vAxis: {format:''}
