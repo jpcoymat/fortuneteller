@@ -1,0 +1,21 @@
+require "resque/tasks"
+require 'resque/scheduler/taks'
+
+task "resque:setup" => :environment do
+  Resque.before_fork = Proc.new { 
+    logfile = File.open(File.join(Rails.root, 'log', 'resque.log'), 'a')
+    logfile.sync = true
+    Resque.logger = Logger.new(logfile)
+    Resque.logger.level = Logger::INFO
+    Resque.logger.info "Resque Logger Initialized!"
+  }
+  
+  require 'resque'
+  require 'resque-scheduler'
+ 
+  Resque.schedule = YAML.load_file(File.join(RAILS_ROOT, 'config/resque_schedule.yml'))
+  require 'jobs'
+
+end
+
+
