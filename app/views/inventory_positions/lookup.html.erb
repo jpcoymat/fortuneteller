@@ -1,6 +1,7 @@
 <% content_for :head do %>
   <%= stylesheet_link_tag "flip" %>
 <% end %>
+<div class="container">
 <h1>Inventory Positions</h1>
  <p>Please select a Product and Location to see projections.</p>
  <div class="container-fluid">  
@@ -31,15 +32,13 @@
   </div>
   <br \><br \>
   <hr>
-<div>
-<br \>
-<%= link_to "Main Menu", main_index_path %>
-<br \>
+</div>
+
 </div>
 
   <% if request.post? %>
     <% if @inventory_position.nil? %>
-       <p>There are no Inventory Positon records for the product and location chosen.</p>	
+       <p>There are no Inventory Position records for the product and location chosen.</p>	
     <% else %>
       <button type="button" id="go">Switch View Format</button>
       <div class="flip-container" style="width: 98%">

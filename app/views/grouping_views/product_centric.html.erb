@@ -1,5 +1,6 @@
-<h1>Product Centric View</h1>
- <p>Please enter a product category or select a unique Product (location and date ranges are optional).</p>
+<div class-"container">
+  <h1>Product Centric View</h1>
+  <p>Please enter a product category or select a unique Product (location and date ranges are optional).</p>
   <div class="container-fluid">
   <%= form_for :group_search, url: product_centric_path, html: {class: "form-horizontal"}  do |form| %>
     <div class="form-group">
@@ -71,7 +72,5 @@
       <%= render partial: "shared/highchart_grouped" %>  
     <% end %>
   <% end %>
-  <br \> <br \><br \>
-  <%= link_to "Main Menu", main_index_path %>
-  <br \> <br \><br \>
+</div>
 

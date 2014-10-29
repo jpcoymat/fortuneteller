@@ -8,7 +8,6 @@ Fortuneteller::Application.routes.draw do
   mount Resque::Server.new, at: "/resque"
  
   get "login/login"
-  get "main/index"
   get "login/logout"
   post "login/logout"
   post "login/login"
@@ -138,5 +137,5 @@ Fortuneteller::Application.routes.draw do
   #     resources :products
   #   end
 
-  root to: 'main#index'
+  root to: 'dashboard#index' 
 end
