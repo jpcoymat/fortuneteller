@@ -1,0 +1,46 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "fixtableheader" %>
+<% end %>
+
+<table id="myTable" class="table table-fixedheader">
+<thead>
+  <tr>
+    <th width="10%">Date</th> 
+    <th width="10%">On Hand Quantity</th> 
+    <th width="15%">On Order Quantity</th> 
+    <th width="15%">In Transit Quantity</th> 
+    <th width="15%">Allocated Quantity</th>
+    <th width="20%">Planned Consumption Quantity</th> 
+    <th width="15%">Available Quantity</th>
+  </tr>
+</thead>
+<tbody style="height:450px">
+<% @dates.each do |date| %>
+  <% min_qty = @min_qty[@dates.index(date)] %>
+  <% max_qty = @max_qty[@dates.index(date)] %>
+  <% on_hand = @on_hand[@dates.index(date)] %>
+  <% on_order = @on_order[@dates.index(date)] %>
+  <% in_transit = @in_transit[@dates.index(date)] %>
+  <% allocated = @allocated[@dates.index(date)] %>
+  <% forecasted = @forecasted[@dates.index(date)] %> 
+  <% available = @available[@dates.index(date)] %>
+  <% if available < 0 %>
+    <tr class="danger" >
+  <% elsif available < min_qty %>
+    <tr class="warning">
+  <% else %>
+    <tr>
+  <% end %> 
+    <td width="10%"><%= date.to_formatted_s(:short)  %></td>
+    <td width="10%"><%= on_hand %></td>
+    <td width="15%"><%= on_order %></td>
+    <td width="15%"><%= in_transit %></td>
+    <td width="15%"><%= allocated %></td>
+    <td width="20%"><%= forecasted %></td>
+    <td width="15%"><%= available %></td>
+  </tr>
+<% end %>
+</tbody>
+</table>
+
+

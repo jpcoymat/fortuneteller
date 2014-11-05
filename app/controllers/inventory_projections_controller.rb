@@ -5,7 +5,19 @@ class InventoryProjectionsController < ApplicationController
   def show
     @inventory_position = InventoryPosition.find(params[:inventory_position_id])
     @inventory_projection = @inventory_position.inventory_projections.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
+
+  def modal
+    @inventory_position = InventoryPosition.find(params[:inventory_position_id])
+    @inventory_projection = @inventory_position.inventory_projections.find(params[:id])
+    respond_to do |format|
+      format.js
+    end
+  end  
 
   protected
    

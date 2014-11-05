@@ -45,7 +45,11 @@ Fortuneteller::Application.routes.draw do
   resources :location_groups
   resources :product_location_assignments
   resources :inventory_positions do
-    resources :inventory_projections
+    resources :inventory_projections do
+      member do
+        get 'modal'
+      end
+    end
     collection do
       get 'lookup'
       post 'lookup'

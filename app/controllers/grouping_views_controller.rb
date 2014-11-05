@@ -56,8 +56,9 @@ class GroupingViewsController < ApplicationController
       if @inventory_positions.count > 0
         current_search_date = @begin_date
         @search_criteria_to_string = search_criteria_to_string(@clean_search_hash.merge({"begin_date" => @begin_date, "end_date" => @end_date}))
-        @min_qty, @on_hand, @on_order, @in_transit, @allocated, @forecasted, @available, @max_qty = [], [], [], [], [], [], [], []
+        @dates, @min_qty, @on_hand, @on_order, @in_transit, @allocated, @forecasted, @available, @max_qty = [], [], [], [], [], [], [], [], []
         while current_search_date <= @end_date
+          @dates << current_search_date
           total_min, total_on_hand, total_on_order, total_in_transit, total_allocated, total_forecasted, total_available, total_max = 0,0,0,0,0,0,0,0
           @inventory_positions.each do |position|
             projection = position.inventory_projections.where(projected_for: current_search_date).first

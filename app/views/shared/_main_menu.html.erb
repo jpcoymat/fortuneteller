@@ -1,6 +1,5 @@
 <div class="navbar navbar-default navbar-static-top" role="navigation">
   <div class="container">
-
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li> <%= link_to "Dashboard", dashboard_path %></li>
@@ -8,32 +7,32 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Projections <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li><%= link_to "Projections", lookup_inventory_positions_path %></li>
-			<li><%= link_to "Product View", product_centric_path %></li>
-			<li><%= link_to "Location View", location_centric_path %></li>
-			<li><%= link_to "Inventory Bucket View", inventory_bucket_view_path %></li>
-			<li><%= link_to "Multichoose View", multichoose_view_path %></li>
+            <li><%= link_to "Product View", product_centric_path %></li>
+            <li><%= link_to "Location View", location_centric_path %></li>
+            <li><%= link_to "Inventory Bucket View", inventory_bucket_view_path %></li>
+            <li><%= link_to "Multichoose View", multichoose_view_path %></li>
           </ul>
         </li>
-		<li class="dropdown">
+        <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sources <span class="caret"></span></a>
-		  <ul class="dropdown-menu" role="menu">
-			<li><%= link_to "Ship Lines", lookup_ship_lines_path %></li>
-			<li><%= link_to "Order Lines", lookup_order_lines_path %></li>
-			<li><%= link_to "Forecasts", lookup_forecasts_path %></li>
+          <ul class="dropdown-menu" role="menu">
+            <li><%= link_to "Ship Lines", lookup_ship_lines_path %></li>
+            <li><%= link_to "Order Lines", lookup_order_lines_path %></li>
+            <li><%= link_to "Forecasts", lookup_forecasts_path %></li>
           </ul>
         </li>
-	    <li class="dropdown">
-	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Adjustments <span class="caret"></span></a>
+	<li class="dropdown">
+	  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Adjustments <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-		    <li><%= link_to "Inventory Advice", inventory_advices_path %></li>
-			<li><%= link_to "Receipts", receipts_path %></li>
-			<li><%= link_to "Shipment Confirmations", shipment_confirmations_path %></li>
+            <li><%= link_to "Inventory Advice", inventory_advices_path %></li>
+            <li><%= link_to "Receipts", receipts_path %></li>
+            <li><%= link_to "Shipment Confirmations", shipment_confirmations_path %></li>
           </ul>
         </li>
       </ul>
-	  <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-right">
         <li><%= link_to "Log Out", login_logout_path, method: :post %></li>
-     </ul>
+      </ul>
     </div>
   </div>
 </div>

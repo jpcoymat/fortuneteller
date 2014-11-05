@@ -1,45 +1,39 @@
 <% content_for :head do %>
   <%= stylesheet_link_tag "flip" %>
 <% end %>
-<div class="container">
+
 <h1>Inventory Positions</h1>
- <p>Please select a Product and Location to see projections.</p>
- <div class="container-fluid">  
- <%= form_for :inventory_position_search, url: lookup_inventory_positions_path, html: {class: "form-horizontal", role: "form"}  do |form| %>
-    <div class="form-group">  
-
-        <%= form.label "Location", {class: "col-sm-1 control-label"} %> 
-        <div class="col-sm-2">
-          <%= form.select :location_id, @locations.collect {|location| [location.name, location.id]}, {}, {class: "form-control"} %>
-          <% if @location %>
-            <script>
-              $("#inventory_position_search_location_id").val('<%= @location.id.to_s %>');	
-            </script>
-          <% end %>
-        </div>
-   
-        <%= render partial: "shared/product_autocomplete", locals: {form: form} %>
-  
+<p>Please select a Product and Location to see projections.</p>
+<div class="container-fluid">  
+<%= form_for :inventory_position_search, url: lookup_inventory_positions_path, html: {class: "form-horizontal", role: "form"}  do |form| %>
+  <div class="form-group">  
+    <%= form.label "Location", {class: "col-sm-1 control-label"} %> 
+    <div class="col-sm-2">
+      <%= form.select :location_id, @locations.collect {|location| [location.name, location.id]}, {}, {class: "form-control"} %>
+      <% if @location %>
+        <script>
+          $("#inventory_position_search_location_id").val('<%= @location.id.to_s %>');	
+        </script>
+      <% end %>
     </div>
-    <div class="form-group"> 
-      <div class="col-sm-1">
-      </div>
-      <div class="col-sm-1">      
-        <%= submit_tag "Lookup Projections", class: "btn btn-primary" %> 
-      </div>
-    </div>
-  <% end %>
+    <%= render partial: "shared/product_autocomplete", locals: {form: form} %> 
   </div>
-  <br \><br \>
-  <hr>
+  <div class="form-group"> 
+    <div class="col-sm-1"></div>
+    <div class="col-sm-1">      
+      <%= submit_tag "Lookup Projections", class: "btn btn-primary" %> 
+    </div>
+  </div>
+<% end %>
 </div>
-
-</div>
-
-  <% if request.post? %>
-    <% if @inventory_position.nil? %>
-       <p>There are no Inventory Position records for the product and location chosen.</p>	
-    <% else %>
+<br \><br \>
+<hr>
+<% if request.post? %>
+<div class="container">
+  <% if @inventory_position.nil? %>
+    <p>There are no Inventory Position records for the product and location chosen.</p>	
+  <% else %>
+    <div class="row" style="height: 600px">
       <button type="button" id="go">Switch View Format</button>
       <div class="flip-container" style="width: 98%">
         <div class="page1" style="width: 100%">
@@ -49,16 +43,22 @@
           <%= render partial: "projection_table" %>
         </div>
       </div>
-      <script type="text/javascript">
-        $('#go').click(function() {
-          var page1 = $('.page1');
-          var page2 = $('.page2');
-          var toHide = page1.is(':visible') ? page1 : page2;
-          var toShow = page2.is(':visible') ? page1 : page2;
-           
-          toHide.removeClass('flip in').addClass('flip out').hide();
-          toShow.removeClass('flip out').addClass('flip in').show();
-        });
-      </script>
-    <% end %>
+    </div>
+    <script type="text/javascript">
+      $('#go').click(function() {
+        var page1 = $('.page1');
+        var page2 = $('.page2');
+        var toHide = page1.is(':visible') ? page1 : page2;
+        var toShow = page2.is(':visible') ? page1 : page2;
+         
+        toHide.removeClass('flip in').addClass('flip out').hide();
+        toShow.removeClass('flip out').addClass('flip in').show();
+      });
+    </script>
+    <div class="container" id="projection_details">
+      <%= render partial: "shared/modal", locals: {projection: @inventory_position.inventory_projections.first} %>
+    </div>
   <% end %>
+</div>
+<% end %>
+

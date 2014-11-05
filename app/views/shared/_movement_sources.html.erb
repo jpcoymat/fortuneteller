@@ -1,0 +1,23 @@
+<table class="table table-striped">
+  <tr><th>Source Type</th> 
+      <th>Source Reference</th> 
+      <th>Origin Location </th> 
+      <th>Destination Location </th> 
+      <th>ETD</th> 
+      <th>ETA</th> 
+      <th>Product</th>
+      <th>Quantity</th>
+  </tr>
+  <% movement_sources.each do |movement_source| %>
+    <tr>
+      <td><%= movement_source.class.to_s		%></td>
+      <td><%= link_to(movement_source.object_reference_number, polymorphic_path(movement_source))	%></td>
+      <td><%= movement_source.origin_location.try(:name)	%></td>
+      <td><%= movement_source.destination_location.try(:name)	%></td>
+      <td><%= movement_source.etd.to_s			%></td>
+      <td><%= movement_source.eta.to_s			%></td>
+      <td><%= movement_source.product.name			%></td>
+      <td><%= movement_source.quantity.to_s			%></td>
+    </tr>
+  <% end %>
+</table>

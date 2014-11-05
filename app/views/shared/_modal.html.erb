@@ -1,0 +1,37 @@
+<h4>Inventory Projection for <%= projection.projected_for.to_s %></h4>
+<dl class="dl-horizontal">
+  <dt>On Hand             </dt>   <dd><%= projection.on_hand_quantity.to_s     %></dd>
+  <dt>On Order            </dt>   <dd><%= projection.on_order_quantity.to_s    %></dd>
+  <dt>In Transit          </dt>   <dd><%= projection.in_transit_quantity.to_s  %></dd>
+  <dt>Allocated           </dt>   <dd><%= projection.allocated_quantity.to_s   %></dd>
+  <dt>Planned Consumption </dt>   <dd><%= projection.forecasted_quantity.to_s  %></dd>
+  <dt>Available           </dt>   <dd><%= projection.available_quantity.to_s   %></dd>
+</dl>
+<br /><br />
+<h4>On Order Sources</h4>
+<% if projection.on_order_sources.empty? %>
+  <p>No On Order Sources for this product/location/date</p>
+<% else %>
+  <%= render partial: "shared/movement_sources", locals: {movement_sources: projection.on_order_sources} %>
+<% end %>
+<br \><br \>
+<h4>In Transit Sources </h4>
+<% if projection.in_transit_sources.empty? %>
+  <p>No In Transit Sources for this product/location/date</p>
+<% else %>
+  <%= render partial: "shared/movement_sources", locals: {movement_sources: projection.in_transit_sources} %>
+<% end %>
+<br \><br \>
+<h4>Allocation Sources </h4>
+<% if projection.allocation_sources.empty? %>
+  <p>No Allocation Sources for this product/location/date</p>
+<% else %>
+  <%= render partial: "shared/movement_sources", locals: {movement_sources: projection.allocation_sources} %>
+<% end %>
+<br \><br \>
+<h4>Planned Consumption Sources </h4>
+<% if projection.forecast_sources.empty? %>
+  <p>No Planned Consumption Sources for this product/location/date</p>
+<% else %>
+  <%= render partial: "shared/movement_sources", locals: {movement_sources: projection.forecast_sources} %>
+<% end %>
