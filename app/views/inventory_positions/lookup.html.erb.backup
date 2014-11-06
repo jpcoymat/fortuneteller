@@ -55,9 +55,9 @@
         toShow.removeClass('flip out').addClass('flip in').show();
       });
     </script>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="container" id="projection_details">
+      <%= render partial: "shared/modal", locals: {projection: @inventory_position.inventory_projections.first} %>
     </div>
-    
   <% end %>
 </div>
 <% end %>

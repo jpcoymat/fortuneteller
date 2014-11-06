@@ -13,9 +13,10 @@ class GroupingViewsController < ApplicationController
       @inventory_positions = inventory_positions_for_product_centric
       if @inventory_positions.class != String and @inventory_positions.count > 0
         @search_criteria_to_string = search_criteria_to_string(@clean_search_hash.merge({"begin_date" => @begin_date, "end_date" => @end_date}))
-        @projections, @min_qty, @on_hand, @on_order, @in_transit, @allocated, @forecasted, @available, @max_qty = [],[],[],[],[],[],[],[],[]
+        @dates, @projections, @min_qty, @on_hand, @on_order, @in_transit, @allocated, @forecasted, @available, @max_qty = [], [],[],[],[],[],[],[],[],[]
         current_search_date = @begin_date
         while current_search_date <= @end_date
+          @dates << current_search_date
           min_quantity, total_on_hand, total_on_order, total_in_transit, total_allocated, total_forecasted, total_available, max_quantity = 0,0,0,0,0,0,0,0
           @inventory_positions.each do |position|
             projection = position.inventory_projections.where(projected_for: current_search_date).first

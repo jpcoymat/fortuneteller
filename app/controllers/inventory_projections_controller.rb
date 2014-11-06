@@ -15,6 +15,7 @@ class InventoryProjectionsController < ApplicationController
     @inventory_position = InventoryPosition.find(params[:inventory_position_id])
     @inventory_projection = @inventory_position.inventory_projections.find(params[:id])
     respond_to do |format|
+      format.html {render partial: "modal"}
       format.js
     end
   end  

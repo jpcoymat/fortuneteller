@@ -1,11 +1,11 @@
-<div class="modal-dialog">
+<div class="modal-dialog modal-lg">
   <div class="modal-content">
     <div class="modal-header">
-	  <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-	  <h4 class="modal-title" id="myModalLabel">Inventory Projection for <%= @inventory_projection.projected_for.to_s %></h4>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+      <h4 class="modal-title" id="myModalLabel">Inventory Projection for <%= @inventory_projection.projected_for.to_s %></h4>
     </div>
     <div class="modal-body">
-	  <dl class="dl-horizontal">
+      <dl class="dl-horizontal">
         <dt>On Hand             </dt>   <dd><%= @inventory_projection.on_hand_quantity.to_s     %></dd>
         <dt>On Order            </dt>   <dd><%= @inventory_projection.on_order_quantity.to_s    %></dd>
         <dt>In Transit          </dt>   <dd><%= @inventory_projection.in_transit_quantity.to_s  %></dd>
@@ -13,31 +13,31 @@
         <dt>Planned Consumption </dt>   <dd><%= @inventory_projection.forecasted_quantity.to_s  %></dd>
         <dt>Available           </dt>   <dd><%= @inventory_projection.available_quantity.to_s   %></dd>
       </dl>
-	  <br /><br />
-	  <h4>On Order Sources</h4>
-	  <% if @inventory_projection.on_order_sources.empty? %>
-        <p>No On Order Sources for this product/location/date</p>
+      <br /><br />
+      <h4>On Order Sources</h4>
+      <% if @inventory_projection.on_order_sources.empty? %>
+      <p>No On Order Sources for this product/location/date</p>
       <% else %>
-        <%= render partial: "movement_sources", locals: {movement_sources: @inventory_projection.on_order_sources} %>
+      <%= render partial: "movement_sources", locals: {movement_sources: @inventory_projection.on_order_sources} %>
       <% end %>
-	  <br \><br \>
+      <br \><br \>
       <h4>In Transit Sources </h4>
       <% if @inventory_projection.in_transit_sources.empty? %>
-        <p>No In Transit Sources for this product/location/date</p>
+      <p>No In Transit Sources for this product/location/date</p>
       <% else %>
-        <%= render partial: "movement_sources", locals: {movement_sources: @inventory_projection.in_transit_sources} %>
+      <%= render partial: "movement_sources", locals: {movement_sources: @inventory_projection.in_transit_sources} %>
       <% end %>
       <br \><br \>
       <h4>Allocation Sources </h4>
       <% if @inventory_projection.allocation_sources.empty? %>
-        <p>No Allocation Sources for this product/location/date</p>
+      <p>No Allocation Sources for this product/location/date</p>
       <% else %>
-        <%= render partial: "movement_sources", locals: {movement_sources: @inventory_projection.allocation_sources} %>
+      <%= render partial: "movement_sources", locals: {movement_sources: @inventory_projection.allocation_sources} %>
       <% end %>
       <br \><br \>
       <h4>Planned Consumption Sources </h4>
       <% if @inventory_projection.forecast_sources.empty? %>
-        <p>No Planned Consumption Sources for this product/location/date</p>
+      <p>No Planned Consumption Sources for this product/location/date</p>
       <% else %>
         <%= render partial: "movement_sources", locals: {movement_sources: @inventory_projection.forecast_sources} %>
       <% end %>

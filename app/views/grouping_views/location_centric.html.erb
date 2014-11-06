@@ -53,6 +53,7 @@
     <% if @inventory_positions.count == 0 %>
        <p>There are no Inventory Positon records for the product and location chosen.</p>
     <% else %>
+    <div class="container">  
       <h4>Inventory Projections for <%= @search_criteria_to_string %></h4>
       <div class="row" style="height: 600px">
         <button type="button" id="go">Switch View Format</button>
@@ -75,6 +76,7 @@
          toHide.removeClass('flip in').addClass('flip out').hide();
          toShow.removeClass('flip out').addClass('flip in').show();
       });
-     </script>
+      </script>
+    </div>
     <% end %>
   <% end %>

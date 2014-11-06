@@ -25,11 +25,9 @@ $(function () {
         click: function(e) {
           var projectionDate = new Date(e.xAxis[0].value);
           var hashKey = projectionDate.getFullYear() + '-' + projectionDate.getMonth() + '-' + projectionDate.getDate();
-          var url = "/inventory_positions/<%= @inventory_position.id.to_s %>/inventory_projections/" + datesAndIds[hashKey] + "/modal"
+          var url = "/inventory_positions/<%= @inventory_position.id.to_s %>/inventory_projections/" + datesAndIds[hashKey] + "/modal.js"
           $.get(url, function(data) {
-              $('#myModal').html(data);
-              $('#myModal').modal({});
-              $('#myModal').show();
+              eval(data);
             }
           );
         }

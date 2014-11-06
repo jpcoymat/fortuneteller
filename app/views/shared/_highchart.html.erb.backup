@@ -58,7 +58,7 @@ $(function () {
       {                                
         var projectionDate = new Date(this.x);
         var hashKey = projectionDate.getFullYear() + '-' + projectionDate.getMonth() + '-' + projectionDate.getDate();
-        var s = '<a href="/inventory_positions/<%= @inventory_position.id.to_s %>/inventory_projections/' + datesAndIds[hashKey] + '/modal" data-remote="true" data-toggle="modal" data-target="#projection_detail">' + projectionDate.toDateString() +'</a>' + '<br />';
+        var s = '<a data-remote="true" href="/inventory_positions/<%= @inventory_position.id.to_s %>/inventory_projections/' + datesAndIds[hashKey] + '/modal.js">' + projectionDate.toDateString() +'</a>' + '<br />';
         s += this.series.name + ': ' + this.y; 
         return s;
       }
