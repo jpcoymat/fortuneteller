@@ -23,7 +23,7 @@
   <% else %>
     <tr>
   <% end %> 
-    <td width="10%"><a href="javascript:void(0)"  onclick: "javasript: getModal(<%= projection.id.to_s %>)"><%= projection.projected_for.to_formatted_s(:short) %></a></td>
+    <td width="10%"><a href="javascript:void(0)"  onclick: "javasript: getModal('<%= projection.id.to_s %>')"><%= projection.projected_for.to_formatted_s(:short) %></a></td>
     <td width="10%"><%= projection.on_hand_quantity %></td>
     <td width="15%"><%= projection.on_order_quantity %></td>
     <td width="15%"><%= projection.in_transit_quantity %></td>
