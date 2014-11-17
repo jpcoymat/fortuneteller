@@ -37,7 +37,7 @@
 <script type="text/javascript">
 
   function getModal(projectionId) {
-    var url = var url = "/inventory_positions/<%= @inventory_position.id.to_s %>/inventory_projections/" + projectionId +  "/modal"
+    var url = "/inventory_positions/<%= @inventory_position.id.to_s %>/inventory_projections/" + projectionId +  "/modal";
     $.get(url, function(data) {
       $('#myModal').html(data);
       $('#myModal').modal({});
