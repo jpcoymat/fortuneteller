@@ -10,7 +10,7 @@
 
 var namesAndIds = new Object();
 <% @locations.each do |location| %>
-  namesAndIds['<%= location.name %>'] = '<%= location.id.to_s %>'
+  namesAndIds['<%= location.name %>'] = '<%= location.id.to_s %>';
 <% end %>
 
 $(function () {
