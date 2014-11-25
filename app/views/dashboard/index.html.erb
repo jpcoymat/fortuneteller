@@ -12,17 +12,7 @@
   <%= render partial: "map_chart", locals: {data_array: @data_array} %>
 
 <h3>Inventory Exception Breakdown</h3>
-  <table class="table table-striped">
-    <tr><th>Location</th><th>Priority 1 Exception Count </th> <th>Priority 2 Exception Count </th><th>Priority 3 Exception Count</th></tr>
-    <% @locations.each do |location| %>
-      <tr><td><%= link_to(location.name, inventory_exceptions_path(inventory_exception: {location_id: location.id})) %></td>
-	  <td><%= location.inventory_exceptions.where(priority: 1).all.count %></td>
-          <td><%= location.inventory_exceptions.where(priority: 2).all.count %></td>
-          <td><%= location.inventory_exceptions.where(priority: 3).all.count %></td>
-      </tr>
-    <% end %>
-  </table> 
-
+  
 <%= render partial: "location_exceptions" %>
 
 <h3>Location Group Exception Breakdown</h3>
