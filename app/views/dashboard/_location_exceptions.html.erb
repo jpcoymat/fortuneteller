@@ -1,0 +1,91 @@
+<% content_for :head do %>
+<script type="text/javascript" src="http://code.highcharts.com/stock/highstock.src.js"></script>
+<script type="text/javascript" src="http://code.highcharts.com/stock/modules/exporting.src.js"></script>
+<script type="text/javascript" src="http://code.highcharts.com/highcharts.src.js"></script>
+<script type="text/javascript" src="https://rawgithub.com/d-nation/highstock-beyond-extremes/master/beyond-extremes.js"></script>
+
+<% end %>
+<div id="location_exceptions" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<script type="text/javascript">
+
+var namesAndIds = new Object();
+<% @locations.each do |location| %>
+  namesAndIds['<%= location.name %>'] = '<%= location.id.to_s %>'
+<% end %>
+
+$(function () {
+    $('#location_exceptions').highcharts({
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Location Exceptions'
+        },
+        xAxis: {
+            categories: [
+            <% @locations.each do |location| %>
+              '<%= location.name %>'
+              <% unless location == @locations.last  %>
+                ,
+              <% end %>
+            <%end %>
+            ]
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Exception Count'
+            }
+        },
+        legend: {
+            reversed: true
+        },
+        plotOptions: {
+            series: {
+                stacking: 'normal',
+                cursor: 'pointer',
+                point: {
+                events:{
+                  click: function () {
+	            var loc_id = namesAndIds[this.category];
+                    var s = '/inventory_exceptions?inventory_exception%5Blocation_id%5D=' + loc_id;
+                    location.href = s;
+                  }
+                }
+              }
+            }
+        },
+        series: [
+            {name: 'P1',
+             data: [
+             <% @locations.each do |location| %>
+               <%= location.inventory_exceptions.where(priority: 1).all.count %>
+	       <% unless location == @locations.last  %>
+                 ,
+               <% end %>
+             <%end %>
+	    ]},
+            {name: 'P2',
+             data: [
+             <% @locations.each do |location| %>
+               <%= location.inventory_exceptions.where(priority: 2).all.count %>
+               <% unless location == @locations.last  %>
+                 ,
+               <% end %>
+             <%end %>
+            ]},
+            {name: 'P3',
+             data: [
+             <% @locations.each do |location| %>
+               <%= location.inventory_exceptions.where(priority: 3).all.count %>
+               <% unless location == @locations.last  %>
+                 ,
+               <% end %>
+             <%end %>
+            ]}	
+        ]
+    });
+});
+
+</script>
+
