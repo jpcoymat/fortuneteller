@@ -8,9 +8,9 @@
 <div id="location_exceptions" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 <script type="text/javascript">
 
-var namesAndIds = new Object();
+var locationNamesAndIds = new Object();
 <% @locations.each do |location| %>
-  namesAndIds['<%= location.name %>'] = '<%= location.id.to_s %>';
+  locationNamesAndIds['<%= location.name %>'] = '<%= location.id.to_s %>';
 <% end %>
 
 $(function () {
@@ -47,7 +47,7 @@ $(function () {
                 point: {
                 events:{
                   click: function () {
-	            var loc_id = namesAndIds[this.category];
+	            var loc_id = locationNamesAndIds[this.category];
                     var s = '/inventory_exceptions?inventory_exception%5Blocation_id%5D=' + loc_id;
                     location.href = s;
                   }
