@@ -1,0 +1,67 @@
+
+<div id="location_group_exceptions" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<script type="text/javascript">
+
+var namesAndIds = new Object();
+<% @location_groups.each do |location_group| %>
+  namesAndIds['<%= location_group.name %>'] = '<%= location_group.id.to_s %>'
+<% end %>
+
+$(function () {
+    $('#location_group_exceptions').highcharts({
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Location Exceptions'
+        },
+        xAxis: {
+            categories: [
+            <% @location_groups.each do |location_group| %>
+              '<%= location_group.name %>'
+              <% unless location_group == @location_groups.last  %>
+                ,
+              <% end %>
+            <%end %>
+            ]
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Exception Count'
+            }
+        },
+        legend: {
+            reversed: true
+        },
+        plotOptions: {
+            series: {
+                stacking: 'normal',
+                cursor: 'pointer',
+                point: {
+                events:{
+                  click: function () {
+	            var loc_id = namesAndIds[this.category];
+                    var s = '/location_group_exceptions?location_group_exception%5Blocation_group_id%5D=' + loc_id;
+                    location.href = s;
+                  }
+                }
+              }
+            }
+        },
+        series: [
+            {name: 'Exception Count',
+             data: [
+             <% @location_groups.each do |location_group| %>
+               <%= location_group.location_group_exceptions.count %>
+               <% unless location_group == @location_groups.last  %>
+                 ,
+               <% end %>
+             <%end %>
+            ]}	
+        ]
+    });
+});
+
+</script>
+
