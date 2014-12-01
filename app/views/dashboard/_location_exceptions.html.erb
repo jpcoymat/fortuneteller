@@ -56,10 +56,10 @@ $(function () {
             }
         },
         series: [
-            {name: 'P1',
+            {name: 'P3',
              data: [
              <% @locations.each do |location| %>
-               <%= location.inventory_exceptions.where(priority: 1).all.count %>
+               <%= location.inventory_exceptions.where(priority: 3).all.count %>
 	       <% unless location == @locations.last  %>
                  ,
                <% end %>
@@ -74,10 +74,10 @@ $(function () {
                <% end %>
              <%end %>
             ]},
-            {name: 'P3',
+            {name: 'P1',
              data: [
              <% @locations.each do |location| %>
-               <%= location.inventory_exceptions.where(priority: 3).all.count %>
+               <%= location.inventory_exceptions.where(priority: 1).all.count %>
                <% unless location == @locations.last  %>
                  ,
                <% end %>
