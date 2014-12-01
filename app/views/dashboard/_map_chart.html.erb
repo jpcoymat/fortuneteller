@@ -4,6 +4,11 @@ google.load('visualization', '1', {'packages': ['geochart']});
 google.setOnLoadCallback(drawMarkersMap);
 
 
+var locationNamesAndIds = new Object();
+<% @locations.each do |location| %>
+  locationNamesAndIds['<%= location.name %>'] = '<%= location.id.to_s %>';
+<% end %>
+
 function drawMarkersMap() {
 
   var data = new google.visualization.DataTable();
@@ -28,6 +33,18 @@ function drawMarkersMap() {
 
   var chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
   chart.draw(data, options);
+  
+  google.visualization.events.addListener(chart, 'select', function() {
+      var selectedItem = chart.getSelection()[0];
+      if (selectedItem) {
+        var locationName = data.getValue(selectedItem.row, 2);
+        var s = '/inventory_exceptions?inventory_exception%5Blocation_id%5D=' + locationNamesAndIds[locationName];
+        location.href = s;
+      }
+    });
+
+
+
 };
 </script>
 
