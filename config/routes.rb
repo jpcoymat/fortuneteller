@@ -38,7 +38,12 @@ Fortuneteller::Application.routes.draw do
       post 'lookup'
     end
   end
-  resources :inventory_advices
+  resources :inventory_advices do
+    collection do
+      get 'lookup'
+      post 'lookup'
+    end
+  end
   resources :receipts
   resources :shipment_confirmations
   resources :locations

@@ -40,6 +40,7 @@ gem 'resque-scheduler',  '~> 2.5.5', require: 'resque_scheduler'
 gem "highcharts-rails", "~> 3.0.0"
 
 gem "twitter-bootstrap-rails"
+gem 'quiet_assets', group: :development
 
 group :test do
   gem "rspec-rails"

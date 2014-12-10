@@ -8,6 +8,18 @@ class InventoryAdvicesController < ApplicationController
     @inventory_advice = InventoryAdvice.where(organization_id: @user.organization_id).all
   end
 
+  def lookup
+    @organization = User.find(session[:user_id]).organization
+    @products = @organization.products
+    @locations = @organization.locations
+    @all_inventory_advices = InventoryAdvice.where(organization: @organization)
+    if request.post?
+      @inventory_advices = InventoryAdvice.where(search_params)
+      @inventory_advices = @inventory_advices.gte(adjustment_date: Date.parse(params[:inventory_advice][:begin_date])) unless params[:inventory_advice][:begin_date].blank?
+      @inventory_advices = @inventory_advices.lte(adjustment_date: Date.parse(params[:inventory_advice][:end_date])) unless params[:inventory_advice][:end_date].blank?      
+    end
+  end
+
   def show
   end
 
@@ -21,7 +33,7 @@ class InventoryAdvicesController < ApplicationController
     @inventory_advice = InventoryAdvice.new(inventory_advice_params)
     if @inventory_advice.save
       Resque.enqueue(AdjustmentProcessingJob, @inventory_advice.id.to_s)
-      redirect_to inventory_advices_path
+      redirect_to lookup_inventory_advices_path
     else
       flash[:notice] = "Error creating Inventory Advice"
       @user = User.find(session[:user_id])
@@ -48,7 +60,17 @@ class InventoryAdvicesController < ApplicationController
     end  
 
     def inventory_advice_params
-      params.require(:inventory_advice).permit(:source, :product_id, :location_id, :organization_id, :object_reference_number, :adjustment_quantity)
+      params.require(:inventory_advice).permit(:product_name, :source, :product_id, :location_id, :organization_id, :object_reference_number, :adjustment_quantity)
     end
+
+    def search_params
+      search_params = inventory_advice_params.delete_if {|k,v| v.blank?}
+      if search_params.key?("product_name")
+        search_params["product_id"] =  Product.where(name: search_params["product_name"]).first.id
+        search_params.delete("product_name")
+      end
+      search_params
+    end
+
     
 end
