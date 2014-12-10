@@ -1,6 +1,6 @@
-<h1> Order Lines</h1>
+<h1>Inventory Advice Lookup</h1>
 
-<div class="container-fluid">
+<div class="container">
 <%= form_for :inventory_advice, url: lookup_inventory_advices_path, html: {class: "form-horizontal"}   do |form| %>
   <div class="form-group">
     <%= form.hidden_field :organization_id, value: @organization_id %>
@@ -20,9 +20,6 @@
     <div class="col-sm-2">
       <%= form.text_field :end_date,  class: "form-control" %>
     </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-1"></div> 
     <div class="col-sm-2">
       <%= submit_tag "Search", {class: "btn btn-primary"} %>
     </div>
