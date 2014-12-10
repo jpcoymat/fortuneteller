@@ -1,0 +1,57 @@
+<h1> Order Lines</h1>
+
+<div class="container-fluid">
+<%= form_for :inventory_advice, url: lookup_inventory_advices_path, html: {class: "form-horizontal"}   do |form| %>
+  <div class="form-group">
+    <%= form.hidden_field :organization_id, value: @organization_id %>
+    <%= render partial: "shared/reference_number_autocomplete", locals: {form: form, movement_sources: @all_inventory_advices, source_type: "order_line"} %>
+    <%= render partial: "shared/product_autocomplete", locals: {form: form} %>
+    <%= form.label "Location", class: "col-sm-1 control-label" %>
+    <div class="col-sm-2">
+      <%= form.select :location_id, @locations.collect {|loc| [loc.name, loc.id]}, {include_blank: true},{class: "form-control"} %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= form.label "Begin Date", class: "col-sm-1 control-label" %>
+    <div class="col-sm-2">
+      <%= form.text_field :begin_date,  class: "form-control" %>
+    </div>
+    <%= form.label "End Date", class: "col-sm-1 control-label" %>
+    <div class="col-sm-2">
+      <%= form.text_field :end_date,  class: "form-control" %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-1"></div> 
+    <div class="col-sm-2">
+      <%= submit_tag "Search", {class: "btn btn-primary"} %>
+    </div>
+  </div>
+<% end %>
+<script type="text/javascript">
+  $( "#inventory_advice_begin_date").datepicker({minDate: 0, maxDate: "<%=@organization.days_to_project%>D", dateFormat: "yy-mm-dd"});
+  $( "#inventory_advice_end_date").datepicker({minDate: 0, maxDate: "<%=@organization.days_to_project%>D", dateFormat: "yy-mm-dd"});
+</script>
+
+</div>
+<br \>
+<hr>
+<br \>
+<% if request.post? %>
+
+  <% if @inventory_advices.empty? %>
+    <p>No Inventory Advice records match your search criteria.  Please try again.</p>
+  <% else %>
+    <table class="table table-striped">
+      <tr><th>Reference Number</th> <th>Adjustment Date </th> <th>Product</th> <th>Location</th> <th>Adjustment Type</th> <th>Quantity</th></tr>
+      <% @inventory_advices.each do |advice| %>
+      <tr><td><%= advice.object_reference_number %> </td> <td><%= advice.adjustment_date.to_s %></td> <td><%= advice.product.name %></td> <td><%= advice.location.name %></td> <td><%= advice.adjustment_type %></td> <td><%= advice.adjustment_quantity.to_s %></td></tr>
+      <% end %>
+    </table>
+  <% end %>
+<% end %>
+<br /> <br />
+<%= link_to "Create New Inventory Advice", new_inventory_advice_path %>
+
+
+
