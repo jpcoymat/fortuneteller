@@ -26,8 +26,8 @@
   </div>
 <% end %>
 <script type="text/javascript">
-  $( "#inventory_advice_begin_date").datepicker({minDate: 0, maxDate: "<%=@organization.days_to_project%>D", dateFormat: "yy-mm-dd"});
-  $( "#inventory_advice_end_date").datepicker({minDate: 0, maxDate: "<%=@organization.days_to_project%>D", dateFormat: "yy-mm-dd"});
+  $( "#inventory_advice_begin_date").datepicker({ maxDate: 0});
+  $( "#inventory_advice_end_date").datepicker({maxDate: 0});
 </script>
 
 </div>
