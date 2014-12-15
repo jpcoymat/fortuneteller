@@ -1,0 +1,53 @@
+
+<h1>Product Location Assignments </h1>
+<div class="container-fluid">
+<%= form_for :product_location_assignment, url: lookup_product_location_assignments_path, html: {class: "form-horizontal"} do |form| %>
+  <%= form.hidden_field :organization_id, value: @organization_id %>
+  <div class="form-group">
+    <%= render partial: "shared/product_autocomplete", locals: {form: form} %>
+    <%= form.label "Location", class: "col-sm-2 control-label" %>  
+    <div class="col-sm-1">
+    </div >
+    <script type="text/javascript">
+      $(function() {
+        var location_names = [
+          <% @locations.each do |location| %>
+          "<%= location.name %>", 
+          <% end %>
+          ""];
+        $("#location_names" ).autocomplete({source: location_names});
+      });
+
+    </script>
+    <div class="col-sm-2">
+      <%= form.text_field :location_name, id: "location_names", class: "form-control" %>
+    </div>
+    <div class="col-sm-2">
+      <%= submit_tag "Search", {class: "btn btn-primary"} %>
+    </div>
+  </div>
+<% end %>
+<%if request.post? %>
+  <% if @product_location_assignments.empty? %>
+    <p>No Product Location Assignment records have been created.</p>
+  <% else %>
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-striped">
+          <tr><th>Product</th> <th>Location</th> <th>Minimum Quantity </th> <th>Maximum Quantity</th></tr>
+          <% @product_location_assignments.each do |product_location_assignment| %>
+            <tr><td><%= product_location_assignment.product.name 	%></td>
+              <td><%= product_location_assignment.location.name	%></td>
+              <td><%= product_location_assignment.minimum_quantity	%></td>
+              <td><%= product_location_assignment.maximum_quantity	%></td>
+              <td><%= link_to "Edit", edit_product_location_assignment_path(product_location_assignment) %></td>
+            </tr>
+          <% end %>
+        </table >
+      </div>
+    </div>
+  <% end %>
+<% end %>
+<br /> <br />
+<%= link_to "Add Product Location Assignment", new_product_location_assignment_path %>
+</div>

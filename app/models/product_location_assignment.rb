@@ -8,7 +8,7 @@ class ProductLocationAssignment
   belongs_to :product
   belongs_to :location
 
-  validates :location_id, presence: true
+  validates :location_id, :product_id, presence: true
   validates :product_id, uniqueness: {scope: :location_id}
 
   def create_inventory_position

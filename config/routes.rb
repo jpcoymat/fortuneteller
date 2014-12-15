@@ -48,7 +48,12 @@ Fortuneteller::Application.routes.draw do
   resources :shipment_confirmations
   resources :locations
   resources :location_groups
-  resources :product_location_assignments
+  resources :product_location_assignments do
+    collection do 
+      get 'lookup'
+      post 'lookup'
+    end
+  end 
   resources :inventory_positions do
     resources :inventory_projections do
       member do
