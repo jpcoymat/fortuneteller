@@ -1,10 +1,22 @@
 <%= render partial: "shared/product_form_auto", locals: {form: form} %>
+
 <div class="form-group">
-  <%= form.label "Location",  class: "col-sm-2 control-label" %>
-  <div class="col-xs-4">
-    <%= form.select :location_id, @locations.collect {|location| [location.name, location.id] }, {}, {class: "form-control"} %> 
+  <%= form.label "Location*", class: "col-sm-2 control-label" %>
+  <script type="text/javascript">
+    $(function() {
+      var location_names = [
+        <% @locations.each do |location| %>
+        "<%= location.name %>", 
+        <% end %>
+        ""];
+      $("#product_location_assignment_location_name" ).autocomplete({source: location_names});
+    });
+  </script>
+  <div class="col-sm-4">
+    <%= form.text_field :location_name, class: "form-control" %>
   </div>
 </div>
+
 <div class="form-group">
   <%= form.label "Minimum Quantity",  class: "col-sm-2 control-label" %>
   <div class="col-xs-4">
