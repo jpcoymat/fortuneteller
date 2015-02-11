@@ -41,7 +41,7 @@
     .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
       return $( "<li>" )
         .append( "<a>" + item.label + 
-                "<br><span style='font-size: 80%;'>Desc: " + item.code + "</span>" +
+                "<br><span style='font-size: 80%;'>Code: " + item.code + "</span>" +
                 "<br><span style='font-size: 60%;'>City: " + item.city + "</span></a>" )
         .appendTo( ul );
     };
