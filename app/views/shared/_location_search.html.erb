@@ -1,0 +1,55 @@
+<%= form.label "Location", {class: "col-sm-1 control-label"} %>
+
+  <script>
+  $(function() {
+    var locations = [
+      <% @locations.each do |location| %>
+        { "label" :"<%= location.name %>", "value": "<%= location.name %>", "city": "<%= location.city %>", "code": "<%= location.code %>", "name" :"<%= location.name %>"},
+      <% end %>
+      { "label" :"", "value": "", "city": "", "code": "", "name" :""}
+    ];
+
+    function lightwell(request, response) {
+        function hasMatch(s) {
+            return s.toLowerCase().indexOf(request.term.toLowerCase())!==-1;
+        }
+        var i, l, obj, matches = [];
+
+        if (request.term==="") {
+		    response([]);
+            return;
+        }
+           
+        for  (i = 0, l = locations.length; i<l; i++) {
+            obj = locations[i];
+            if (hasMatch(obj.label) || hasMatch(obj.code) || hasMatch(obj.city)) {
+                matches.push(obj);
+            }
+        }
+        response(matches);
+    }
+
+
+    $( "#location_names" ).autocomplete({
+      source: lightwell,
+      focus: function( event, ui ) {
+        $( "#location_names" ).val( ui.item.label );
+          return false;
+        }
+    })
+
+    .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+      return $( "<li>" )
+        .append( "<a>" + item.label + 
+                "<br><span style='font-size: 80%;'>Desc: " + item.code + "</span>" +
+                "<br><span style='font-size: 60%;'>City: " + item.city + "</span></a>" )
+        .appendTo( ul );
+    };
+
+  });
+</script>
+<div class="col-sm-2">
+  <%= form.text_field :location_name, id: "location_names", value: @location.try(:name), class: "form-control" %>
+</div>
+      
+

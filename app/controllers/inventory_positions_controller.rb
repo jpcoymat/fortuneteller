@@ -7,7 +7,7 @@ class InventoryPositionsController < ApplicationController
     @products = @organization.products
     @locations = @organization.locations
     if request.post?
-      @inventory_position = InventoryPosition.where(search_params).where(product: @product).first
+      @inventory_position = InventoryPosition.where(product: @product, location: @location).first
       if @inventory_position
         @product_location_assignment = @inventory_position.product_location_assignment
         @min_qty, @on_hand, @available, @on_order, @in_transit, @allocated, @forecasted, @max_qty = [], [],[],[],[],[],[],[]
@@ -73,10 +73,10 @@ class InventoryPositionsController < ApplicationController
     end
 
    def set_location
-     if params[:inventory_position_search].nil? or  params[:inventory_position_search][:location_id].blank?
+     if params[:inventory_position_search].nil? or  params[:inventory_position_search][:location_name].blank?
        @location = nil
      else
-       @location = Location.find(params[:inventory_position_search][:location_id])
+       @location = Location.where(name: params[:inventory_position_search][:location_name]).first
      end
      @location
    end
