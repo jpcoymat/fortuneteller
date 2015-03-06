@@ -4,9 +4,9 @@
   $(function() {
     var locations = [
       <% @locations.each do |location| %>
-        { "label" :"<%= location.name %>", "value": "<%= location.name %>", "city": "<%= location.city %>", "code": "<%= location.code %>", "name" :"<%= location.name %>"},
+        { "label" :"<%= location.name %>", "value": "<%= location.name %>", "city": "<%= location.city %>", "code": "<%= location.code %>", "name" :"<%= location.name %>", "country" : "<%= location.country %>"},
       <% end %>
-      { "label" :"", "value": "", "city": "", "code": "", "name" :""}
+      { "label" :"", "value": "", "city": "", "code": "", "name" :"", "country" : ""}
     ];
 
     function lightwell(request, response) {
@@ -42,7 +42,8 @@
       return $( "<li>" )
         .append( "<a>" + item.label + 
                 "<br><span style='font-size: 80%;'>Code: " + item.code + "</span>" +
-                "<br><span style='font-size: 60%;'>City: " + item.city + "</span></a>" )
+                "<br><span style='font-size: 60%;'>City: " + item.city + "</span>" + 
+                "<br><span style='font-size: 60%;'>Country: " + item.country + "</span></a>" )
         .appendTo( ul );
     };
 
