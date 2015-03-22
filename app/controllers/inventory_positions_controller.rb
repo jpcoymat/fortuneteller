@@ -73,14 +73,15 @@ class InventoryPositionsController < ApplicationController
     end
 
    def set_location
-     if  params[:inventory_position_search][:location_id]
-       @location = Location.find(params[:inventory_position_search][:location_id])
-     elsif params[:inventory_position_search].nil? or  params[:inventory_position_search][:location_name].blank?
-       @location = nil
+     if params[:inventory_position_search]
+       if !(params[:inventory_position_search][:location_id].blank?)
+         @location = Location.find(params[:inventory_position_search][:location_id])
+       else
+         @location = Location.where(name: params[:inventory_position_search][:location_name]).first
+       end
      else
-       @location = Location.where(name: params[:inventory_position_search][:location_name]).first
+       @location = nil
      end
-     @location
    end
 
 
