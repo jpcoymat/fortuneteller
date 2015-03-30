@@ -161,6 +161,10 @@ GEM
       resque
       sass-rails
       twitter-bootstrap-rails
+    roo (1.13.2)
+      nokogiri
+      rubyzip
+      spreadsheet (> 0.6.4)
     rspec-core (3.0.2)
       rspec-support (~> 3.0.0)
     rspec-expectations (3.0.2)
@@ -177,6 +181,8 @@ GEM
       rspec-mocks (~> 3.0.0)
       rspec-support (~> 3.0.0)
     rspec-support (3.0.2)
+    ruby-ole (1.2.11.7)
+    rubyzip (1.1.6)
     rufus-scheduler (2.0.24)
       tzinfo (>= 0.3.22)
     sass (3.2.19)
@@ -200,6 +206,8 @@ GEM
       activesupport (>= 3.0, < 4.2)
       railties (>= 3.0, < 4.2)
       slim (~> 2.0)
+    spreadsheet (1.0.0)
+      ruby-ole (>= 1.0)
     sprockets (2.11.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -256,6 +264,7 @@ DEPENDENCIES
   resque
   resque-scheduler (~> 2.5.5)
   resque-web
+  roo
   rspec-rails
   sass-rails (~> 4.0.0)
   sdoc

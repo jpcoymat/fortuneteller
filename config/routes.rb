@@ -18,7 +18,9 @@ Fortuneteller::Application.routes.draw do
       get 'reset_password'
     end
   end
+
   resources :organizations
+
   resources :forecasts do
     collection do
       get 'lookup'
@@ -30,12 +32,17 @@ Fortuneteller::Application.routes.draw do
     collection do 
       get 'lookup'
       post 'lookup'
+      get 'file_upload'
+      post 'import_file'
     end
   end
+
   resources :ship_lines do
     collection do
       get 'lookup'
       post 'lookup'
+      get 'file_upload'
+      post 'import_file'
     end
   end
   resources :inventory_advices do
@@ -44,16 +51,22 @@ Fortuneteller::Application.routes.draw do
       post 'lookup'
     end
   end
+
   resources :receipts
+
   resources :shipment_confirmations
+
   resources :locations
+
   resources :location_groups
+
   resources :product_location_assignments do
     collection do 
       get 'lookup'
       post 'lookup'
     end
   end 
+
   resources :inventory_positions do
     resources :inventory_projections do
       member do
@@ -65,8 +78,11 @@ Fortuneteller::Application.routes.draw do
       post 'lookup'
     end  
   end
+
   resources :inventory_exceptions
+
   resources :location_group_exceptions
+
   resources :products do
     collection do
       get 'lookup'

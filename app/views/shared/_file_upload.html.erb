@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Apocalypsealert</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+  <%= render partial: "shared/main_menu" %>
+  <% if notice %>
+    <div class="alert alert-danger" role="alert"><p><%= notice %></p></div>
+  <% end %>
+  <div class="container">
+    <h1>Excel File upload</h1>
+    <h3>Supported formats: .xls, .xlsx, .csv</h3>
+    <%= form_tag target_path, {class: "form-horizontal", role: "form", multipart: true} do %>
+      <div class="form-group">
+        <%= label_tag "Please select file", nil, class: "col-sm-2 control-label" %>
+        <div class="col-xs-4">
+          <%= file_field_tag :file %>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-xs-4">
+          <%= submit_tag "Import File", class: "btn btn-primary"%>
+        </div>
+      </div>
+    <% end %>
+ 
+  </div>
+</body>
+</html>
+

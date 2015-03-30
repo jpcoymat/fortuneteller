@@ -81,6 +81,18 @@ class OrderLinesController < ApplicationController
   end
 
 
+  def file_upload
+   render partial: "shared/file_upload", locals: {target_path: import_file_order_lines_path}
+  end
+
+  def import_file
+    order_line_file = params[:file]
+    copy_order_line_file(order_line_file)
+    OrderLine.import(Rails.root.join('public','order_line_uploads').to_s + "/"+order_line_file.original_filename)
+    redirect_to lookup_order_lines_url
+  end
+
+
   private
     
     def order_line_params
@@ -108,6 +120,11 @@ class OrderLinesController < ApplicationController
       search_params
     end
 
+    def copy_order_line_file(order_line_file)
+      File.open(Rails.root.join('public','order_line_uploads',order_line_file.original_filename),"wb") do |file|
+        file.write(order_line_file.read)
+      end
+    end
 
 end
 

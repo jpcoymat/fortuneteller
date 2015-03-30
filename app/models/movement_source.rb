@@ -43,9 +43,17 @@ class MovementSource
     self.origin_location_id = location.try(:id)
   end
 
+  def origin_location_name=(name)
+    self.origin_location_id = Location.where(name: name).first.try(:id)
+  end
+
   def destination_location=(location)
     self.destination_location_id = location.try(:id)
   end
+
+  def destination_location_name=(name)
+    self.destination_location_id = Location.where(name: name).first.try(:id)
+  end 
 
   def trackable?
     product_location_assignment = ProductLocationAssignment.where(product_id: self.product_id, location_id: self.origin_location_id).first

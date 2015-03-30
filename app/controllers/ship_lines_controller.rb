@@ -73,6 +73,18 @@ class ShipLinesController < ApplicationController
   def destroy
   end
  
+  def file_upload
+    render partial: "shared/file_upload", locals: {target_path: import_file_ship_lines_path}
+  end
+
+  def import_file
+    ship_line_file = params[:file]
+    copy_ship_line_file(ship_line_file)
+    ShipLine.import(Rails.root.join('public','ship_line_uploads').to_s + "/"+ship_line_file.original_filename)
+    redirect_to lookup_ship_lines_url
+  end
+
+
   private
 
     def ship_line_params
@@ -98,6 +110,12 @@ class ShipLinesController < ApplicationController
         search_params.delete("product_name")
       end
       search_params
+    end
+  
+    def copy_ship_line_file(ship_line_file)
+      File.open(Rails.root.join('public','ship_line_uploads',ship_line_file.original_filename),"wb") do |file|
+        file.write(ship_line_file.read)
+      end
     end
 
 
