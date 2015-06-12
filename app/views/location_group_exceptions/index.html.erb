@@ -4,7 +4,7 @@
     <p>Yay! No Location Group Exceptions!</p>
   <% else %>
     <table  class="table table-striped">
-      <tr><th>Location Group</th><th>Product </th> <th>Aggregate Minimum</th> <th>Aggregate On Hand Quantity</th> <th>Days to Impat</th> <th>Duration</th> <th>Begin Date</th> <th>End Date</th></tr>
+      <tr><th>Location Group</th><th>Product </th> <th>Aggregate Minimum</th> <th>Aggregate On Hand Quantity</th> <th>Days to Impact</th> <th>Duration</th> <th>Begin Date</th> <th>End Date</th></tr>
       <% @location_group_exceptions.each do |location_group_exception|%>
         <tr><td><%= location_group_exception.location_group.name         	%></td>
 	    <td><%= location_group_exception.product.name                	%></td>
