@@ -41,6 +41,6 @@ module Fortuneteller
     end
 
     config.autoload_paths += Dir[Rails.root.join('app', 'lib', 'mongoid')]
-    config.serve_static_assets = true
+    config.serve_static_file = true
   end
 end
