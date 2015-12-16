@@ -21,6 +21,7 @@ class AdjustmentProcessingJob
   def self.process_inventory_advice(inventory_advice)
     invn_posn = inventory_position(inventory_advice)
     invn_posn.on_hand_quantity = inventory_advice.adjustment_quantity
+    invn_posn.attribute_breakdown = inventory_advice.attribute_breakdown
     invn_posn.save
     invn_posn.reset_projections
   end

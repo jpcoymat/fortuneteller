@@ -2,11 +2,23 @@ class InventoryPosition
   include Mongoid::Document
   include Mongoid::Timestamps
   field :on_hand_quantity,	type: Float
+  field :attribute_breakdown,	type: Hash
 
   embeds_many :inventory_projections, order: :projected_for.asc 
 
   belongs_to :product
   belongs_to :location
+  
+  validate :breakdown_integrity
+
+  def breakdown_integrity
+    unless attribute_breakdown.nil?
+      breakdown_quantity = 0
+      attribute_breakdown.each {|k,v| breakdown_quantity += v}
+      errors.add(:attribute_breakdown, "Attribute Breakdown does not add up to total quantity") if breakdown_quantity != on_hand_quantity
+    end
+  end
+
 
   def latest_projection_date
     self.inventory_projections.last.projected_for

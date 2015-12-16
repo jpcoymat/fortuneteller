@@ -1,13 +1,14 @@
 class InventoryAdjustment
   include Mongoid::Document
   include Mongoid::Timestamps
-  field :source, type: String
-  field :adjustment_type, type: String
-  field :adjustment_quantity, type: Float
-  field :adjustment_date, type: Date
-  field :object_reference_number, type: String 
-  field :legacy_store_id, type: String
-  field :legacy_persistance, type: Boolean
+  field :source, 			type: String
+  field :adjustment_type, 		type: String
+  field :adjustment_quantity, 		type: Float
+  field :adjustment_date, 		type: Date
+  field :object_reference_number,	type: String 
+  field :legacy_store_id, 		type: String
+  field :legacy_persistance, 		type: Boolean
+  field :attribute_breakdown, 		type: Hash
 
   belongs_to :organization
   belongs_to :location
