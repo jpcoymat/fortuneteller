@@ -10,8 +10,14 @@
 
      <h2>Product: <%= inventory_position.product.name %> &nbsp; / &nbsp; Location: <%= inventory_position.location.name %></h2>
      
-     <h4>On Order Sources </h4>
      <% inventory_projection = inventory_position.inventory_projections.where(projected_for: @projection_date).first %>
+
+     <dl class="dl-horizontal">
+        <dt>On Hand Quantity	</dt>   <dd><%= inventory_projection.on_hand_quantity	%></dd>
+        <dt>Available Quantity	</dt>   <dd><%= inventory_projection.available_quantity	%></dd>
+     </dl>
+
+     <h4>On Order Sources </h4>
      <% if inventory_projection.on_order_sources.empty? %>
        <p>No On Order Sources for this product/location/date</p>
      <% else %>
